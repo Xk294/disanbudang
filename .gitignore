@@ -61,3 +61,7 @@ AkiClaudeDoc-master/
 
 # Disposable visual export from /akihtmlreport — regenerated each run, not a doc source of truth
 REPORT.html
+
+# Claude Code — chỉ ignore local-only files, không ignore toàn bộ .claude/
+.claude/settings.local.json
+.claude/todos.json
