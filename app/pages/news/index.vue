@@ -40,7 +40,7 @@
         >
           <!-- Article Cover Image -->
           <div class="relative overflow-hidden rounded-xl aspect-[16/10] mb-5 border border-charcoal-800/80">
-            <img :src="article.coverImage" :alt="article.title" class="w-full h-full object-cover transition-transform duration-750 ease-out-expo group-hover:scale-105" />
+            <NuxtImg :src="article.coverImage" :alt="article.title" class="w-full h-full object-cover transition-transform duration-750 ease-out-expo group-hover:scale-105" />
           </div>
 
           <div class="flex items-center gap-3 mb-4">

@@ -14,7 +14,7 @@
             :key="i"
             class="absolute inset-0"
           >
-            <img
+            <NuxtImg
               :src="slide.image"
               :alt="slide.alt"
               class="w-full h-full object-cover"
@@ -49,8 +49,8 @@
         <span class="text-charcoal-500 text-xs tabular-nums">{{ String(slides.length).padStart(2, '0') }}</span>
       </div>
 
-      <!-- MAIN CONTENT — bottom-left positioned -->
-      <div class="relative z-20 flex-1 flex flex-col justify-end pb-20 md:pb-24 pt-36">
+      <!-- MAIN CONTENT — vertically centered -->
+      <div class="relative z-20 flex-1 flex flex-col justify-center py-20 lg:py-24">
         <div class="container-heritage">
           <div class="max-w-3xl xl:max-w-4xl">
 
@@ -168,7 +168,7 @@
           <div class="reveal relative">
             <!-- Main photo -->
             <div class="relative rounded-3xl overflow-hidden h-[420px] lg:h-[520px] border border-charcoal-800/60 shadow-2xl shadow-charcoal-950/50">
-              <img
+              <NuxtImg
                 src="/images/heritage/van-hoa-phi-vat-the/cong-chieng-lg.webp"
                 alt="Cồng chiêng S'tiêng"
                 class="w-full h-full object-cover"
@@ -324,7 +324,7 @@
           >
             <!-- Thumbnail image background -->
             <div class="relative h-44 overflow-hidden">
-              <img
+              <NuxtImg
                 :src="pillar.image"
                 :alt="pillar.title"
                 class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-[1.05]"
@@ -422,7 +422,7 @@
 
       <!-- Background subtle image -->
       <div class="absolute inset-0 z-0 opacity-5">
-        <img src="/images/heritage/img-disanbudang/chien-khu-D.png" alt="" class="w-full h-full object-cover" />
+        <NuxtImg src="/images/heritage/img-disanbudang/chien-khu-D.png" alt="" class="w-full h-full object-cover" />
         <div class="absolute inset-0 bg-charcoal-950/90" />
       </div>
 

@@ -154,7 +154,7 @@
                 class="group flex gap-4 bg-charcoal-950/40 border border-charcoal-850 rounded-2xl p-4 hover:border-gold-500/30 transition-all duration-500"
               >
                 <div class="w-24 h-20 rounded-xl overflow-hidden shrink-0 border border-charcoal-800">
-                  <img :src="h.coverImage" :alt="h.title" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+                  <NuxtImg :src="h.coverImage" :alt="h.title" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
                 </div>
                 <div class="min-w-0 flex-1">
                   <p class="text-charcoal-450 text-2xs uppercase tracking-wider font-semibold">{{ getCategoryLabel(h.category) }}</p>

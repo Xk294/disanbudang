@@ -1,7 +1,10 @@
 <template>
   <div class="min-h-screen flex flex-col bg-charcoal-900 transition-colors duration-500">
     <AppTopNav />
-    <main class="flex-1 pt-[72px]">
+    <main
+      class="flex-1"
+      :class="isHeroPage ? '' : 'pt-[72px]'"
+    >
       <Breadcrumb />
       <slot />
     </main>
@@ -18,9 +21,11 @@
 </template>
 
 <script setup lang="ts">
+const route = useRoute()
+const isHeroPage = computed(() => route.path === '/' || route.path === '/about')
+
 // Scroll reveal on route change
 const { observeAll } = useScrollReveal()
-const route = useRoute()
 watch(
   () => route.path,
   () => nextTick(() => observeAll()),
@@ -31,3 +36,4 @@ onMounted(() => {
   useVisitorTrack()
 })
 </script>
+

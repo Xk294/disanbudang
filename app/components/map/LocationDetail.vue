@@ -102,7 +102,7 @@
           class="aspect-video rounded-lg overflow-hidden border border-charcoal-800 cursor-pointer hover:border-gold-400/60 transition-all relative group"
           @click="$emit('open-gallery', gIdx)"
         >
-          <img :src="img.src" :alt="img.alt" class="w-full h-full object-cover" loading="lazy" />
+          <NuxtImg :src="img.src" :alt="img.alt" class="w-full h-full object-cover" loading="lazy" />
           <div class="absolute inset-0 bg-black/30 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
             <Icon name="mdi:magnify-plus-outline" class="w-4 h-4 text-white" />
           </div>
@@ -135,7 +135,7 @@
           @click="$emit('select-heritage', place)"
         >
           <div class="w-14 h-11 rounded-lg overflow-hidden shrink-0 border border-charcoal-700">
-            <img :src="place.coverImage" :alt="place.title" class="w-full h-full object-cover" />
+            <NuxtImg :src="place.coverImage" :alt="place.title" class="w-full h-full object-cover" />
           </div>
           <div class="min-w-0 flex-1 flex flex-col justify-center">
             <p class="text-white text-xs font-semibold truncate leading-snug">{{ place.title }}</p>

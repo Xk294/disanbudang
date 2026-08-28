@@ -32,7 +32,7 @@
                 v-if="currentState === 'peek' && selectedHeritage.coverImage"
                 class="w-14 h-11 rounded-lg overflow-hidden shrink-0 border border-charcoal-700 shadow-md"
               >
-                <img :src="selectedHeritage.coverImage" :alt="selectedHeritage.title" class="w-full h-full object-cover" />
+                <NuxtImg :src="selectedHeritage.coverImage" :alt="selectedHeritage.title" class="w-full h-full object-cover" />
               </div>
             </transition>
 

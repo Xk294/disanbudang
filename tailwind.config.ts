@@ -131,9 +131,7 @@ export default {
       fontFamily: {
         heading: ['"Playfair Display"', 'Georgia', 'serif'],
         body: ['Inter', 'system-ui', 'sans-serif'],
-        // Accent now reuses the editorial serif (italic) instead of a third
-        // typeface — one less font to load, matches the "minimal" principle.
-        accent: ['"Playfair Display"', 'Georgia', 'serif'],
+        accent: ['"Cormorant Garamond"', 'Georgia', 'serif'],
       },
       fontSize: {
         '3xs': ['0.5rem', { lineHeight: '0.75rem' }],

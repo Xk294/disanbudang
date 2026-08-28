@@ -383,7 +383,7 @@
                 <div class="flex flex-col lg:flex-row gap-0">
                   <!-- Cover image -->
                   <div class="h-56 lg:h-auto lg:w-96 relative overflow-hidden bg-charcoal-900 shrink-0">
-                    <img :src="featuredResource.coverImage" :alt="featuredResource.title" class="w-full h-full object-cover opacity-80 group-hover:opacity-95 group-hover:scale-105 transition-all duration-700" loading="lazy" />
+                    <NuxtImg :src="featuredResource.coverImage" :alt="featuredResource.title" class="w-full h-full object-cover opacity-80 group-hover:opacity-95 group-hover:scale-105 transition-all duration-700" loading="lazy" />
                     <div class="absolute inset-0 bg-gradient-to-r from-transparent to-charcoal-950/80" />
                     <div class="absolute top-4 left-4 flex gap-2">
                       <span class="px-3 py-1.5 bg-gold-500 text-charcoal-950 text-3xs font-bold uppercase tracking-wider rounded-full flex items-center gap-1.5 shadow-lg">
@@ -465,7 +465,7 @@
                 >
                   <!-- Cover image -->
                   <div class="h-40 w-full relative overflow-hidden bg-charcoal-900 shrink-0">
-                    <img :src="res.coverImage" :alt="res.title" class="w-full h-full object-cover opacity-70 group-hover/card:opacity-90 group-hover/card:scale-105 transition-all duration-500" loading="lazy" />
+                    <NuxtImg :src="res.coverImage" :alt="res.title" class="w-full h-full object-cover opacity-70 group-hover/card:opacity-90 group-hover/card:scale-105 transition-all duration-500" loading="lazy" />
                     <div class="absolute inset-0 bg-gradient-to-t from-charcoal-950 via-charcoal-950/20 to-transparent" />
                     <div class="absolute top-3 left-3">
                       <span class="px-2 py-0.5 rounded bg-charcoal-900/80 border border-charcoal-800 text-3xs font-semibold text-gold-400 tracking-wider uppercase backdrop-blur-sm">
@@ -523,7 +523,7 @@
                   role="button"
                   :aria-label="`Mở tài liệu: ${res.title}`"
                 >
-                  <img :src="res.coverImage" :alt="res.title" class="w-20 h-16 object-cover rounded-xl shrink-0 opacity-80 group-hover:opacity-100 transition-opacity" loading="lazy" />
+                  <NuxtImg :src="res.coverImage" :alt="res.title" class="w-20 h-16 object-cover rounded-xl shrink-0 opacity-80 group-hover:opacity-100 transition-opacity" loading="lazy" />
                   <div class="flex-1 min-w-0">
                     <div class="flex items-center gap-2 mb-1">
                       <span class="text-gold-400 text-3xs font-bold uppercase">{{ res.subject }}</span>
@@ -649,7 +649,7 @@
               :aria-label="`Xem chi tiết ${spot.name}`"
             >
               <div class="h-36 relative overflow-hidden">
-                <img :src="spot.image" :alt="spot.name" class="w-full h-full object-cover opacity-80 group-hover:opacity-100 group-hover:scale-105 transition-all duration-500" loading="lazy" />
+                <NuxtImg :src="spot.image" :alt="spot.name" class="w-full h-full object-cover opacity-80 group-hover:opacity-100 group-hover:scale-105 transition-all duration-500" loading="lazy" />
                 <div class="absolute inset-0 bg-gradient-to-t from-charcoal-950 via-charcoal-950/30 to-transparent" />
                 <span class="absolute top-3 left-3 px-2.5 py-1 rounded-full text-3xs font-bold uppercase tracking-wider border" :class="spot.tagClass">{{ spot.tag }}</span>
                 <span v-if="spot.audioGuide" class="absolute top-3 right-3 px-2 py-1 rounded-full text-3xs font-bold bg-charcoal-950/80 border border-gold-500/30 text-gold-400 flex items-center gap-1">
@@ -943,7 +943,7 @@
           <!-- Photos -->
           <div v-if="activeMediaSubtab === 'photos'" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
             <div v-for="(item, idx) in imageStories" :key="idx" class="group relative rounded-3xl overflow-hidden border border-charcoal-800 bg-charcoal-950 cursor-pointer shadow-lg shadow-black/20 h-72 hover:border-gold-500/25 transition-all duration-400 hover:-translate-y-1 hover:shadow-2xl hover:shadow-black/40" @click="openImageModal(item)" :aria-label="`Xem ảnh: ${item.title}`">
-              <img :src="item.image" :alt="item.title" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" loading="lazy" @error="hideOnImageError" />
+              <NuxtImg :src="item.image" :alt="item.title" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" loading="lazy" @error="hideOnImageError" />
               <div class="absolute inset-0 bg-gradient-to-t from-charcoal-950 via-charcoal-950/30 to-transparent" />
               <div class="absolute bottom-0 inset-x-0 p-5 space-y-1.5">
                 <span class="text-gold-400 text-3xs font-bold uppercase tracking-wider">{{ item.tag }}</span>
@@ -958,7 +958,7 @@
           <!-- Videos -->
           <div v-else-if="activeMediaSubtab === 'videos'" class="space-y-6">
             <div class="relative w-full aspect-video bg-charcoal-950 border border-charcoal-850 rounded-3xl overflow-hidden group cursor-pointer" @click="startVideoPlayback">
-              <img src="/images/heritage/danh-thang/thac-dung-lg.webp" alt="Video: Thác Dung Bù Đăng" class="w-full h-full object-cover opacity-60 group-hover:opacity-80 transition-opacity duration-500" loading="lazy" @error="hideOnImageError" />
+              <NuxtImg src="/images/heritage/danh-thang/thac-dung-lg.webp" alt="Video: Thác Dung Bù Đăng" class="w-full h-full object-cover opacity-60 group-hover:opacity-80 transition-opacity duration-500" loading="lazy" @error="hideOnImageError" />
               <div class="absolute inset-0 flex items-center justify-center">
                 <div class="w-20 h-20 rounded-full bg-charcoal-950/70 backdrop-blur-sm border-2 border-gold-500/50 flex items-center justify-center group-hover:scale-110 transition-transform shadow-gold/20 shadow-xl">
                   <Icon name="mdi:play" class="w-9 h-9 text-gold-400 translate-x-0.5" />
@@ -974,7 +974,7 @@
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div v-for="video in mockVideos" :key="video.title" class="flex gap-4 p-4 bg-charcoal-950 border border-charcoal-850 rounded-2xl hover:border-gold-500/25 transition-colors cursor-pointer group" @click="startVideoPlayback">
                 <div class="w-24 h-16 rounded-xl bg-charcoal-900 overflow-hidden relative shrink-0">
-                  <img :src="video.thumb" :alt="video.title" class="w-full h-full object-cover group-hover:scale-105 transition-transform" loading="lazy" @error="hideOnImageError" />
+                  <NuxtImg :src="video.thumb" :alt="video.title" class="w-full h-full object-cover group-hover:scale-105 transition-transform" loading="lazy" @error="hideOnImageError" />
                   <div class="absolute inset-0 flex items-center justify-center bg-charcoal-950/40">
                     <Icon name="mdi:play-circle" class="w-7 h-7 text-gold-400/80" />
                   </div>
@@ -1152,7 +1152,7 @@
               :aria-label="lesson.hasContent ? `Bắt đầu bài học: ${lesson.title}` : `${lesson.title} - sắp ra mắt`"
             >
               <div class="h-48 relative overflow-hidden bg-charcoal-900">
-                <img v-if="lesson.coverImage" :src="lesson.coverImage" :alt="lesson.title" class="w-full h-full object-cover opacity-70 transition-all duration-500" :class="lesson.hasContent ? 'group-hover:opacity-90 group-hover:scale-105' : ''" loading="lazy" />
+                <NuxtImg v-if="lesson.coverImage" :src="lesson.coverImage" :alt="lesson.title" class="w-full h-full object-cover opacity-70 transition-all duration-500" :class="lesson.hasContent ? 'group-hover:opacity-90 group-hover:scale-105' : ''" loading="lazy" />
                 <div class="absolute inset-0 bg-gradient-to-t from-charcoal-950 via-charcoal-950/20 to-transparent" />
                 <div class="absolute top-3 right-3 flex items-center gap-1.5 bg-charcoal-950/80 border border-charcoal-800 px-2.5 py-1 rounded-full text-3xs backdrop-blur-sm">
                   <Icon name="mdi:clock-outline" class="w-3 h-3 text-charcoal-400" />
@@ -1533,7 +1533,7 @@
         <div class="absolute inset-0 bg-charcoal-950/90 backdrop-blur-sm" @click="selectedImageItem = null" />
         <div class="relative w-full max-w-3xl bg-charcoal-950 border border-charcoal-800 rounded-3xl overflow-hidden shadow-2xl z-10 flex flex-col md:flex-row max-h-[85vh] md:h-[450px]">
           <div class="w-full md:w-1/2 h-52 md:h-full relative overflow-hidden bg-charcoal-900 shrink-0">
-            <img :src="selectedImageItem.image" :alt="selectedImageItem.title" class="w-full h-full object-cover" />
+            <NuxtImg :src="selectedImageItem.image" :alt="selectedImageItem.title" class="w-full h-full object-cover" />
           </div>
           <div class="flex-1 p-6 md:p-8 overflow-y-auto flex flex-col justify-between">
             <div class="space-y-3">
@@ -1862,8 +1862,8 @@ const heritageSpotlights = [
   },
   {
     slug: 'cong-chieng-stieng',
-    name: 'Cồng Chiêng S\'tiêng — Di Sản UNESCO',
-    desc: 'Không gian văn hóa cồng chiêng Tây Nguyên được UNESCO công nhận năm 2005, gìn giữ bởi cộng đồng S\'tiêng Bù Đăng.',
+    name: 'Cồng Chiêng S\'tiêng — Cùng Mạch Nguồn UNESCO',
+    desc: 'Cồng chiêng S\'tiêng Bù Đăng chung cội nguồn với Không gian văn hóa cồng chiêng Tây Nguyên (UNESCO 2005), đang được cộng đồng gìn giữ.',
     image: '/images/heritage/van-hoa-phi-vat-the/cong-chieng-md.webp',
     location: 'Sóc Bom Bo, Thành Phố Đồng Nai',
     tag: 'Phi vật thể',
@@ -1959,7 +1959,7 @@ const historyTimeline = [
   { year: 'Thế kỷ 3-4', tag: 'Khảo cổ', tagBg: 'bg-earth-500/10 text-earth-400', title: 'Đàn đá tiền sử', desc: 'Những bộ đàn đá cổ đại nhất được phát hiện trong lòng đất đỏ bazan Thành Phố Đồng Nai, âm thanh từ thời tiền sử.' },
   { year: '1945 - 1954', tag: 'Kháng chiến', tagBg: 'bg-red-500/10 text-red-400', title: 'Chiến Khu Đ thành lập', desc: 'Hệ thống căn cứ địa cách mạng kiên cố, điểm tựa cho cuộc kháng chiến chống Pháp tại miền Đông Nam Bộ.' },
   { year: '1960s', tag: 'Văn hóa', tagBg: 'bg-gold-500/10 text-gold-400', title: 'Tiếng chày Sóc Bom Bo', desc: 'Đồng bào S\'tiêng đốt đuốc giã gạo thâu đêm nuôi quân giải phóng — bài ca huyền thoại ra đời.' },
-  { year: '2005', tag: 'UNESCO', tagBg: 'bg-blue-500/10 text-blue-400', title: 'Cồng chiêng Tây Nguyên được vinh danh', desc: 'UNESCO công nhận không gian văn hóa cồng chiêng Tây Nguyên là Di sản phi vật thể của nhân loại.' },
+  { year: '2005', tag: 'UNESCO', tagBg: 'bg-blue-500/10 text-blue-400', title: 'Cồng chiêng Tây Nguyên được vinh danh', desc: 'UNESCO công nhận Không gian văn hóa cồng chiêng Tây Nguyên (5 tỉnh Tây Nguyên) là Di sản phi vật thể. Cồng chiêng S\'tiêng Bù Đăng chung mạch nguồn văn hóa này.' },
   { year: '2026', tag: 'Số hóa', tagBg: 'bg-green-500/10 text-green-400', title: 'Cổng Học Tập Di Sản Số ra mắt', desc: 'Trang web di sản số hóa Thành Phố Đồng Nai ra mắt, mang lịch sử địa phương đến với học sinh khắp nơi.' }
 ]
 
@@ -2284,11 +2284,11 @@ interface ImageStory { title: string; tag: string; image: string; story: string 
 const imageStories = ref<ImageStory[]>([
   { title: 'Thác Mơ Bù Đăng Hùng Vĩ', tag: 'Thiên Nhiên', image: '/images/heritage/img-disanbudang/thac-mo-dong-nai.png', story: 'Ngọn thác biểu tượng nằm nép mình giữa rừng già nguyên sinh Bù Đăng. Dòng nước trắng xóa như dải lụa đổ từ trên cao, tạo nên cảnh sắc huyền ảo thơ mộng và gắn liền với thần thoại cội nguồn Dak Mơ xa xưa của người S\'tiêng bản địa.' },
   { title: 'Trảng Cỏ Bù Lạch Xanh Mướt', tag: 'Thiên Nhiên', image: '/images/heritage/img-disanbudang/Trang-co-Bu-Lach.png', story: 'Tuyệt tác thiên nhiên hoang sơ rộng gần 140 hecta bao bọc lấy một lòng hồ nước ngọt trong mát quanh năm. Trảng cỏ là không gian sinh hoạt lễ hội cộng đồng độc đáo và là bài học thực địa địa lý sinh động nhất.' },
-  { title: 'Cồng Chiêng & Vũ Điệu Xoang', tag: 'Văn Hóa', image: '/images/heritage/van-hoa-phi-vat-the/cong-chieng-md.webp', story: 'Âm thanh cồng chiêng ngân vang kết nối buôn làng, là linh hồn sinh hoạt tâm linh và nghệ thuật biểu diễn của đồng bào dân tộc thiểu số Bù Đăng đã được UNESCO vinh danh.' }
+  { title: 'Cồng Chiêng & Vũ Điệu Xoang', tag: 'Văn Hóa', image: '/images/heritage/van-hoa-phi-vat-the/cong-chieng-md.webp', story: 'Âm thanh cồng chiêng ngân vang kết nối buôn làng, là linh hồn sinh hoạt tâm linh và nghệ thuật biểu diễn của đồng bào S\'tiêng Bù Đăng — chung cội nguồn với Cồng chiêng Tây Nguyên (UNESCO 2005).' }
 ])
 const selectedImageItem = ref<ImageStory | null>(null)
-function hideOnImageError(e: Event) {
-  (e.target as HTMLImageElement).style.display = 'none'
+function hideOnImageError(e: string | Event) {
+  if (e instanceof Event) (e.target as HTMLImageElement).style.display = 'none'
 }
 
 const mockVideos = [
@@ -2322,7 +2322,7 @@ function generateAiResponse(inputVal: string): string {
   const query = inputVal.toLowerCase().trim()
   if (query.includes('chiến khu') || query.includes('chien khu')) return 'Chiến Khu Đ là hệ thống căn cứ địa cách mạng vô cùng hiểm yếu nằm sâu trong lòng rừng nguyên sinh Xã Bù Đăng, Thành Phố Đồng Nai. Nơi đây được bảo vệ bởi địa thế hiểm trở và tinh thần đoàn kết kiên cường của đồng bào du kích S\'tiêng.'
   if (query.includes('lúa mới') || query.includes('lua moi')) return 'Lễ hội Mừng Lúa Mới của đồng bào S\'tiêng thường diễn ra vào cuối vụ mùa thu hoạch (tháng 10-12 âm lịch). Đây là dịp người dân tạ ơn thần linh (Yang) và thắt chặt tình đoàn kết buôn làng bằng cồng chiêng và rượu cần Đ\'rắp S\'lung.'
-  if (query.includes('cồng chiêng') || query.includes('cong chieng')) return 'Dàn nhạc cồng chiêng S\'tiêng thường bao gồm từ 6 đến 12 chiếc chiêng bằng đồng không có núm. Nghệ thuật diễn xướng cồng chiêng Tây Nguyên đã được UNESCO vinh danh là Di sản văn hóa phi vật thể năm 2005.'
+  if (query.includes('cồng chiêng') || query.includes('cong chieng')) return 'Dàn nhạc cồng chiêng S\'tiêng thường bao gồm từ 6 đến 12 chiếc chiêng bằng đồng không có núm. Không gian văn hóa cồng chiêng Tây Nguyên (5 tỉnh Tây Nguyên) được UNESCO vinh danh năm 2005; cồng chiêng S\'tiêng Bù Đăng chung mạch nguồn nhưng nằm ngoài phạm vi hồ sơ công nhận.'
   if (query.includes('s\'tiêng') || query.includes('m\'nông')) return 'Đồng bào S\'tiêng nổi tiếng với nghề dệt thổ cẩm Rơ-let tinh xảo và cồng chiêng, trong khi người M\'nông có kiến trúc nhà sàn gỗ đặc thù. Cả hai đều là dân tộc thiểu số lâu đời tại Thành Phố Đồng Nai.'
   if (query.includes('dak mơ') || query.includes('thác mơ')) return 'Trong ngôn ngữ S\'tiêng, "Dak" có nghĩa là nước, "Dak Mơ" tức là "nguồn nước của ước mơ". Đây chính là cội nguồn của danh thắng Thác Mơ hùng vĩ, biểu trưng cho sinh khí dạt dào nuôi dưỡng đại ngàn Thành Phố Đồng Nai.'
   return 'Tôi đã ghi nhận câu hỏi của bạn. Thành Phố Đồng Nai là vùng đất giàu lịch sử cách mạng, có danh thắng trảng cỏ Bù Lạch tuyệt đẹp và nét dệt thổ cẩm, cồng chiêng S\'tiêng lâu đời. Bạn muốn hỏi chi tiết hơn về chủ đề nào?'

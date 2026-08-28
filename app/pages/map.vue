@@ -240,7 +240,7 @@
                 <div v-if="selectedId === heritage.id" class="absolute left-0 top-2 bottom-2 w-0.5 bg-gradient-to-b from-gold-400 via-gold-500 to-gold-400 rounded-full"></div>
                 
                 <div class="w-16 h-12 rounded-xl overflow-hidden flex-shrink-0 relative border border-charcoal-800/60 shadow-md">
-                  <img :src="heritage.coverImage" :alt="heritage.title" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" loading="lazy" />
+                  <NuxtImg :src="heritage.coverImage" :alt="heritage.title" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" loading="lazy" />
                   <div class="absolute inset-0 bg-gradient-to-t from-charcoal-950/70 via-transparent to-transparent" />
                 </div>
                 <div class="flex-1 min-w-0">
@@ -400,7 +400,7 @@
 
               <!-- Banner Photo - taller for visibility -->
               <div class="relative h-52 flex-shrink-0 bg-charcoal-900 group">
-                <img :src="selectedHeritage.coverImage" :alt="selectedHeritage.title" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" />
+                <NuxtImg :src="selectedHeritage.coverImage" :alt="selectedHeritage.title" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" />
                 <div class="absolute inset-0 bg-gradient-to-t from-charcoal-950/95 via-charcoal-950/30 to-transparent"></div>
                 
                 <!-- Badge + title overlay on image -->
@@ -543,7 +543,7 @@
                         class="aspect-video rounded-lg overflow-hidden border border-charcoal-850 cursor-pointer hover:border-gold-400/50 transition-all relative group"
                         @click="activeImageIndex = gIdx"
                       >
-                        <img :src="img.src" :alt="img.alt" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" loading="lazy" />
+                        <NuxtImg :src="img.src" :alt="img.alt" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" loading="lazy" />
                         <div class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
                           <Icon name="mdi:magnify-plus-outline" class="w-4 h-4 text-white" />
                         </div>

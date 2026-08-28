@@ -13,7 +13,7 @@
       <div class="bg-dark-earth border-b border-charcoal-850 relative overflow-hidden">
         <div class="absolute inset-0 pointer-events-none">
           <div v-if="lesson.coreKnowledge.images?.[0]" class="absolute inset-0">
-            <img :src="lesson.coreKnowledge.images[0].url" alt="" class="w-full h-full object-cover opacity-10" />
+            <NuxtImg :src="lesson.coreKnowledge.images[0].url" alt="" class="w-full h-full object-cover opacity-10" />
             <div class="absolute inset-0 bg-gradient-to-r from-charcoal-950/95 to-charcoal-950/60" />
           </div>
         </div>
@@ -227,7 +227,7 @@ const lessons: Record<string, LessonData> = {
     subject: 'Văn hóa dân tộc',
     xpReward: 75,
     estimatedMinutes: 10,
-    tldr: 'Cồng chiêng là di sản văn hóa phi vật thể quan trọng nhất của đồng bào S\'tiêng Bù Đăng. Mỗi chiếc chiêng đồng mang trong mình một vị thần linh (Yang Ching), và tiếng chiêng vang lên là cầu nối giữa con người với thần linh, đã được UNESCO vinh danh năm 2005.',
+    tldr: 'Cồng chiêng là di sản văn hóa phi vật thể quan trọng nhất của đồng bào S\'tiêng Bù Đăng. Mỗi chiếc chiêng đồng mang trong mình một vị thần linh (Yang Ching), và tiếng chiêng vang lên là cầu nối giữa con người với thần linh — chung cội nguồn với Cồng chiêng Tây Nguyên (UNESCO 2005).',
     coreKnowledge: {
       text: `<p>Cồng chiêng không chỉ là nhạc cụ — đó là <strong>tiếng nói tâm linh thiêng liêng</strong> của đồng bào dân tộc thiểu số S'tiêng tại Xã Bù Đăng. Theo tín ngưỡng truyền thống, mỗi chiếc chiêng đồng đều có vị thần <strong>Yang Ching</strong> ngự trị.</p>
       <p>Dàn nhạc cồng chiêng S'tiêng thường gồm từ <strong>6 đến 12 chiếc chiêng</strong> không núm (gọi là <em>Ching</em>), được phân tầng âm thanh chặt chẽ:</p>
@@ -242,7 +242,7 @@ const lessons: Record<string, LessonData> = {
       ],
     },
     didYouKnow: [
-      'Không gian văn hóa cồng chiêng Tây Nguyên được UNESCO công nhận là Di sản văn hóa phi vật thể đại diện của nhân loại vào năm 2005.',
+      'Không gian văn hóa cồng chiêng Tây Nguyên (5 tỉnh Tây Nguyên) được UNESCO công nhận là Di sản văn hóa phi vật thể đại diện của nhân loại vào năm 2005. Cồng chiêng S\'tiêng Bù Đăng chung mạch nguồn văn hóa này.',
       'Trong tín ngưỡng S\'tiêng, cồng chiêng là vật thiêng — không ai được tùy tiện đánh chiêng ngoài nghi lễ chính thức.',
       'Một bộ chiêng hoàn chỉnh của người S\'tiêng có thể trị giá cả trâu, bò, lợn — tài sản cả đời của một gia đình.',
     ],

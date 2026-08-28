@@ -151,7 +151,7 @@
             <!-- Section: Audio Play Detail -->
             <div v-if="heritage.audio" class="reveal border border-charcoal-800 bg-charcoal-950/50 rounded-3xl p-6 lg:p-8 flex flex-col sm:flex-row gap-6 items-center">
               <div class="w-20 h-20 rounded-2xl overflow-hidden shrink-0 border border-charcoal-800 relative">
-                <img v-if="heritage.audio.coverImage" :src="heritage.audio.coverImage" :alt="heritage.audio.title" class="w-full h-full object-cover" />
+                <NuxtImg v-if="heritage.audio.coverImage" :src="heritage.audio.coverImage" :alt="heritage.audio.title" class="w-full h-full object-cover" />
               </div>
               <div class="flex-1 text-center sm:text-left space-y-1">
                 <span class="eyebrow text-gold-400 text-3xs">Thuyết minh chính thức</span>

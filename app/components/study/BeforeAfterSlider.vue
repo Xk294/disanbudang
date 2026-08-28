@@ -2,7 +2,7 @@
   <div class="relative w-full aspect-[16/9] rounded-2xl overflow-hidden shadow-2xl border border-charcoal-800 select-none touch-none" ref="containerRef">
     <!-- Right side: Modern image (After) -->
     <div class="absolute inset-0">
-      <img :src="modernImage" alt="Hiện đại" class="w-full h-full object-cover pointer-events-none" />
+      <NuxtImg :src="modernImage" alt="Hiện đại" class="w-full h-full object-cover pointer-events-none" />
       <div class="absolute bottom-4 right-4 bg-charcoal-950/70 border border-charcoal-800 rounded-lg px-2.5 py-1 text-ivory text-3xs font-bold uppercase tracking-wider backdrop-blur-sm">
         Ngày nay
       </div>
@@ -12,7 +12,7 @@
     <div class="absolute inset-0 overflow-hidden" :style="{ width: sliderPosition + '%' }">
       <!-- We make it twice the width or absolute position so it stays scaled -->
       <div class="absolute inset-0" :style="{ width: containerWidth + 'px' }">
-        <img :src="historicalImage" alt="Xưa" class="w-full h-full object-cover pointer-events-none filter sepia contrast-125 brightness-90 grayscale-[0.8]" />
+        <NuxtImg :src="historicalImage" alt="Xưa" class="w-full h-full object-cover pointer-events-none filter sepia contrast-125 brightness-90 grayscale-[0.8]" />
       </div>
       <div class="absolute bottom-4 left-4 bg-charcoal-950/70 border border-charcoal-800 rounded-lg px-2.5 py-1 text-gold-400 text-3xs font-bold uppercase tracking-wider backdrop-blur-sm">
         Năm 1965 (Mô phỏng tư liệu)

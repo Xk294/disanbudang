@@ -28,7 +28,7 @@
       <!-- Core images if any -->
       <div v-if="lesson.coreKnowledge.images?.length" class="mt-4 grid grid-cols-1 gap-4" :class="lesson.coreKnowledge.images.length > 1 ? 'sm:grid-cols-2' : ''">
         <figure v-for="(img, i) in lesson.coreKnowledge.images" :key="i" class="space-y-1.5">
-          <img :src="img.url" :alt="img.caption" class="w-full rounded-xl object-cover max-h-60" loading="lazy" />
+          <NuxtImg :src="img.url" :alt="img.caption" class="w-full rounded-xl object-cover max-h-60" loading="lazy" />
           <figcaption class="text-3xs text-charcoal-500 italic text-center">{{ img.caption }}</figcaption>
         </figure>
       </div>
