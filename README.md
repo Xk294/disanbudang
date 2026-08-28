@@ -13,8 +13,8 @@ Các hạn chế của các giải pháp hiện tại mà dự án này khắc p
 |---|---|
 | Thiếu bản đồ di sản tương tác | Bản đồ Leaflet.js + GPS Geolocation (`/map`) |
 | Thiếu hệ thống trắc nghiệm sinh động | Góc Học Tập với Quiz + Huy hiệu điện tử (`/study`) |
-| Không có hướng dẫn bằng âm thanh | Audio Guide toàn cục chạy ngầm (Howler.js + Pinia) |
-| Nội dung rời rạc, không hệ thống | 11 di sản số hóa đầy đủ qua Nuxt Content v3 |
+| Không có hướng dẫn bằng âm thanh | Audio Guide toàn cục chạy ngầm (HTML5 Audio + Pinia) |
+| Nội dung rời rạc, không hệ thống | 16 di sản số hóa đầy đủ qua Nuxt Content v3 |
 | Giao diện truyền thống, thiếu tương tác | Dark mode nghệ thuật, animation GSAP/VueUse Motion |
 
 ## 📖 Báo Cáo Công Nghệ và Xây Dựng Sản Phẩm
@@ -49,24 +49,23 @@ Dự án được xây dựng trong **6 tháng** với các nguyên vật liệu
 
 ## 🗺️ Khả năng Mở rộng (Roadmap)
 
-### Giai đoạn hiện tại (Đã hoàn thành)
-- [x] 11 di sản số hóa
-- [x] Bản đồ tương tác + GPS
-- [x] Audio Guide toàn cục (4 track hoàn thiện)
-- [x] Góc Học Tập với Quiz + Huy hiệu
-- [x] Flashcard thuật ngữ S'tiêng
-- [x] 6 ký ức cộng đồng thu âm
+### Giai đoạn hiện tại (Đã hoàn thành — V1)
+- [x] 16 di sản số hóa toàn diện kèm tọa độ GIS
+- [x] Bản đồ tương tác + GPS Geolocation
+- [x] Audio Guide toàn cục (2 track hoàn thiện: Sóc Bom Bo & Trảng Cỏ Bù Lạch)
+- [x] Góc Học Tập với 16 bộ Quiz + 4 cấp bậc Huy hiệu
+- [x] Flashcard thuật ngữ S'tiêng tương tác 3D
+- [x] 6 ký ức cộng đồng thu âm & biên soạn
+- [x] Backend: D1, Firebase Auth, Turnstile, Admin panel
 
-### Giai đoạn tiếp theo (Ưu tiên cao)
-- [ ] Thêm audio guide cho các di sản còn lại (7 di sản chưa có audio)
-- [ ] Thêm nội dung Markdown chi tiết cho tất cả 11 di sản
-- [ ] Tích hợp Video phục dựng lễ hội Mừng Lúa Mới
-
-### Tương lai (Sau khi có đủ nguồn lực)
-- [ ] VR 360° cho các điểm di tích
-- [ ] AI Chatbot hỗ trợ giải đáp thắc mắc du khách
-- [ ] Mở rộng mô hình sang các phường/xã khác của TP. Đồng Nai
-- [ ] Phiên bản đa ngôn ngữ (Anh, Khmer)
+### Giai đoạn V2 (Đang thực hiện)
+Xem chi tiết: [`docs/plan/PLAN-disanbudangv2.md`](./docs/plan/PLAN-disanbudangv2.md)
+- [ ] Heritage Data Core — structured DB với data provenance
+- [ ] Impact Measurement — pre/post test trên 50+ học sinh
+- [ ] Living Heritage Archive — living community archive
+- [ ] Heritage Explorer V2 — GPS on-site mode, QR codes, 360°
+- [ ] Education Engine — learning paths, teacher dashboard
+- [ ] AI Heritage Guide — RAG-based chatbot
 
 ## ⏳ Giai đoạn Phát triển
 Dự án được xây dựng trong **6 tháng**:

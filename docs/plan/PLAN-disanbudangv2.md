@@ -26,7 +26,7 @@ Ba gap nguy hiểm nhất:
 
 - [ ] **P0.1** Fix brand consistency: `<title>`, `og:site_name`, meta description phải đồng nhất là "Di Sản Bù Đăng" (không lẫn "Di Sản Đồng Nai" ở nơi này "Di Sản Bù Đăng" ở nơi kia).
 - [ ] **P0.2** Audit UNESCO claims: tất cả chỗ nhắc UNESCO phải thêm context rõ: "Di sản Cồng chiêng Tây Nguyên (UNESCO 2005), trong đó người S'Tiêng là một trong các chủ thể." Không được claim "UNESCO công nhận Bù Đăng/Sóc Bom Bo" vì đó là trap giám khảo.
-- [ ] **P0.3** Các số liệu (11 di sản, 6 ký ức, 4 audio guide) phải nhất quán trên toàn site — kiểm tra từng trang.
+- [ ] **P0.3** Các số liệu (16 di sản, 6 ký ức, 4 audio guide) phải nhất quán trên toàn site — kiểm tra từng trang.
 - [ ] **P0.4** Images từ Unsplash cần gắn attribution hoặc watermark "Ảnh minh họa — sẽ thay bằng ảnh thực địa". Giám khảo heritage sẽ notice.
 - [ ] **P0.5** Xác nhận Tailwind version thực tế đang dùng (PROJECT_MASTER ghi v3, GEMINI.md ghi v4 — cần sync).
 
@@ -50,7 +50,7 @@ Chuyển toàn bộ heritage data từ TypeScript static files sang PostgreSQL v
 
 - [ ] **P1.1** Setup PostgreSQL — dùng [Neon.tech](https://neon.tech) (free tier, serverless, compatible với Cloudflare Workers).
 - [ ] **P1.2** Implement schema mới (xem chi tiết bên dưới).
-- [ ] **P1.3** Migrate 11 heritage từ `app/data/` vào DB. Giữ `app/data/` làm fallback tĩnh nếu DB unreachable.
+- [ ] **P1.3** Migrate 16 heritage từ `app/data/` vào DB. Giữ `app/data/` làm fallback tĩnh nếu DB unreachable.
 - [ ] **P1.4** Refactor `stores/heritage.ts` — fetch từ API route thay vì import static.
 
 ### Schema V2
@@ -144,7 +144,7 @@ CREATE TABLE learning_sessions (
 
 ### Data Entry (song song với code)
 
-- [ ] **P1.12** Nhập ≥ 3 sources cho mỗi trong 11 di sản (tối thiểu 33 sources). Ưu tiên: Sóc Bom Bo, Chiến Khu Đ, Núi Bà Rá.
+- [ ] **P1.12** Nhập ≥ 3 sources cho mỗi trong 16 di sản (tối thiểu 48 sources). Ưu tiên: Sóc Bom Bo, Chiến Khu Đ, Núi Bà Rá.
 - [ ] **P1.13** Mỗi source phải có: type, title, author/institution, năm, credibility level.
 
 ### Definition of Done
@@ -234,7 +234,7 @@ Bản đồ trở thành Heritage Exploration Engine, không chỉ widget marker
 
 - GPS on-site trigger hoạt động (test tại địa điểm thực).
 - ≥ 2 heritage có 360° photos.
-- QR codes được tạo cho tất cả 11 di sản.
+- QR codes được tạo cho tất cả 16 di sản.
 
 ---
 
@@ -298,7 +298,7 @@ Quiz trở thành Learning System có cấu trúc, dùng được trong lớp h�
 
 | Metric | Target |
 |---|---|
-| Heritage entities có ≥ 1 verified source | 100% (11/11) |
+| Heritage entities có ≥ 1 verified source | 100% (16/16) |
 | Total sources trong bibliography | ≥ 50 |
 | Learning sessions có data | ≥ 100 |
 | Avg knowledge gain (pre → post) | ≥ 30% |
@@ -310,7 +310,6 @@ Quiz trở thành Learning System có cấu trúc, dùng được trong lớp h�
 
 ## Tài liệu liên quan
 
-- [PROJECT_MASTER.md](../PROJECT_MASTER.md)
-- [Đóng Góp Cộng Đồng](../feat/contribute.md)
-- [Gamification](../feat/gamification.md)
-- [Bản đồ](../feat/map.md)
+- [Kiến Trúc Hệ Thống V2](../arch/system.md) — master doc duy nhất
+- [Backend Operations](../arch/backend-operations.md) — luồng request, D1, admin
+- [Business Backbone](../biz/overview.md) — định vị, monetize
