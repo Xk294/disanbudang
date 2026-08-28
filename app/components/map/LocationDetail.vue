@@ -8,10 +8,11 @@
         class="w-full h-full object-cover"
       />
       <div class="absolute inset-0 bg-gradient-to-t from-charcoal-950/80 via-transparent to-transparent"></div>
-      <div class="absolute bottom-3 left-3">
+      <div class="absolute bottom-3 left-3 flex items-center gap-2 flex-wrap">
         <BaseBadge :variant="getCategoryVariant(selectedHeritage.category)" size="sm" class="uppercase tracking-widest font-bold">
           {{ getCategoryLabel(selectedHeritage.category) }}
         </BaseBadge>
+        <HeritageSourceBadge :sources="selectedHeritage.sources" @open="isSourceModalOpen = true" />
       </div>
     </div>
 
@@ -165,14 +166,23 @@
         Chỉ đường
       </a>
     </div>
+
+    <!-- Source Verification Modal -->
+    <HeritageSourceModal
+      :is-open="isSourceModalOpen"
+      :sources="selectedHeritage.sources"
+      @close="isSourceModalOpen = false"
+    />
   </div>
 </template>
 
 <script setup lang="ts">
-import { computed } from 'vue'
+import { computed, ref } from 'vue'
 import type { Heritage } from '~/types'
 import { useHeritageStore } from '~/stores/heritage'
 import { useHeritage } from '~/composables/useHeritage'
+
+const isSourceModalOpen = ref(false)
 
 const props = defineProps<{
   selectedHeritage: Heritage

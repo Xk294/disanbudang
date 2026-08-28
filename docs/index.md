@@ -38,6 +38,7 @@ Nơi lưu trữ các kế hoạch triển khai đã chốt hoặc đang thực h
 - [Standardize Docs Plan (đã hoàn thành)](./plan/done/PLAN-001-standardize-docs.md): Kế hoạch chuẩn hoá tài liệu đợt 1.
 - [Refactor theo Aki-RULE đợt 1 (đã hoàn thành)](./plan/done/PLAN-JUL08-refactor-akirule-first.md): Kết quả rà soát toàn dự án theo bộ rule Aki-RULE và kế hoạch refactor ưu tiên P0/P1/P2.
 - [Init DB & Docs Refactor (đã hoàn thành)](./plan/done/PLAN-JUL12-init-db.md): Khởi tạo D1 DB cho tính năng đóng góp và Firebase Auth.
+- [**DisanBudang V2 — Nâng cấp Cạnh tranh Cấp Quốc gia**](./plan/PLAN-disanbudangv2.md): Kế hoạch 6-phase nâng cấp toàn diện — Heritage Data Core, Source Provenance, Impact Measurement, Living Archive, Explorer V2, Education Engine, AI Guide.
 
 ### 5. Báo cáo (Reports)
 - [Báo Cáo Nghiên Cứu Dự Án](./ref/bao-cao-du-an.md): Bản báo cáo nghiên cứu dự án chi tiết, chính thức và chuẩn xác về mặt công nghệ và tính năng.
@@ -46,8 +47,8 @@ Nơi lưu trữ các kế hoạch triển khai đã chốt hoặc đang thực h
 - [Repo visibility khi tích hợp backend (2026-07-12)](./research/2026-07-12-repo-visibility-akithink.md): Decision record — giữ repo public kèm điều kiện hardening bắt buộc trước khi ship endpoint backend (giai đoạn 2).
 
 ### 7. Hướng dẫn & Tài liệu phụ trợ (References)
+- [**Hồ Sơ Tranh Biện & Thuyết Minh Chung Khảo Quốc Gia**](./ref/NATIONAL_COMPETITION_DEFENSE_PACK.md): Tuyên bố giá trị 60s, ma trận tiêu chí đánh giá, cheat sheet phản biện giám khảo và kịch bản demo 3 phút.
 - [Kịch Bản Thu Âm Audio Guide](./ref/audio-recording-guide.md): Hướng dẫn thuyết minh & kịch bản thu âm giọng đọc thực tế cho các điểm di sản (thay thế giọng AI hiện tại).
 
 ---
 > **Lưu ý cho Developer/AI:** Mọi thay đổi về tính năng lớn hoặc kiến trúc mới đều phải được cập nhật tương ứng vào thư mục `docs/feat/` hoặc `docs/arch/`. Không tạo thêm các top-level directory trừ khi các thư mục hiện tại (`biz`, `feat`, `arch`, `plan`, `ref`, `research`) không còn phù hợp.
-

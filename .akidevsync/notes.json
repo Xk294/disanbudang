@@ -1,0 +1,58 @@
+{
+  "about": "https://github.com/lacvietanh/aki-dev-sync",
+  "schema": 1,
+  "notes": "",
+  "tasks": [
+    {
+      "created_at": 1783839577161,
+      "detail": "main project value",
+      "done": false,
+      "id": "task-1783839577161",
+      "pin": false,
+      "title": "DOCS: feat: explore (heritage)",
+      "updated_at": 1783839882665,
+      "wish": false
+    },
+    {
+      "created_at": 1783839892229,
+      "detail": "just SEO",
+      "done": false,
+      "id": "task-1783839892229",
+      "pin": false,
+      "title": "DOCS: feat: News",
+      "updated_at": 1783839892229,
+      "wish": false
+    },
+    {
+      "created_at": 1783839924579,
+      "detail": "home include quizz component",
+      "done": false,
+      "id": "task-1783839924579",
+      "pin": false,
+      "title": "DOCS: feat: quizz",
+      "updated_at": 1783839924579,
+      "wish": false
+    },
+    {
+      "created_at": 1783839942229,
+      "detail": "",
+      "done": false,
+      "id": "task-1783839942229",
+      "pin": false,
+      "title": "DOCS: feat: contribute",
+      "updated_at": 1783839942229,
+      "wish": false
+    },
+    {
+      "created_at": 1783839950729,
+      "detail": "",
+      "done": false,
+      "id": "task-1783839950729",
+      "pin": false,
+      "title": "DOCS: feat: map",
+      "updated_at": 1787850825476,
+      "wish": false
+    }
+  ],
+  "updated_at": 1787850825482
+}

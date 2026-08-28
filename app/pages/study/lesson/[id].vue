@@ -1,5 +1,5 @@
 <template>
-  <div class="min-h-screen bg-charcoal-900 text-ivory pt-[72px]">
+  <div class="min-h-screen bg-charcoal-900 text-ivory">
     <!-- 404 state -->
     <div v-if="!lesson" class="container-heritage py-24 text-center space-y-4">
       <Icon name="mdi:book-off-outline" class="w-14 h-14 text-charcoal-400 mx-auto" />

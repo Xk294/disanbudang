@@ -1,4 +1,5 @@
 import type { Heritage } from '~/types'
+import { HERITAGE_SOURCES } from '~/data/sources'
 
 export const HERITAGES: Heritage[] = [
   {
@@ -53,10 +54,6 @@ Ngày nay, dấu tích chiến khu xưa đã hòa vào những rẫy điều, v�
       },
     ],
 
-    video: {
-      title: 'Phim tư liệu hào hùng Căn cứ Nửa Lon Bù Đăng',
-      url: 'https://www.w3schools.com/html/mov_bbb.mp4',
-    },
     relatedIds: ['hrt-005', 'hrt-006'],
     tags: ['cách mạng', 'lịch sử', 'kháng chiến', 'rừng', 'căn cứ địa', 'Bù Đăng'],
     references: [
@@ -444,6 +441,10 @@ Người dân bản địa S'tiêng từ ngàn đời nay lưu truyền nhiều 
       url: '/audio/trang-co-bu-lach.mp3',
       coverImage: '/images/heritage/img-disanbudang/Trang-co-Bu-Lach.png',
     },
+    video: {
+      title: 'Phim tư liệu Thảo Nguyên Xanh Trảng Cỏ Bù Lạch',
+      url: '/video/virtual-tour/trang-co/trang-co-trailer.mp4',
+    },
     relatedIds: ['hrt-006', 'hrt-002'],
     tags: ['trảng cỏ', 'bù lạch', 'danh thắng', 'cắm trại', 'sinh thái', 'hồ tự nhiên'],
     references: [
@@ -585,7 +586,7 @@ Không chỉ là nơi trưng bày tĩnh, khu bảo tồn thường xuyên tổ c
     },
     video: {
       title: 'Phim tư liệu Sóc Bom Bo những năm tháng kháng chiến',
-      url: 'https://www.w3schools.com/html/mov_bbb.mp4',
+      url: '/video/virtual-tour/bom-bo/bom-bo-trailer.mp4',
     },
     relatedIds: ['hrt-003', 'hrt-001'],
     tags: ['sóc bom bo', 'giã gạo', 'S\'tiêng', 'kháng chiến', 'di tích lịch sử', 'xã Bom Bo', 'nhà dài'],
@@ -840,6 +841,10 @@ Bảo tàng là điểm giáo dục truyền thống cách mạng quan trọng, 
     viewCount: 890,
   },
 ]
+
+HERITAGES.forEach((h) => {
+  h.sources = HERITAGE_SOURCES[h.id] || []
+})
 
 export const getFeaturedHeritages = () => HERITAGES.filter((h) => h.featured)
 export const getHeritageBySlug = (slug: string) => HERITAGES.find((h) => h.slug === slug)

@@ -194,7 +194,7 @@
             class="hero-item font-accent italic text-ivory/65 text-lg md:text-xl lg:text-2xl mb-4 leading-relaxed max-w-xl"
             style="--delay: 0.25s"
           >
-            "Từ đại ngàn Bù Đăng đến trái tim Thành Phố Đồng Nai — vùng di sản trọng điểm đang lớn lên cùng đô thị mới"
+            "Hình thành tại Xã Bù Đăng — nơi phương pháp số hóa di sản phi vật thể dân tộc thiểu số được kiểm chứng lần đầu. Thiết kế để mở rộng."
           </p>
 
           <!-- Description -->
@@ -202,8 +202,8 @@
             class="hero-item text-charcoal-300 text-sm md:text-base leading-relaxed mb-9 md:mb-11 max-w-lg"
             style="--delay: 0.34s"
           >
-            Bảo tàng số tiên phong bảo tồn di sản văn hóa, lịch sử và thiên nhiên vùng Bù Đăng —
-            vùng lõi di sản của Thành Phố Đồng Nai, nơi văn hóa S'tiêng hội tụ cùng nhịp sống đô thị năng động.
+            Nền tảng số hóa di sản văn hóa phi vật thể — được xây dựng từ thực địa tại Xã Bù Đăng,
+            kiểm chứng phương pháp thu thập và chuẩn hóa dữ liệu, thiết kế kiến trúc độc lập với ranh giới hành chính để phục vụ toàn Thành Phố Đồng Nai.
           </p>
 
           <!-- CTAs -->
@@ -327,7 +327,7 @@ const questionCount = QUIZZES.reduce((sum, q) => sum + q.questions.length, 0)
 const bomBoAudio: HeritageAudio = {
   id: 'khu-bao-ton-soc-bom-bo',
   title: 'Thuyết minh: Khu Bảo Tồn Sóc Bom Bo',
-  narrator: 'Người kể chuyện Di Sản Đồng Nai',
+  narrator: 'Người kể chuyện Di Sản Bù Đăng',
   duration: 560,
   url: '/audio/khu-bao-ton-soc-bom-bo.mp3',
   coverImage: '/video/virtual-tour/bom-bo/poster.jpg',

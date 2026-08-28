@@ -4,7 +4,7 @@
       <div class="w-8 h-8 border-2 border-gold-500 border-t-transparent rounded-full animate-spin" />
     </div>
 
-    <div v-else-if="heritage" class="bg-charcoal-900 min-h-screen text-ivory pt-[72px]">
+    <div v-else-if="heritage" class="bg-charcoal-900 min-h-screen text-ivory">
       <!-- ===== HERO ===== -->
       <section class="relative h-[80vh] min-h-[600px] flex items-end overflow-hidden border-b border-charcoal-850">
         <img
@@ -17,9 +17,12 @@
 
         <div class="relative z-10 container-heritage pb-16">
           <div class="max-w-3xl">
-            <BaseBadge :variant="categoryVariant" class="mb-4">
-              {{ getCategoryLabel(heritage.category) }}
-            </BaseBadge>
+            <div class="flex flex-wrap items-center gap-3 mb-4">
+              <BaseBadge :variant="categoryVariant">
+                {{ getCategoryLabel(heritage.category) }}
+              </BaseBadge>
+              <HeritageSourceBadge :sources="heritage.sources" @open="isSourceModalOpen = true" />
+            </div>
             <h1 class="font-heading font-bold text-ivory text-4xl md:text-5xl lg:text-6xl leading-[1.35] md:leading-[1.3] lg:leading-[1.25] mb-6 md:mb-8 text-shadow-hero text-balance tracking-[-0.03em]">
               {{ heritage.title }}
             </h1>
@@ -198,6 +201,29 @@
               </div>
             </div>
 
+            <!-- Provenance / Scientific Sources card -->
+            <div v-if="heritage.sources && heritage.sources.length" class="bg-forest-950/20 border border-forest-500/30 rounded-2xl p-6 shadow-xl backdrop-blur-xl">
+              <div class="flex items-center justify-between gap-2 mb-3">
+                <span class="text-3xs uppercase tracking-widest font-bold text-forest-400">Data Provenance</span>
+                <span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-forest-500/20 text-forest-300 border border-forest-500/30">Verified</span>
+              </div>
+              <h3 class="font-heading font-bold text-ivory text-lg mb-2 flex items-center gap-2">
+                <Icon name="mdi:certificate-outline" class="w-5 h-5 text-forest-400" />
+                Hồ Sơ Nguồn Thẩm Định
+              </h3>
+              <p class="text-charcoal-350 text-xs leading-relaxed mb-4">
+                Di sản này đã được chuẩn hóa và kiểm chứng qua <strong>{{ heritage.sources.length }} nguồn tư liệu</strong> chính thống (Hồ sơ xếp hạng di tích, nghiên cứu dân tộc học & ký ức nhân chứng).
+              </p>
+              <button
+                type="button"
+                class="btn-ghost w-full justify-center text-xs py-2.5 border border-forest-500/40 hover:border-forest-400 text-forest-300 hover:text-ivory hover:bg-forest-500/10 rounded-xl flex items-center gap-2 cursor-pointer"
+                @click="isSourceModalOpen = true"
+              >
+                <Icon name="mdi:book-open-page-variant" class="w-4 h-4" />
+                Tra Cứu Chi Tiết Nguồn
+              </button>
+            </div>
+
             <!-- Map location link -->
             <div class="bg-charcoal-950/60 border border-charcoal-850 rounded-2xl p-6 shadow-xl backdrop-blur-xl">
               <h3 class="font-heading font-bold text-ivory text-lg mb-4 flex items-center gap-2">
@@ -311,10 +337,17 @@
           </div>
         </div>
       </Transition>
+
+      <!-- Source Provenance Modal -->
+      <HeritageSourceModal
+        :is-open="isSourceModalOpen"
+        :sources="heritage.sources"
+        @close="isSourceModalOpen = false"
+      />
     </div>
 
     <!-- 404 -->
-    <div v-else class="min-h-screen flex items-center justify-center bg-charcoal-900 pt-[72px]">
+    <div v-else class="min-h-screen flex items-center justify-center bg-charcoal-900">
       <div class="text-center">
         <Icon name="mdi:map-marker-off" class="w-20 h-20 text-charcoal-400 mx-auto mb-6" />
         <h1 class="font-heading font-bold text-ivory text-3xl mb-3">Di sản không tồn tại</h1>
@@ -335,6 +368,7 @@ const { getCategoryLabel } = useHeritage()
 const { observeAll } = useScrollReveal()
 
 const isLoaded = ref(false)
+const isSourceModalOpen = ref(false)
 const lightboxIndex = ref<number | null>(null)
 const currentActiveTab = ref('story')
 
@@ -397,6 +431,26 @@ onMounted(async () => {
   }
   await nextTick()
   observeAll()
+
+  // On-site QR code or GPS field arrival trigger
+  if (route.query.src === 'qr' || route.query.src === 'field') {
+    const swal = useSwal()
+    swal.fire({
+      title: '📍 Chào mừng bạn đến với thực địa!',
+      text: `Bạn đang có mặt tại ${heritage.value?.title || 'điểm di tích'}. Hệ thống thuyết minh tự động đã sẵn sàng.`,
+      icon: 'info',
+      confirmButtonText: heritage.value?.audio ? '🎧 Nghe thuyết minh ngay' : 'Khám phá ngay',
+      showCancelButton: true,
+      cancelButtonText: 'Tự đọc tư liệu',
+      confirmButtonColor: '#C7A664',
+      background: '#221D17',
+      color: '#F5F1EA',
+    }).then((res) => {
+      if (res.isConfirmed && heritage.value?.audio) {
+        playAudio()
+      }
+    })
+  }
 
   // Intersection observer to automatically highlight active tab
   if (import.meta.client) {

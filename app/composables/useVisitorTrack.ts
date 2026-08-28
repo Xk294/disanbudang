@@ -25,6 +25,9 @@ export function useVisitorTrack() {
       // Update global counter if the server returned a total
       if (res.ok && typeof res.totalVisits === 'number') {
         visitCount.value = res.totalVisits
+        if (import.meta.client) {
+          localStorage.setItem('disanbudang_visit_count', String(res.totalVisits))
+        }
       }
     } catch {
       // Silent — analytics must not impact UX
@@ -32,6 +35,14 @@ export function useVisitorTrack() {
   }
 
   onMounted(() => {
+    // Attempt to restore cached count immediately to avoid UI pop
+    if (visitCount.value === null) {
+      const cached = localStorage.getItem('disanbudang_visit_count')
+      if (cached && !isNaN(Number(cached))) {
+        visitCount.value = Number(cached)
+      }
+    }
+
     // Track initial page
     track(route.path)
 

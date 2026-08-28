@@ -1,6 +1,46 @@
 <template>
   <div class="relative w-full h-full">
     <div ref="mapEl" class="w-full h-full" />
+
+    <!-- ON-SITE FIELD MODE ALERT CARD -->
+    <Transition name="slide-up">
+      <div
+        v-if="nearbyHeritage"
+        class="absolute top-6 left-1/2 -translate-x-1/2 z-[500] w-[92%] max-w-lg bg-charcoal-900/95 backdrop-blur-xl border-2 border-gold-500 rounded-2xl p-4 shadow-2xl shadow-charcoal-950/80 text-ivory flex items-center justify-between gap-4"
+      >
+        <div class="flex items-center gap-3">
+          <div class="w-11 h-11 rounded-xl bg-gold-500/20 border border-gold-500/40 flex items-center justify-center shrink-0">
+            <Icon name="mdi:map-marker-radius" class="w-6 h-6 text-gold-400" />
+          </div>
+          <div>
+            <div class="flex items-center gap-2">
+              <span class="text-3xs uppercase font-bold tracking-wider text-gold-400">Chế độ Thực Địa GPS</span>
+              <span class="text-3xs text-charcoal-400">• Cách ~{{ Math.round(nearbyDistance) }}m</span>
+            </div>
+            <p class="font-heading font-bold text-sm text-ivory line-clamp-1">{{ nearbyHeritage.title }}</p>
+          </div>
+        </div>
+
+        <div class="flex items-center gap-2">
+          <button
+            v-if="nearbyHeritage.audio"
+            class="btn-primary text-xs px-3 py-2 bg-gold-500 text-charcoal-950 flex items-center gap-1.5 shrink-0"
+            @click="playNearbyAudio(nearbyHeritage)"
+          >
+            <Icon name="mdi:play" class="w-4 h-4" />
+            <span class="hidden sm:inline">Audio</span>
+          </button>
+          <NuxtLink
+            :to="`/heritage/${nearbyHeritage.slug}?src=field`"
+            class="p-2 rounded-xl bg-charcoal-800 hover:bg-charcoal-700 text-charcoal-300 hover:text-ivory transition-colors shrink-0"
+            title="Xem chi tiết di tích"
+          >
+            <Icon name="mdi:arrow-right" class="w-4 h-4" />
+          </NuxtLink>
+        </div>
+      </div>
+    </Transition>
+
     <!-- Locate button — premium -->
     <button
       class="absolute bottom-6 right-6 z-[400] w-14 h-14 flex items-center justify-center rounded-2xl transition-all duration-300 group"
@@ -44,11 +84,14 @@ const emit = defineEmits<{
 }>()
 
 const mapEl = ref<HTMLElement | null>(null)
+const audioStore = useAudioStore()
 let map: any = null
 let LInstance: any = null
 const activeMarkers: any[] = []
 let routePolyline: any = null
 const isLocating = ref(false)
+const nearbyHeritage = ref<Heritage | null>(null)
+const nearbyDistance = ref(0)
 
 // Brighter, more vivid colors that pop on dark map tile
 const categoryColors: Record<string, string> = {
@@ -95,6 +138,23 @@ const locateMe = async () => {
       const lat = position.coords.latitude
       const lng = position.coords.longitude
       
+      // Check nearest heritage for Field Mode
+      let minDistance = Infinity
+      let nearest: Heritage | null = null
+
+      props.heritages.forEach((h) => {
+        const dist = calculateDistanceMeters(lat, lng, h.coordinates.lat, h.coordinates.lng)
+        if (dist < minDistance) {
+          minDistance = dist
+          nearest = h
+        }
+      })
+
+      if (nearest && minDistance <= 5000) {
+        nearbyHeritage.value = nearest
+        nearbyDistance.value = minDistance
+      }
+
       if (map) {
         map.flyTo([lat, lng], 14, { duration: 1.8, easeLinearity: 0.25 })
         
@@ -130,6 +190,28 @@ const locateMe = async () => {
   )
 }
 
+function calculateDistanceMeters(lat1: number, lon1: number, lat2: number, lon2: number): number {
+  const R = 6371e3 // meters
+  const phi1 = (lat1 * Math.PI) / 180
+  const phi2 = (lat2 * Math.PI) / 180
+  const deltaPhi = ((lat2 - lat1) * Math.PI) / 180
+  const deltaLambda = ((lon2 - lon1) * Math.PI) / 180
+
+  const a =
+    Math.sin(deltaPhi / 2) * Math.sin(deltaPhi / 2) +
+    Math.cos(phi1) * Math.cos(phi2) * Math.sin(deltaLambda / 2) * Math.sin(deltaLambda / 2)
+  const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a))
+
+  return R * c
+}
+
+function playNearbyAudio(h: Heritage) {
+  if (h.audio) {
+    audioStore.loadTrack(h.audio, h.id)
+    audioStore.play()
+  }
+}
+
 onMounted(async () => {
   if (!mapEl.value) return
 
@@ -151,11 +233,11 @@ onMounted(async () => {
     attributionControl: false,
   })
 
-  // CartoDB Dark Matter — cinematic dark tile that matches the overall design
-  L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
-    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright" style="color:#C7A664">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions" style="color:#C7A664">CARTO</a>',
-    subdomains: 'abcd',
+  // OpenStreetMap — dark cinematic tile theme via CSS filter (no API key required)
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright" style="color:#C7A664">OpenStreetMap</a> contributors',
     maxZoom: 19,
+    className: 'map-tiles-dark',
   }).addTo(map)
 
   // Listen to zoom changes to update clusters dynamically
@@ -539,5 +621,14 @@ onUnmounted(() => {
 :deep(.leaflet-control-zoom a:hover) {
   background: rgba(30, 28, 26, 0.95) !important;
   color: #C7A664 !important;
+}
+
+/* OpenStreetMap Dark Theme Tile Filter */
+:deep(.map-tiles-dark) {
+  filter: brightness(0.6) invert(1) contrast(3) hue-rotate(200deg) saturate(0.3) brightness(0.7);
+}
+
+:deep(.leaflet-container) {
+  background: #0d0b09 !important;
 }
 </style>

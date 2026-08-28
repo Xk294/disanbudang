@@ -107,9 +107,10 @@ stores/
 
 ### 3.1 Số liệu đã số hóa
 
-- **11 di sản** được tổ chức lưu trữ và biên soạn tài liệu khoa học
+- **16 di sản** được tổ chức lưu trữ, lập hồ sơ tọa độ và biên soạn tài liệu khoa học
 - **6 Ký ức cộng đồng** — câu chuyện truyền miệng từ già làng, nghệ nhân S'Tiêng, M'Nông
-- **4 Audio Guide** hoàn thiện — tệp âm thanh thuyết minh giọng đọc truyền cảm
+- **2 Audio Guide** hoàn thiện chất lượng cao — tệp âm thanh thuyết minh giọng đọc truyền cảm (Sóc Bom Bo & Trảng Cỏ Bù Lạch)
+- **16 bộ Quiz kiểm tra kiến thức** tích hợp hệ thống huy hiệu điện tử
 
 ### 3.2 Phân loại Di sản (`HeritageCategory`)
 
@@ -245,3 +246,72 @@ Mỗi điểm di sản bắt buộc có đầy đủ các trường:
 - Quality: 85%
 - Domain whitelist: `images.unsplash.com`
 - Xử lý qua `@nuxt/image` — bắt buộc dùng `<NuxtImg>` thay cho `<img>` raw
+
+---
+
+## 7. Quy tắc Phát triển (Development Rules)
+
+> Những quy tắc này là bất biến. Mọi AI agent và developer đều phải tuân theo.
+
+### 7.1 Nguyên tắc chung
+
+- **Scope discipline:** Làm đúng và đủ những gì được yêu cầu. Không tự ý thêm tính năng, refactor hay cleanup nếu không được yêu cầu.
+- **YAGNI:** Không xây dựng những gì "có thể cần trong tương lai" — chỉ xây dựng những gì cần ngay bây giờ.
+- **Source of truth:** Code thực tế > Docs này > Memory. Luôn đọc file nguồn trước khi chỉnh sửa.
+
+### 7.2 Quy tắc Code
+
+- **Ngôn ngữ code & comment:** Tiếng Anh
+- **TypeScript:** Strict mode bắt buộc (`strict: true` trong tsconfig)
+- **Component naming:** PascalCase, đặt theo chức năng rõ ràng
+- **Không dùng `any`** trừ khi có lý do kỹ thuật được document rõ
+- **Result pattern** cho mọi external call:
+  ```typescript
+  type Result<T> = { ok: true; data: T } | { ok: false; error: string }
+  ```
+
+### 7.3 Quy tắc Commit
+
+- Commit message: Tiếng Anh, imperative style (`Add`, `Fix`, `Update`, không phải `Added`, `Fixed`)
+- **Không** thêm co-author signatures của AI vào commit message
+
+### 7.4 Quy tắc Docs
+
+- Tài liệu feature: `docs/feat/<tên>.md`
+- Tài liệu kiến trúc: `docs/arch/<tên>.md`
+- Kế hoạch triển khai: `docs/plan/<PLAN-XXX-tên>.md`
+- Khi hoàn thành plan: chuyển vào `docs/plan/done/`
+- **Luôn cập nhật `docs/index.md`** khi thêm file doc mới
+- Không tạo top-level thư mục mới trong `docs/` trừ khi thực sự cần thiết
+
+### 7.5 Quy tắc Nội dung (Content)
+
+- Tên thuật ngữ dân tộc phải nhất quán: **S'Tiêng**, **M'Nông**
+- Tên thương hiệu ngắn (logo, UI, SEO site name): **Di Sản Bù Đăng** — dùng như tên riêng/khởi nguyên, không phải khẳng định ranh giới hành chính.
+- Tagline/subtitle mô tả phạm vi phục vụ: **Bảo Tàng Số Thành Phố Đồng Nai** — luôn đi kèm brand ngắn để làm rõ phạm vi thực tế.
+- Tên sản phẩm đầy đủ: **Bảo Tàng Số Di Sản Bù Đăng — Thành Phố Đồng Nai** (viết hoa đầy đủ).
+- Địa danh cấp thành phố (khung phạm vi phục vụ): **Thành Phố Đồng Nai** — dùng trong mô tả tổng quát, SEO, metadata phạm vi.
+- Địa danh cụ thể (khi mô tả một di sản/sự kiện cụ thể): **Xã Bù Đăng**, **Sóc Bom Bo**, núi Bà Rá, Căn cứ Tà Thiết, Lộc Ninh... Các cụm này được kết nối với nhau qua khái niệm "cụm/tuyến di sản", không dùng brand để gộp chúng.
+
+---
+
+## 8. Khả năng Mở rộng (Roadmap)
+
+### Giai đoạn hiện tại (Đã hoàn thành)
+- [x] 16 di sản số hóa toàn diện kèm tọa độ GIS
+- [x] Bản đồ tương tác + GPS Geolocation
+- [x] Audio Guide toàn cục (2 track hoàn thiện Sóc Bom Bo & Bù Lạch)
+- [x] Góc Học Tập với 16 bộ Quiz + 4 cấp bậc Huy hiệu
+- [x] Flashcard thuật ngữ S'tiêng tương tác 3D
+- [x] 6 ký ức cộng đồng thu âm & biên soạn tư liệu
+
+### Giai đoạn tiếp theo (Ưu tiên cao)
+- [ ] Thêm audio guide cho các di sản còn lại
+- [ ] Tích hợp VR 360° Panorama cho các điểm lõi
+- [ ] Hệ thống thẩm định nguồn khoa học (Data Provenance) & Thẻ thực địa On-site Mode
+
+### Tương lai (Sau khi có đủ nguồn lực)
+- [ ] VR 360° cho các điểm di tích
+- [ ] AI Chatbot hỗ trợ giải đáp thắc mắc du khách
+- [ ] Mở rộng mô hình sang các phường/xã khác của TP. Đồng Nai
+- [ ] Phiên bản đa ngôn ngữ (Anh, Khmer)

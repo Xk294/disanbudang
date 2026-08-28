@@ -18,7 +18,7 @@
     <!-- ================================================== -->
     <!-- HERO SECTION — Cinematic Full-Screen               -->
     <!-- ================================================== -->
-    <section class="relative min-h-[92vh] flex flex-col items-center justify-center overflow-hidden pt-[72px]" aria-label="Trang chủ học tập di sản">
+    <section class="relative min-h-[90vh] flex flex-col items-center justify-center overflow-hidden py-16" aria-label="Trang chủ học tập di sản">
       <!-- Cinematic background -->
       <div class="absolute inset-0 z-0">
         <img
@@ -575,6 +575,13 @@
             </div>
           </div>
         </section>
+      </div>
+
+      <!-- ================================================ -->
+      <!-- MODULE: HỘ CHIẾU SỐ DI SẢN (passport tab)        -->
+      <!-- ================================================ -->
+      <div v-if="activeTab === 'passport'" class="space-y-10 animate-section-in">
+        <HeritagePassport />
       </div>
 
       <!-- ================================================ -->
@@ -1406,7 +1413,7 @@
                   <!-- Authentic Stamp -->
                   <div class="absolute top-8 right-8 w-20 h-20 rounded-full border-4 border-double border-red-600/15 flex flex-col items-center justify-center text-red-600/15 font-bold text-[7px] uppercase tracking-wider rotate-[15deg] pointer-events-none select-none">
                     <span class="leading-none mb-0.5">Hồ Sơ</span>
-                    <span class="leading-none mb-0.5 border-y border-red-600/10 py-0.5 px-1 font-extrabold text-[8px]">Di Sản Đồng Nai</span>
+                    <span class="leading-none mb-0.5 border-y border-red-600/10 py-0.5 px-1 font-extrabold text-[8px]">Di Sản Bù Đăng</span>
                     <span class="leading-none">Số Hóa</span>
                   </div>
 
@@ -1698,9 +1705,10 @@ const activeCollectionName = computed(() =>
   activeCollectionFilter.value ? (collectionsStore.getById(activeCollectionFilter.value)?.name ?? '') : '',
 )
 
-// 8 tabs — 'explore' tab for heritage overview interaction
+// 9 tabs — 'passport' tab for Digital Heritage Passport
 const navItems = computed(() => [
   { id: 'lessons', label: 'Bài Học', icon: 'mdi:book-open-variant', badge: 'Mới' },
+  { id: 'passport', label: 'Hộ Chiếu Số', icon: 'mdi:book-account-outline', badge: '✨ Mới' },
   { id: 'explore', label: 'Khám Phá', icon: 'mdi:compass-outline', badge: '' },
   { id: 'research', label: 'Thư Viện', icon: 'mdi:library-outline', badge: String(allResources.value.length) },
   { id: 'lab', label: 'Trải Nghiệm Số', icon: 'mdi:flask-outline', badge: '✨' },

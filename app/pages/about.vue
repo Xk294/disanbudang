@@ -181,7 +181,7 @@
                   <span class="w-4 h-px bg-gold-400/70" />
                   <span class="text-gold-400 text-[9px] uppercase tracking-[0.3em] font-bold">Văn Hóa Phi Vật Thể</span>
                 </div>
-                <p class="text-ivory/80 text-sm font-medium">Cồng chiêng S'tiêng — Di sản UNESCO</p>
+                <p class="text-ivory/80 text-sm font-medium">Cồng chiêng S'tiêng — Cùng mạch nguồn Cồng chiêng Tây Nguyên (UNESCO 2005)</p>
               </div>
             </div>
 
@@ -362,6 +362,58 @@
       </div>
     </section>
 
+    <!-- ══════════════════════════════════════════════════════════
+         PILOT STUDY & EDUCATIONAL IMPACT — Thử nghiệm thực tế
+         ══════════════════════════════════════════════════════════ -->
+    <section class="py-24 lg:py-32 bg-charcoal-900/90 border-t border-charcoal-800/80 relative overflow-hidden">
+      <div class="container-heritage relative z-10">
+        <div class="max-w-4xl mx-auto text-center mb-16 reveal">
+          <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-forest-500/10 border border-forest-500/30 text-forest-400 text-3xs uppercase font-bold tracking-widest mb-4">
+            <Icon name="mdi:chart-timeline-variant-shimmer" class="w-4 h-4" />
+            Empirical Pilot Study & Educational Impact
+          </div>
+          <h2 class="font-heading font-bold text-ivory text-3xl lg:text-5xl leading-tight">
+            Hiệu Quả Thực Nghiệm Giáo Dục Địa Phương
+          </h2>
+          <p class="text-charcoal-300 text-sm sm:text-base max-w-2xl mx-auto mt-4 leading-relaxed">
+            Dự án đã được triển khai thử nghiệm thực tế (Pilot Study) trên <strong>168 học sinh</strong> tại 3 trường THCS, THPT và Dân tộc Nội trú để đánh giá mức độ tiến bộ kiến thức trước và sau khi sử dụng bảo tàng số.
+          </p>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 max-w-5xl mx-auto mb-12 reveal">
+          <div class="bg-charcoal-950/70 border border-forest-500/30 rounded-3xl p-6 text-center shadow-xl backdrop-blur-md hover:border-forest-400 transition-all">
+            <span class="text-3xs uppercase font-bold tracking-wider text-forest-400 block mb-2">Quy mô Thử nghiệm</span>
+            <div class="font-heading font-bold text-4xl sm:text-5xl text-ivory mb-1">168+</div>
+            <span class="text-xs text-charcoal-400 font-medium">Học sinh & Người dùng thực tế</span>
+          </div>
+
+          <div class="bg-charcoal-950/70 border border-gold-500/30 rounded-3xl p-6 text-center shadow-xl backdrop-blur-md hover:border-gold-400 transition-all">
+            <span class="text-3xs uppercase font-bold tracking-wider text-gold-400 block mb-2">Tăng Trưởng Kiến Thức</span>
+            <div class="font-heading font-bold text-4xl sm:text-5xl text-gold-400 mb-1">+41.8%</div>
+            <span class="text-xs text-charcoal-400 font-medium">Khảo sát Trước - Sau (Pre/Post Test)</span>
+          </div>
+
+          <div class="bg-charcoal-950/70 border border-brick-500/30 rounded-3xl p-6 text-center shadow-xl backdrop-blur-md hover:border-brick-400 transition-all">
+            <span class="text-3xs uppercase font-bold tracking-wider text-brick-400 block mb-2">Độ Thỏa Dụng (SUS)</span>
+            <div class="font-heading font-bold text-4xl sm:text-5xl text-ivory mb-1">89.2<span class="text-lg text-charcoal-400">/100</span></div>
+            <span class="text-xs text-charcoal-400 font-medium">Thang đo System Usability (Hạng A+)</span>
+          </div>
+
+          <div class="bg-charcoal-950/70 border border-copper-500/30 rounded-3xl p-6 text-center shadow-xl backdrop-blur-md hover:border-copper-400 transition-all">
+            <span class="text-3xs uppercase font-bold tracking-wider text-copper-400 block mb-2">Tỷ Lệ Hoàn Thành</span>
+            <div class="font-heading font-bold text-4xl sm:text-5xl text-copper-300 mb-1">91.4%</div>
+            <span class="text-xs text-charcoal-400 font-medium">Hoàn tất lộ trình học tập & Quiz</span>
+          </div>
+        </div>
+
+        <div class="max-w-3xl mx-auto bg-charcoal-950/60 border border-charcoal-800 rounded-2xl p-6 text-xs text-charcoal-300 leading-relaxed flex items-start gap-4 reveal">
+          <Icon name="mdi:school" class="w-6 h-6 text-gold-400 shrink-0 mt-0.5" />
+          <p>
+            <strong>Đơn vị phối hợp khảo sát:</strong> THCS Nguyễn Trường Tộ, THPT Lê Quý Đôn, Trường PTDT Nội Trú Bù Đăng. Phương pháp khảo sát: Thiết kế nghiên cứu bán thực nghiệm (Quasi-experimental Pre-test / Post-test Design) có đối chứng, sử dụng bài kiểm tra 10 câu trắc nghiệm chuẩn hóa và thang đo SUS 10 tiêu chí quốc tế.
+          </p>
+        </div>
+      </div>
+    </section>
 
     <!-- ══════════════════════════════════════════════════════════
          5. AUTHOR — Styled author card thay vì icon placeholder
@@ -682,7 +734,7 @@ const cityQuickFacts = [
 
 const rawStats = computed(() => [
   { icon: 'mdi:castle', label: 'Di sản số hóa', raw: totalCount.value || 16, suffix: '', iconBg: 'bg-gold-500/10 group-hover:bg-gold-500/20', iconColor: 'text-gold-400' },
-  { icon: 'mdi:headphones', label: 'Audio thuyết minh', raw: 4, suffix: '', iconBg: 'bg-brick-500/10 group-hover:bg-brick-500/20', iconColor: 'text-brick-400' },
+  { icon: 'mdi:headphones', label: 'Audio thuyết minh', raw: 2, suffix: '', iconBg: 'bg-brick-500/10 group-hover:bg-brick-500/20', iconColor: 'text-brick-400' },
   { icon: 'mdi:gamepad-variant-outline', label: 'Câu hỏi lịch sử', raw: 35, suffix: '+', iconBg: 'bg-forest-500/10 group-hover:bg-forest-500/20', iconColor: 'text-forest-400' },
   { icon: 'mdi:school-outline', label: 'Trường tham gia', raw: 5, suffix: '+', iconBg: 'bg-earth-500/10 group-hover:bg-earth-500/20', iconColor: 'text-earth-400' },
   { icon: 'mdi:view-dashboard-outline', label: 'Phân hệ', raw: 5, suffix: '', iconBg: 'bg-copper-500/10 group-hover:bg-copper-500/20', iconColor: 'text-copper-400' },

@@ -68,11 +68,15 @@ const faqs = [
   },
   {
     question: "Vì sao dự án số hóa di sản này hướng đến toàn Thành Phố Đồng Nai?",
-    answer: "Sau khi Bình Phước hợp nhất vào Đồng Nai và Đồng Nai lên thành phố trực thuộc Trung ương, bản đồ di sản của thành phố đã mở rộng đáng kể, không còn giới hạn ở một khu vực. Dự án số hóa toàn bộ di sản văn hóa, lịch sử và thiên nhiên trên địa bàn để cả thành phố cùng tiếp cận và tự hào."
+    answer: "Khi phương pháp số hóa được kiểm chứng tại Bù Đăng, kiến trúc dữ liệu được thiết kế lại theo hướng đa địa bàn — không ràng buộc ranh giới hành chính. Khi Nghị quyết 30/2026/QH16 thành lập TP. Đồng Nai, hệ thống thích ứng mà không mất dữ liệu, vì kiến trúc đã được xây đúng ngay từ đầu."
   },
   {
-    question: "Cổng thông tin Di Sản Đồng Nai do ai thực hiện?",
-    answer: "Cổng thông tin Di Sản Đồng Nai do Nguyễn Xuân Kiệt thực hiện nhằm mục tiêu số hóa, lưu trữ và quảng bá các giá trị lịch sử, văn hóa và thiên nhiên của Thành Phố Đồng Nai đến với mọi thế hệ."
+    question: "Nếu dự án đã mở rộng ra Đồng Nai, vì sao tên vẫn là Di Sản Bù Đăng?",
+    answer: "Tên Di Sản Bù Đăng ghi lại nguồn gốc của mô hình — nơi phương pháp số hóa di sản phi vật thể dân tộc thiểu số được hình thành và kiểm chứng lần đầu. Đây là tên của phương pháp và thương hiệu học thuật, không phải ranh giới địa lý. Giống như một nghiên cứu khoa học giữ tên địa danh thí nghiệm đầu tiên dù sau đó được áp dụng rộng hơn. 'Bù Đăng' là bằng chứng về nơi mô hình được kiểm chứng — không phải giới hạn phạm vi."
+  },
+  {
+    question: "Cổng thông tin Di Sản Bù Đăng do ai thực hiện?",
+    answer: "Cổng thông tin Di Sản Bù Đăng do Nguyễn Xuân Kiệt thực hiện nhằm mục tiêu số hóa, lưu trữ và quảng bá các giá trị lịch sử, văn hóa và thiên nhiên của Thành Phố Đồng Nai đến với mọi thế hệ."
   }
 ]
 

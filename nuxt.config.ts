@@ -9,7 +9,7 @@ export default defineNuxtConfig({
 
   site: {
     url: 'https://disanbudang.com',
-    name: 'Di Sản Đồng Nai',
+    name: 'Di Sản Bù Đăng',
     trailingSlash: true,
   },
 
@@ -135,7 +135,7 @@ export default defineNuxtConfig({
     head: {
       charset: 'utf-8',
       viewport: 'width=device-width, initial-scale=1',
-      title: 'Di Sản Đồng Nai - Bảo Tàng Số Địa Phương',
+      title: 'Di Sản Bù Đăng — Bảo Tàng Số Thành Phố Đồng Nai',
       meta: [
         {
           name: 'description',
@@ -147,7 +147,7 @@ export default defineNuxtConfig({
         { property: 'og:locale', content: 'vi_VN' },
         {
           property: 'og:site_name',
-          content: 'Di Sản Đồng Nai',
+          content: 'Di Sản Bù Đăng',
         },
       ],
       link: [

@@ -282,13 +282,163 @@ export const QUIZZES: HeritageQuiz[] = [
       },
     ],
   },
+  {
+    id: 'quiz-012',
+    heritageId: 'hrt-012',
+    title: 'Núi Bà Rá — Đỉnh Thiêng Đông Nam Bộ',
+    description: 'Thử tài hiểu biết về đỉnh núi hùng vĩ và di tích lịch sử Nhà tù Bà Rá.',
+    questions: [
+      {
+        id: 'q-012-1',
+        question: 'Núi Bà Rá có độ cao bao nhiêu mét so với mực nước biển, giữ vị trí như thế nào tại khu vực Nam Bộ?',
+        options: [
+          'Cao 723m, là đỉnh núi cao thứ 3 toàn Nam Bộ',
+          'Cao 1.200m, là ngọn núi cao nhất miền Nam',
+          'Cao 450m, thuộc dãy Trường Sơn',
+          'Cao 986m, đỉnh núi cao nhất Tây Ninh',
+        ],
+        correctIndex: 0,
+        explanation: 'Núi Bà Rá vươn cao 723m so với mực nước biển, là một trong ba đỉnh núi cao nhất Đông Nam Bộ và đứng thứ 3 toàn Nam Bộ (sau núi Bà Đen và núi Chứa Chan).',
+      },
+      {
+        id: 'q-012-2',
+        question: 'Công trình lịch sử nào từng được thực dân Pháp xây dựng trên lưng núi Bà Rá vào năm 1930 để giam cầm các chiến sĩ cách mạng?',
+        options: ['Nhà tù Bà Rá', 'Nhà đày Buôn Ma Thuột', 'Nhà tù Côn Đảo', 'Trại giam Phú Quốc'],
+        correctIndex: 0,
+        explanation: 'Năm 1930, thực dân Pháp đã xây dựng Nhà tù Bà Rá kiên cố trên lưng núi để giam cầm, đày ải hàng nghìn chiến sĩ cách mạng và chí sĩ yêu nước.',
+      },
+    ],
+  },
+  {
+    id: 'quiz-013',
+    heritageId: 'hrt-013',
+    title: 'Chiến Thắng Phước Long 06/01/1975',
+    description: 'Tìm hiểu về "trận trinh sát chiến lược" mở màn giải phóng hoàn toàn miền Nam.',
+    questions: [
+      {
+        id: 'q-013-1',
+        question: 'Chiến thắng Phước Long ngày 06/01/1975 mang ý nghĩa lịch sử đặc biệt nào đối với cục diện kháng chiến chống Mỹ?',
+        options: [
+          'Là tỉnh lỵ đầu tiên ở miền Nam được giải phóng hoàn toàn',
+          'Là trận đánh kết thúc hoàn toàn cuộc kháng chiến chống Pháp',
+          'Là trận đàm phán ký kết Hiệp định Genève',
+          'Là cuộc tập kích đường không đầu tiên',
+        ],
+        correctIndex: 0,
+        explanation: 'Ngày 06/01/1975, Phước Long trở thành tỉnh đầu tiên ở miền Nam được giải phóng hoàn toàn, tạo nên bước ngoặt lịch sử trên toàn chiến trường.',
+      },
+      {
+        id: 'q-013-2',
+        question: 'Vì sao Chiến thắng Phước Long được ví như một "trận trinh sát chiến lược" vĩ đại của Bộ Chính trị?',
+        options: [
+          'Vì đã chứng minh quân đội Sài Gòn suy yếu không thể phản kích và Mỹ không có khả năng can thiệp trở lại',
+          'Vì chỉ là một trận diễn tập trinh sát địa hình',
+          'Vì nhằm thăm dò trữ lượng khoáng sản của địa phương',
+          'Vì chỉ nhằm bảo vệ căn cứ hậu cần',
+        ],
+        correctIndex: 0,
+        explanation: 'Chiến thắng Phước Long là "đòn trinh sát chiến lược" chứng minh quân ngụy bất lực và Mỹ không thể quay lại can thiệp quân sự, tạo căn cứ thực tiễn quyết định để Bộ Chính trị mở cuộc Tổng tiến công mùa Xuân 1975.',
+      },
+    ],
+  },
+  {
+    id: 'quiz-014',
+    heritageId: 'hrt-014',
+    title: 'Căn Cứ Tà Thiết — Bộ Chỉ Huy Miền',
+    description: 'Khám phá "Rừng Chính phủ" — trung tâm đầu não chỉ đạo cách mạng miền Nam.',
+    questions: [
+      {
+        id: 'q-014-1',
+        question: 'Căn cứ Tà Thiết (xã Lộc Thành) từng giữ vai trò đầu não gì trong giai đoạn 1973 – 1975?',
+        options: [
+          'Trụ sở Bộ Chỉ huy Quân giải phóng miền Nam Việt Nam (Bộ Tư lệnh Miền)',
+          'Chỉ là trạm y tế dã chiến địa phương',
+          'Kho vũ khí trung chuyển hàng không',
+          'Trường huấn luyện phi công quân sự',
+        ],
+        correctIndex: 0,
+        explanation: 'Căn cứ Tà Thiết là cơ quan đầu não của Bộ Tư lệnh Miền, nơi chỉ đạo toàn bộ các hoạt động quân sự, chính trị trên chiến trường miền Nam giai đoạn 1973 - 1975.',
+      },
+      {
+        id: 'q-014-2',
+        question: 'Sự kiện quân sự lịch sử vĩ đại nào đã được hoạch định và hoàn thiện kế hoạch tác chiến chi tiết tại Căn cứ Tà Thiết?',
+        options: [
+          'Kế hoạch Chiến dịch Hồ Chí Minh lịch sử giải phóng Sài Gòn năm 1975',
+          'Kế hoạch Chiến dịch Điện Biên Phủ 1954',
+          'Kế hoạch Chiến dịch Biên Giới 1950',
+          'Kế hoạch Chiến dịch Việt Bắc Thu Đông 1947',
+        ],
+        correctIndex: 0,
+        explanation: 'Tại Căn cứ Tà Thiết, Bộ Chỉ huy Miền đã hoàn thành kế hoạch tác chiến chi tiết của Chiến dịch Hồ Chí Minh lịch sử, đưa non sông thu về một mối ngày 30/4/1975.',
+      },
+    ],
+  },
+  {
+    id: 'quiz-015',
+    heritageId: 'hrt-015',
+    title: 'Nhà Giao Tế Lộc Ninh',
+    description: 'Tìm hiểu về chứng nhân lịch sử ngoại giao và thực thi Hiệp định Paris 1973.',
+    questions: [
+      {
+        id: 'q-015-1',
+        question: 'Nhà Giao Tế Lộc Ninh được thiết kế bởi kiến trúc sư nổi tiếng nào, sau này là Thủ tướng Chính phủ Cách mạng lâm thời?',
+        options: ['Huỳnh Tấn Phát', 'Ngô Viết Thụ', 'Võ Trọng Nghĩa', 'Hoàng Đạo Kính'],
+        correctIndex: 0,
+        explanation: 'Nhà Giao Tế Lộc Ninh do kiến trúc sư Huỳnh Tấn Phát thiết kế, mang phong cách nhà sàn truyền thống kết hợp công năng hội nghị ngoại giao hiện đại.',
+      },
+      {
+        id: 'q-015-2',
+        question: 'Sau Hiệp định Paris 1973, Nhà Giao Tế Lộc Ninh là địa điểm tổ chức sự kiện ngoại giao quan trọng nào?',
+        options: [
+          'Các phiên họp của Ban Liên hợp quân sự bốn bên và trao trả tù binh chiến tranh',
+          'Lễ ký kết Hiệp định Sơ bộ 1946',
+          'Hội nghị thượng đỉnh Phong trào Không liên kết',
+          'Đại hội Thể thao Đông Nam Á',
+        ],
+        correctIndex: 0,
+        explanation: 'Nhà Giao Tế là nơi Ban Liên hợp quân sự bốn bên (Việt Nam Dân chủ Cộng hòa, Chính phủ Cách mạng lâm thời, Hoa Kỳ, Việt Nam Cộng hòa) họp bàn thực thi ngừng bắn và trao trả tù binh theo Hiệp định Paris.',
+      },
+    ],
+  },
+  {
+    id: 'quiz-016',
+    heritageId: 'hrt-016',
+    title: 'Bảo Tàng Chiến Dịch Đường 14 – Phước Long',
+    description: 'Khám phá kho tàng hiện vật và tư liệu lịch sử về chiến dịch giải phóng Phước Long.',
+    questions: [
+      {
+        id: 'q-016-1',
+        question: 'Bảo tàng Chiến dịch Đường 14 – Phước Long lưu giữ các hiện vật tái hiện sự kiện lịch sử diễn ra trong khoảng thời gian nào?',
+        options: [
+          'Chiến dịch Đường 14 – Phước Long (13/12/1974 – 06/01/1975)',
+          'Chiến dịch Điện Biên Phủ trên không (12/1972)',
+          'Chiến dịch Biên giới Thu Đông (1950)',
+          'Chiến dịch Tây Nguyên (tháng 3/1975)',
+        ],
+        correctIndex: 0,
+        explanation: 'Bảo tàng tái hiện toàn diện diễn biến Chiến dịch Đường 14 – Phước Long kéo dài từ ngày 13/12/1974 đến ngày toàn thắng 06/01/1975.',
+      },
+      {
+        id: 'q-016-2',
+        question: 'Bộ sưu tập hiện vật quý giá tại Bảo tàng Chiến dịch Đường 14 bao gồm những loại tư liệu nào?',
+        options: [
+          'Vũ khí, bản đồ tác chiến gốc, trang phục quân sự và hình ảnh nhân chứng lịch sử',
+          'Chỉ trưng bày tranh vẽ mô phỏng lại',
+          'Chỉ có tài liệu văn bản in hiện đại',
+          'Mô hình khí tài viễn tưởng nhân tạo',
+        ],
+        correctIndex: 0,
+        explanation: 'Bảo tàng lưu giữ hàng nghìn hiện vật gốc: từ vũ khí, quân trang của hai bên đến bản đồ tác chiến, phim ảnh tư liệu và hồi ức của các chiến sĩ trực tiếp tham gia chiến dịch.',
+      },
+    ],
+  },
 ]
 
 export const BADGES: Badge[] = [
   {
     id: 'badge-chien-khu',
-    name: 'Chiến Binh Chiến Khu Đ',
-    description: 'Hoàn thành tốt quiz về Chiến Khu Đ',
+    name: 'Chiến Binh Căn Cứ Lịch Sử',
+    description: 'Hoàn thành tốt quiz về các di tích kháng chiến hào hùng',
     icon: 'mdi:shield-star',
     color: '#C4552A',
     condition: 'completedQuizzes.includes("quiz-001")',
@@ -296,8 +446,8 @@ export const BADGES: Badge[] = [
   },
   {
     id: 'badge-cong-chieng',
-    name: 'Người Giữ Nhịp',
-    description: 'Nắm vững bí ẩn của cồng chiêng S\'tiêng',
+    name: 'Người Giữ Nhịp Chiêng',
+    description: 'Nắm vững bí ẩn của văn hóa cồng chiêng S\'tiêng',
     icon: 'mdi:music-circle',
     color: '#D4952B',
     condition: 'completedQuizzes.includes("quiz-002")',
@@ -306,7 +456,7 @@ export const BADGES: Badge[] = [
   {
     id: 'badge-thac-mo',
     name: 'Nhà Thám Hiểm Thác Mơ',
-    description: 'Khám phá huyền thoại vùng thác nước',
+    description: 'Khám phá huyền thoại vùng thác nước và danh thắng',
     icon: 'mdi:water',
     color: '#2D5016',
     condition: 'completedQuizzes.includes("quiz-003")',
@@ -314,11 +464,11 @@ export const BADGES: Badge[] = [
   },
   {
     id: 'badge-explorer',
-    name: 'Nhà Khám Phá Di Sản',
-    description: 'Hoàn thành tất cả các quiz về di sản Thành Phố Đồng Nai',
+    name: 'Nhà Khám Phá Di Sản Toàn Diện',
+    description: 'Hoàn thành tất cả các bài quiz về 16 di sản Thành Phố Đồng Nai',
     icon: 'mdi:compass',
     color: '#B87845',
-    condition: 'completedQuizzes.length >= 11',
+    condition: 'completedQuizzes.length >= 16',
     rarity: 'legendary',
   },
 ]

@@ -79,6 +79,19 @@ export interface HeritageQuiz {
   badgeId?: string
 }
 
+export interface HeritageSource {
+  id: string
+  type: 'primary' | 'academic' | 'oral' | 'fieldwork'
+  title: string
+  author?: string
+  institution?: string
+  publishedYear?: number | string
+  referenceCode?: string
+  url?: string
+  credibility: 'official' | 'research' | 'community'
+  notes?: string
+}
+
 export interface Heritage {
   id: string
   slug: string
@@ -102,6 +115,7 @@ export interface Heritage {
     coverImage?: string
   }
   quiz?: HeritageQuiz
+  sources?: HeritageSource[]
   relatedIds: string[]
   tags: string[]
   references: string[]

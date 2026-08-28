@@ -1,5 +1,5 @@
 <template>
-  <div class="bg-charcoal-900 min-h-screen text-ivory pt-[72px]">
+  <div class="bg-charcoal-900 min-h-screen text-ivory">
     <!-- Hero header -->
     <div class="bg-dark-earth py-10 md:py-14 relative overflow-hidden border-b border-charcoal-850">
       <div class="absolute inset-0 pointer-events-none">
@@ -424,7 +424,7 @@ import type { Heritage, HeritageCategory_Meta, PostType } from '~/types'
 definePageMeta({ layout: 'default' })
 useMuseumSeo({
   title: 'Thư Viện Di Sản & Ký Ức Cộng Đồng',
-  description: 'Tra cứu di tích lịch sử, danh thắng, văn hóa phi vật thể và ký ức do chính người dân Thành Phố Đồng Nai đóng góp.',
+  description: '11 di sản số hóa đầy đủ dữ liệu học thuật cùng ký ức do người dân Thành Phố Đồng Nai đóng góp. Di tích lịch sử, danh thắng, văn hóa phi vật thể S\'Tiêng có tọa độ và nguồn gốc tư liệu.',
 })
 
 // CollectionPage + ItemList schema — chuẩn cho trang danh sách (rich results)
@@ -435,7 +435,7 @@ useHead({
       innerHTML: JSON.stringify({
         '@context': 'https://schema.org',
         '@type': 'CollectionPage',
-        name: 'Thư Viện Di Sản Đồng Nai',
+        name: 'Thư Viện Di Sản Bù Đăng',
         url: 'https://disanbudang.com/explore/',
         description: 'Danh sách toàn bộ di sản văn hóa, lịch sử và thiên nhiên Thành Phố Đồng Nai đã được số hóa.',
         mainEntity: {

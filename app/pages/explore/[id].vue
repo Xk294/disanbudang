@@ -1,13 +1,16 @@
 <template>
-  <div v-if="!post" class="min-h-screen flex items-center justify-center bg-charcoal-900 text-ivory pt-[72px]">
-    <div class="text-center">
-      <Icon name="mdi:alert-circle-outline" class="w-16 h-16 text-gold-500 mx-auto mb-4" />
-      <h2 class="font-heading font-bold text-2xl mb-4">Không tìm thấy câu chuyện</h2>
-      <NuxtLink to="/explore" class="btn-primary inline-flex">Quay lại Trải Nghiệm</NuxtLink>
+  <div v-if="!post" class="min-h-screen flex items-center justify-center bg-charcoal-900 text-ivory">
+    <div class="text-center space-y-4">
+      <Icon name="mdi:compass-off-outline" class="w-16 h-16 text-gold-400/50 mx-auto" />
+      <h1 class="text-2xl font-bold font-heading">Không tìm thấy bài viết</h1>
+      <p class="text-charcoal-400 text-sm">Câu chuyện bạn tìm kiếm không tồn tại hoặc đã được cập nhật.</p>
+      <NuxtLink to="/explore" class="inline-flex items-center gap-2 px-6 py-2.5 rounded-full bg-gold-500 text-charcoal-950 font-bold text-sm hover:bg-gold-400 transition-colors">
+        Quay lại Khám Phá
+      </NuxtLink>
     </div>
   </div>
 
-  <div v-else class="bg-charcoal-900 min-h-screen text-ivory pb-20 pt-[72px]">
+  <div v-else class="bg-charcoal-900 min-h-screen text-ivory pb-20">
     <!-- Header/Hero -->
     <div class="relative h-[55vh] min-h-[400px] flex items-end border-b border-charcoal-850 overflow-hidden">
       <img

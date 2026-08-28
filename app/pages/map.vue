@@ -1,5 +1,5 @@
 <template>
-  <div class="min-h-screen bg-charcoal-900 flex flex-col relative pt-[72px]">
+  <div class="min-h-[calc(100vh-72px)] bg-charcoal-900 flex flex-col relative">
     <!-- Page header — cinematic -->
     <div class="border-b border-charcoal-800/50 py-4 bg-gradient-to-b from-charcoal-950 to-charcoal-950/97 backdrop-blur-xl relative z-30 shadow-2xl shadow-charcoal-950/80">
       <!-- Gold accent line top -->
@@ -344,6 +344,30 @@
 
       <!-- Map Area -->
       <div class="flex-1 relative">
+        <!-- Floating Timeline Bar on Map Top -->
+        <div class="absolute top-4 left-4 z-[400] hidden sm:flex items-center gap-1.5 p-1.5 rounded-2xl bg-charcoal-950/85 backdrop-blur-xl border border-charcoal-800 shadow-xl">
+          <div class="flex items-center gap-1 px-2.5 py-1 text-3xs font-bold uppercase tracking-wider text-gold-400 border-r border-charcoal-800">
+            <Icon name="mdi:timeline-clock-outline" class="w-3.5 h-3.5" />
+            <span>Thời Kỳ</span>
+          </div>
+          <button
+            class="px-3 py-1.5 rounded-xl text-3xs font-bold uppercase tracking-wider transition-all duration-200 cursor-pointer"
+            :class="activePeriod === '' ? 'bg-gold-500 text-charcoal-950 shadow-md font-extrabold' : 'text-charcoal-300 hover:text-ivory hover:bg-charcoal-850'"
+            @click="activePeriod = ''"
+          >
+            Tất Cả
+          </button>
+          <button
+            v-for="per in periods"
+            :key="per.id"
+            class="px-3 py-1.5 rounded-xl text-3xs font-bold uppercase tracking-wider transition-all duration-200 cursor-pointer"
+            :class="activePeriod === per.id ? 'bg-gold-500 text-charcoal-950 shadow-md font-extrabold' : 'text-charcoal-300 hover:text-ivory hover:bg-charcoal-850'"
+            @click="activePeriod = per.id"
+          >
+            {{ per.label }}
+          </button>
+        </div>
+
         <ClientOnly>
           <MapContainer
             :heritages="displayedHeritages"
@@ -381,9 +405,12 @@
                 
                 <!-- Badge + title overlay on image -->
                 <div class="absolute bottom-0 left-0 right-0 p-4">
-                  <BaseBadge :variant="getCategoryVariant(selectedHeritage.category)" size="sm" class="uppercase tracking-widest font-bold mb-2">
-                    {{ getCategoryLabel(selectedHeritage.category) }}
-                  </BaseBadge>
+                  <div class="flex items-center gap-2 mb-2 flex-wrap">
+                    <BaseBadge :variant="getCategoryVariant(selectedHeritage.category)" size="sm" class="uppercase tracking-widest font-bold">
+                      {{ getCategoryLabel(selectedHeritage.category) }}
+                    </BaseBadge>
+                    <HeritageSourceBadge :sources="selectedHeritage.sources" @open="isSourceModalOpen = true" />
+                  </div>
                   <h3 class="font-heading font-bold text-white text-base leading-snug tracking-tight drop-shadow-lg line-clamp-2">{{ selectedHeritage.title }}</h3>
                   <p v-if="selectedHeritage.subtitle" class="text-gold-300 text-3xs font-accent italic mt-0.5 drop-shadow line-clamp-1">{{ selectedHeritage.subtitle }}</p>
                 </div>
@@ -623,6 +650,13 @@
             </div>
           </div>
         </Transition>
+
+        <!-- Source Modal -->
+        <HeritageSourceModal
+          :is-open="isSourceModalOpen"
+          :sources="selectedHeritage?.sources"
+          @close="isSourceModalOpen = false"
+        />
       </div>
     </div>
   </div>
@@ -635,6 +669,8 @@ import { HERITAGES } from '~/data/heritages'
 import type { Heritage } from '~/types'
 import { useEventListener } from '@vueuse/core'
 import MapBottomSheet from '~/components/map/BottomSheet.vue'
+
+const isSourceModalOpen = ref(false)
 
 definePageMeta({ layout: 'default' })
 useMuseumSeo({
@@ -764,7 +800,7 @@ const suggestedRoutes = [
     name: 'Bản Sắc Bản Địa S\'tiêng - M\'nông',
     icon: 'mdi:account-group-outline',
     color: '#C7A664',
-    description: 'Dòng chảy văn hóa cồng chiêng phi vật thể UNESCO, nghề dệt hoa văn thổ cẩm tỉ mẩn cùng nghi lễ nông nghiệp thiêng liêng.',
+    description: 'Dòng chảy văn hóa cồng chiêng phi vật thể (Cồng chiêng Tây Nguyên, UNESCO 2005), nghề dệt hoa văn thổ cẩm tỉ mẩn cùng nghi lễ nông nghiệp thiêng liêng.',
     stops: [
       { id: 'hrt-003', title: 'Lễ Hội Cồng Chiêng S\'tiêng' },
       { id: 'hrt-004', title: 'Nhà Dài Truyền Thống S\'tiêng' },

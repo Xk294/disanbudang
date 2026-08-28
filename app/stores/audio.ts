@@ -66,8 +66,8 @@ export const useAudioStore = defineStore('audio', () => {
     if (!('mediaSession' in navigator)) return
     navigator.mediaSession.metadata = new MediaMetadata({
       title: audio.title,
-      artist: audio.narrator ?? 'Di Sản Đồng Nai',
-      album: 'Audio Guide Di Sản Đồng Nai',
+      artist: audio.narrator ?? 'Di Sản Bù Đăng',
+      album: 'Audio Guide Di Sản Bù Đăng',
       artwork: audio.coverImage ? [{ src: audio.coverImage }] : [],
     })
     navigator.mediaSession.setActionHandler('play', () => play())

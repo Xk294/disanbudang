@@ -1,7 +1,7 @@
 <template>
   <div class="bg-charcoal-950 min-h-screen text-ivory">
     <!-- Hero -->
-    <div class="relative pt-[72px] overflow-hidden">
+    <div class="relative overflow-hidden">
       <!-- Background image -->
       <div class="absolute inset-0">
         <img
@@ -137,7 +137,7 @@
           <Icon name="mdi:handshake-outline" class="w-12 h-12 text-gold-400 mx-auto mb-4" />
           <h3 class="font-heading font-bold text-ivory text-2xl lg:text-3xl mb-3">Sẵn Sàng Hợp Tác?</h3>
           <p class="text-charcoal-300 text-base max-w-lg mx-auto mb-7 leading-relaxed">
-            Đội ngũ dự án Di Sản Đồng Nai sẵn sàng kết nối bạn với các cơ quan hữu quan và tư vấn cơ hội đầu tư phù hợp.
+            Đội ngũ dự án Di Sản Bù Đăng sẵn sàng kết nối bạn với các cơ quan hữu quan và tư vấn cơ hội đầu tư phù hợp.
           </p>
           <div class="flex flex-wrap gap-4 justify-center">
             <NuxtLink to="/contact" class="btn-primary">

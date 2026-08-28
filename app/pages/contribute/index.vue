@@ -1,5 +1,5 @@
 <template>
-  <div class="bg-charcoal-900 min-h-screen text-ivory pt-[72px]">
+  <div class="bg-charcoal-900 min-h-screen text-ivory">
     <!-- Hero -->
     <div class="relative py-24 overflow-hidden border-b border-charcoal-850">
       <img

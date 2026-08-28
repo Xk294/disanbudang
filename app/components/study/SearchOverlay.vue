@@ -107,7 +107,7 @@
               <kbd class="border border-charcoal-700 px-1 rounded font-mono">↑↓</kbd> Điều hướng
               <kbd class="border border-charcoal-700 px-1 rounded font-mono">↵</kbd> Chọn
             </span>
-            <span>Tìm kiếm toàn bộ nội dung Di Sản Đồng Nai</span>
+            <span>Tìm kiếm toàn bộ nội dung Di Sản Bù Đăng</span>
           </div>
         </div>
       </div>

@@ -15,12 +15,13 @@
         <div class="lg:col-span-1 space-y-6">
           <div class="flex items-center gap-3">
             <NuxtImg src="/favicon/icon-192.png" alt="Logo Di Sản Thành Phố Đồng Nai" class="h-14 lg:h-16 w-auto object-contain shrink-0" />
-            <div class="flex flex-col justify-center text-left min-w-0">
-              <span class="font-heading font-bold text-white text-sm lg:text-base leading-snug whitespace-nowrap">
-                Di Sản
-              </span>
-              <span class="font-heading font-bold text-gold-300 text-sm lg:text-base leading-snug -mt-0.5 whitespace-nowrap">
-                Bù Đăng
+            <div class="flex flex-col justify-center text-left shrink-0 select-none">
+              <div class="font-heading font-bold text-base lg:text-lg leading-tight tracking-wide whitespace-nowrap">
+                <span class="text-white">Di Sản</span>
+                <span class="text-gold-300 ml-1.5">Bù Đăng</span>
+              </div>
+              <span class="text-[10px] text-charcoal-400 tracking-[0.14em] uppercase font-semibold mt-1 leading-none whitespace-nowrap">
+                Bảo Tàng Số Thành Phố Đồng Nai
               </span>
             </div>
           </div>
@@ -74,11 +75,18 @@
       <!-- Bottom Bar -->
       <div class="mt-14 pt-8 border-t border-charcoal-800 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-ivory/70">
         <p>© {{ currentYear }} Nguyễn Xuân Kiệt. Bảo lưu mọi quyền.</p>
+        <div class="flex flex-wrap items-center justify-center gap-x-4 gap-y-2">
+          <div v-if="formattedVisitCount" class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-charcoal-950/60 border border-charcoal-800/80 text-charcoal-400">
+            <Icon name="mdi:eye-outline" class="w-3.5 h-3.5 text-gold-400/80" />
+            <span class="text-ivory font-medium tabular-nums">{{ formattedVisitCount }}</span>
+            <span>lượt ghé thăm</span>
+          </div>
           <div class="flex items-center gap-1">
             <span>Người thực hiện:</span>
             <span class="text-gold-300 font-medium mx-1">Nguyễn Xuân Kiệt</span>
             <span>• Cổng di sản số Thành Phố Đồng Nai</span>
           </div>
+        </div>
       </div>
     </div>
   </footer>
@@ -86,6 +94,11 @@
 
 <script setup lang="ts">
 const currentYear = new Date().getFullYear()
+const visitCount = useSiteVisitCount()
+const formattedVisitCount = computed(() => {
+  if (visitCount.value === null) return null
+  return visitCount.value.toLocaleString('vi-VN')
+})
 
 const footerLinks = [
   {

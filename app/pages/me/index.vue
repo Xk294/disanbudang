@@ -1,5 +1,5 @@
 <template>
-  <div class="min-h-screen bg-charcoal-900 pt-[72px]">
+  <div class="min-h-screen bg-charcoal-900">
     <div class="max-w-2xl mx-auto px-4 py-12">
 
       <!-- Loading state while Firebase restores session -->

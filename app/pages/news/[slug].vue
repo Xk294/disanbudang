@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div v-if="article" class="bg-charcoal-900 min-h-screen pt-[72px]">
+    <div v-if="article" class="bg-charcoal-900 min-h-screen">
       <!-- Article Header -->
       <div class="bg-dark-earth py-16 md:py-20 relative overflow-hidden border-b border-charcoal-800">
         <div class="absolute inset-0 pointer-events-none opacity-40">
@@ -23,7 +23,7 @@
             <div class="flex items-center gap-4 text-xs text-charcoal-350">
               <span class="flex items-center gap-1">
                 <Icon name="mdi:account-outline" class="w-4 h-4 text-gold-450" />
-                {{ article.author || 'Di Sản Đồng Nai' }}
+                {{ article.author || 'Di Sản Bù Đăng' }}
               </span>
               <span>•</span>
               <span class="flex items-center gap-1">
