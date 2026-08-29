@@ -43,6 +43,20 @@
                 {{ heritage.tags.slice(0, 3).join(' • ') }}
               </span>
             </div>
+
+            <!-- 360 Virtual Tour Hero CTA -->
+            <div v-if="virtualTour" class="mt-6 flex flex-wrap items-center gap-4">
+              <NuxtLink
+                :to="`/explore/virtual-tour?tour=${heritage.slug}`"
+                class="inline-flex items-center gap-2.5 px-6 py-3 rounded-2xl bg-gradient-to-r from-gold-400 via-gold-500 to-gold-600 text-charcoal-950 font-bold text-sm shadow-gold/40 shadow-xl hover:shadow-gold-lg hover:scale-105 transition-all duration-300 group"
+              >
+                <div class="w-7 h-7 rounded-full bg-charcoal-950/20 flex items-center justify-center group-hover:rotate-45 transition-transform">
+                  <Icon name="mdi:panorama-sphere" class="w-4 h-4 text-charcoal-950" />
+                </div>
+                <span>KHÁM PHÁ KHÔNG GIAN 360°</span>
+                <Icon name="mdi:arrow-right" class="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+              </NuxtLink>
+            </div>
           </div>
         </div>
 
@@ -84,6 +98,64 @@
 
           <!-- Main story column -->
           <div class="lg:col-span-8 space-y-16">
+
+            <!-- Section: 360 Virtual Tour Feature Banner -->
+            <div v-if="virtualTour" id="tour360" class="reveal scroll-mt-28 p-6 md:p-8 rounded-3xl border border-gold-500/30 relative overflow-hidden bg-gradient-to-br from-charcoal-950 via-charcoal-900 to-charcoal-950 shadow-2xl">
+              <div class="absolute -right-12 -bottom-12 w-64 h-64 bg-gold-500/10 rounded-full blur-3xl pointer-events-none" />
+              <div class="relative z-10">
+                <div class="flex items-center gap-2 mb-2">
+                  <span class="w-2.5 h-2.5 rounded-full bg-gold-400 animate-ping" />
+                  <span class="text-2xs font-bold uppercase tracking-widest text-gold-400">Trải Nghiệm Bảo Tàng Số 360°</span>
+                </div>
+                <h3 class="font-heading font-bold text-ivory text-2xl md:text-3xl mb-2">
+                  Khám Phá {{ heritage.title }} Không Gian 360°
+                </h3>
+                <p class="text-charcoal-300 text-sm md:text-base leading-relaxed max-w-2xl mb-6">
+                  {{ virtualTour.description }}
+                </p>
+
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 mb-6">
+                  <div class="p-3 rounded-2xl bg-charcoal-900/80 border border-charcoal-800 flex items-center gap-3">
+                    <div class="w-10 h-10 rounded-xl bg-gold-500/15 flex items-center justify-center text-gold-400 shrink-0">
+                      <Icon name="mdi:panorama-wide-angle" class="w-5 h-5" />
+                    </div>
+                    <div>
+                      <p class="text-xs font-bold text-ivory">{{ virtualTour.scenes.length }} Điểm Nhìn</p>
+                      <p class="text-[10px] text-charcoal-400">Xoay 360° Street View</p>
+                    </div>
+                  </div>
+
+                  <div class="p-3 rounded-2xl bg-charcoal-900/80 border border-charcoal-800 flex items-center gap-3">
+                    <div class="w-10 h-10 rounded-xl bg-amber-500/15 flex items-center justify-center text-amber-400 shrink-0">
+                      <Icon name="mdi:cube-scan" class="w-5 h-5" />
+                    </div>
+                    <div>
+                      <p class="text-xs font-bold text-ivory">{{ virtualTour.artifacts?.length || 0 }} Bảo Vật 3D</p>
+                      <p class="text-[10px] text-charcoal-400">Khảo cứu hiện vật</p>
+                    </div>
+                  </div>
+
+                  <div class="p-3 rounded-2xl bg-charcoal-900/80 border border-charcoal-800 flex items-center gap-3">
+                    <div class="w-10 h-10 rounded-xl bg-emerald-500/15 flex items-center justify-center text-emerald-400 shrink-0">
+                      <Icon name="mdi:headphones" class="w-5 h-5" />
+                    </div>
+                    <div>
+                      <p class="text-xs font-bold text-ivory">Audio Guide</p>
+                      <p class="text-[10px] text-charcoal-400">Thuyết minh tự động</p>
+                    </div>
+                  </div>
+                </div>
+
+                <NuxtLink
+                  :to="`/explore/virtual-tour?tour=${heritage.slug}`"
+                  class="inline-flex items-center gap-3 px-6 py-3.5 rounded-2xl bg-gold-500 hover:bg-gold-400 text-charcoal-950 font-bold text-sm shadow-gold/30 shadow-lg hover:shadow-gold-lg transition-all group"
+                >
+                  <Icon name="mdi:rotate-3d-variant" class="w-5 h-5 group-hover:rotate-90 transition-transform" />
+                  <span>BƯỚC VÀO KHÔNG GIAN 360° NGAY</span>
+                  <Icon name="mdi:arrow-right" class="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                </NuxtLink>
+              </div>
+            </div>
 
             <div id="story" class="reveal scroll-mt-28">
               <div class="flex items-center gap-3 mb-6">
@@ -180,6 +252,25 @@
 
           <!-- Sidebar column -->
           <div class="lg:col-span-4 space-y-6 lg:sticky lg:top-[150px] self-start" id="location">
+            <!-- 360 Virtual Tour Sidebar Card -->
+            <div v-if="virtualTour" class="bg-gradient-to-br from-gold-500/15 via-charcoal-950 to-charcoal-900 border border-gold-500/40 rounded-2xl p-6 shadow-xl backdrop-blur-xl group hover:border-gold-500 transition-all duration-300">
+              <div class="flex items-center gap-2 mb-2">
+                <span class="w-2 h-2 rounded-full bg-gold-400 animate-ping" />
+                <span class="text-2xs uppercase tracking-widest font-bold text-gold-400">Street View Di Sản</span>
+              </div>
+              <h3 class="font-heading font-bold text-ivory text-lg mb-2 flex items-center gap-2">
+                <Icon name="mdi:panorama-sphere" class="w-5 h-5 text-gold-400" />
+                Tham Quan Ảo 360°
+              </h3>
+              <p class="text-charcoal-350 text-xs leading-relaxed mb-4">
+                Trải nghiệm khám phá không gian di sản số hóa với <strong>{{ virtualTour.scenes.length }} góc nhìn</strong> và bảo vật 3D tương tác.
+              </p>
+              <NuxtLink :to="`/explore/virtual-tour?tour=${heritage.slug}`" class="btn-primary w-full justify-center text-xs py-3 bg-gold-500 text-charcoal-950 font-bold shadow-gold/20 shadow-md hover:scale-102 transition-transform">
+                <Icon name="mdi:rotate-3d" class="w-4 h-4" />
+                Bắt Đầu Tham Quan 360°
+              </NuxtLink>
+            </div>
+
             <!-- Quick Facts -->
             <div class="bg-charcoal-950/60 border border-charcoal-850 rounded-2xl p-6 shadow-xl backdrop-blur-xl">
               <h3 class="font-heading font-bold text-ivory text-lg mb-5 flex items-center gap-2">
@@ -254,18 +345,64 @@
           </div>
         </div>
 
-        <!-- Related heritages -->
+        <!-- Section 07: Ký ức cộng đồng gắn liền với di sản này -->
+        <div v-if="communityMemories.length > 0" class="mt-20 pt-12 border-t border-charcoal-850 reveal" id="community">
+          <div class="flex items-end justify-between mb-8">
+            <div>
+              <span class="eyebrow text-gold-400 text-3xs">Tiếng nói nhân dân</span>
+              <h2 class="font-heading font-bold text-ivory text-2xl lg:text-3xl mt-1">Ký Ức Cộng Đồng</h2>
+            </div>
+            <NuxtLink
+              to="/explore?tab=community"
+              class="hidden sm:flex items-center gap-2 text-gold-400 text-sm font-semibold hover:text-gold-300 transition-colors"
+            >
+              Xem tất cả ký ức
+              <Icon name="mdi:arrow-right" class="w-4 h-4" />
+            </NuxtLink>
+          </div>
+          <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            <NuxtLink
+              v-for="post in communityMemories"
+              :key="post.id"
+              :to="`/explore/${post.id}`"
+              class="bg-charcoal-950/50 rounded-2xl overflow-hidden border border-charcoal-850 hover:border-gold-500/30 transition-all duration-300 group flex flex-col"
+            >
+              <div class="aspect-[16/9] overflow-hidden relative shrink-0">
+                <img
+                  v-if="post.coverImage"
+                  :src="post.coverImage"
+                  :alt="post.title"
+                  class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                />
+                <div class="absolute inset-0 bg-gradient-to-t from-charcoal-950/70 to-transparent" />
+              </div>
+              <div class="p-4 flex flex-col flex-1">
+                <span class="text-gold-400 text-[10px] font-bold uppercase tracking-wider mb-1.5">{{ typeLabels[post.type] ?? 'Ký ức' }}</span>
+                <h3 class="font-heading font-bold text-ivory text-sm leading-snug mb-2 group-hover:text-gold-300 transition-colors line-clamp-2">{{ post.title }}</h3>
+                <p class="text-charcoal-400 text-xs leading-relaxed line-clamp-2 mb-3">{{ post.excerpt }}</p>
+                <div class="flex items-center gap-2 mt-auto border-t border-charcoal-850 pt-3">
+                  <div class="w-6 h-6 rounded-full bg-charcoal-800 flex items-center justify-center shrink-0">
+                    <Icon name="mdi:account" class="w-3.5 h-3.5 text-gold-400/60" />
+                  </div>
+                  <p class="text-charcoal-400 text-xs truncate">{{ post.author.name }}</p>
+                </div>
+              </div>
+            </NuxtLink>
+          </div>
+        </div>
+
+        <!-- Section 08: Tiếp tục hành trình — Di sản tiếp theo -->
         <div v-if="related.length" class="mt-20 pt-12 border-t border-charcoal-850 reveal">
           <div class="flex items-end justify-between mb-8">
             <div>
-              <span class="eyebrow text-gold-400 text-3xs">Tiếp tục hành trình</span>
-              <h2 class="font-heading font-bold text-ivory text-2xl lg:text-3xl mt-1">Di Sản Liên Quan</h2>
+              <span class="eyebrow text-gold-400 text-3xs">Bước tiếp theo của bạn</span>
+              <h2 class="font-heading font-bold text-ivory text-2xl lg:text-3xl mt-1">Khám Phá Di Sản Tiếp Theo</h2>
             </div>
             <NuxtLink
               to="/explore"
               class="hidden sm:flex items-center gap-2 text-gold-400 text-sm font-semibold hover:text-gold-300 transition-colors"
             >
-              Xem tất cả
+              Toàn bộ di sản
               <Icon name="mdi:arrow-right" class="w-4 h-4" />
             </NuxtLink>
           </div>
@@ -277,6 +414,17 @@
               class="border border-charcoal-850"
               @click="navigateTo(`/heritage/${item.slug}`)"
             />
+          </div>
+          <!-- Journey CTA: không để dead-end -->
+          <div class="mt-10 text-center">
+            <NuxtLink
+              to="/map"
+              class="inline-flex items-center gap-2.5 px-7 py-3.5 rounded-2xl bg-charcoal-900 border border-gold-500/30 hover:border-gold-500 text-gold-300 hover:text-gold-200 font-semibold text-sm transition-all duration-300 hover:bg-charcoal-800"
+            >
+              <Icon name="mdi:map-outline" class="w-5 h-5" />
+              Xem trên Bản Đồ Di Sản
+              <Icon name="mdi:arrow-right" class="w-4 h-4" />
+            </NuxtLink>
           </div>
         </div>
       </div>
@@ -358,6 +506,9 @@
 </template>
 
 <script setup lang="ts">
+import { getVirtualTourByHeritageId } from '~/data/virtualTours'
+import { COMMUNITY_POSTS } from '~/data/posts'
+
 const route = useRoute()
 const slug = computed(() => route.params.slug as string)
 
@@ -373,6 +524,10 @@ const lightboxIndex = ref<number | null>(null)
 const currentActiveTab = ref('story')
 
 const heritage = computed(() => store.getBySlug(slug.value) ?? null)
+const virtualTour = computed(() => {
+  if (!heritage.value) return null
+  return getVirtualTourByHeritageId(heritage.value.id) || getVirtualTourByHeritageId(heritage.value.slug) || null
+})
 
 function prevGalleryImage() {
   if (!heritage.value?.gallery || lightboxIndex.value === null) return
@@ -395,8 +550,28 @@ const storyParagraphs = computed(() => {
   return heritage.value.longStory.split('\n\n').map((p) => p.trim()).filter(Boolean)
 })
 
+// Community memories linked to this specific heritage
+const communityMemories = computed(() => {
+  if (!heritage.value) return []
+  return COMMUNITY_POSTS
+    .filter((post) => post.heritageId === heritage.value!.id)
+    .slice(0, 3)
+})
+
+const typeLabels: Record<string, string> = {
+  story: 'Câu chuyện',
+  memory: 'Ký ức',
+  artwork: 'Tác phẩm nghệ thuật',
+  research: 'Nghiên cứu',
+  video: 'Video',
+}
+
 const activeTabsList = computed(() => {
-  const tabs = [{ id: 'story', name: 'Cội nguồn' }]
+  const tabs = []
+  if (virtualTour.value) {
+    tabs.push({ id: 'tour360', name: 'Không gian 360°' })
+  }
+  tabs.push({ id: 'story', name: 'Cội nguồn' })
   if (heritage.value?.timeline && heritage.value.timeline.length > 0) {
     tabs.push({ id: 'timeline', name: 'Biên niên sử' })
   }
@@ -404,6 +579,9 @@ const activeTabsList = computed(() => {
     tabs.push({ id: 'gallery', name: 'Thư viện ảnh' })
   }
   tabs.push({ id: 'location', name: 'Vị trí & Bản đồ' })
+  if (communityMemories.value.length > 0) {
+    tabs.push({ id: 'community', name: 'Ký ức' })
+  }
   return tabs
 })
 
@@ -462,7 +640,7 @@ onMounted(async () => {
       })
     }, { threshold: 0.2, rootMargin: '-10% 0px -70% 0px' })
 
-    const targets = ['story', 'timeline', 'gallery', 'location']
+    const targets = ['tour360', 'story', 'timeline', 'gallery', 'location']
     targets.forEach((t) => {
       const el = document.getElementById(t)
       if (el) observer.observe(el)

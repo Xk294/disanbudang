@@ -1,10 +1,8 @@
 <template>
-  <section class="hero-root relative min-h-screen flex flex-col overflow-hidden" aria-label="Hero section">
+  <section class="hero-root relative min-h-screen flex flex-col justify-center overflow-hidden bg-[#0A0C10]" aria-label="Hero section">
 
-    <!-- ═══ BACKGROUND VIDEO (primary) ═══ -->
-    <div class="absolute inset-0 z-0 bg-charcoal-950">
-      <!-- Video: Khu Bảo Tồn Sóc Bom Bo — preloads silently behind the entry gate,
-           only starts playing once the user clicks "Bắt Đầu Hành Trình" -->
+    <!-- ═══ BACKGROUND MEDIA (Video & Archival Slideshow) ═══ -->
+    <div class="absolute inset-0 z-0 bg-[#0A0C10]">
       <video
         v-if="enableVideo"
         ref="heroVideoRef"
@@ -19,7 +17,7 @@
         @canplay="markVideoReady"
         @progress="onVideoProgress"
       />
-      <!-- Fallback image slideshow shown while video loads -->
+
       <TransitionGroup name="hero-slide">
         <div
           v-for="(slide, i) in slides"
@@ -39,149 +37,104 @@
       </TransitionGroup>
     </div>
 
-    <!-- ═══ LAYERED OVERLAYS ═══ -->
-    <!-- Dark base vignette: calibrated on bottom & center for crisp text legibility -->
-    <div class="absolute inset-0 z-10 bg-gradient-to-t from-charcoal-950/95 via-charcoal-950/65 to-charcoal-950/40" />
-    <!-- Center vignette scrim for focused legibility -->
-    <div class="absolute inset-0 z-10 bg-[radial-gradient(ellipse_at_center,rgba(10,12,16,0.75)_0%,rgba(10,12,16,0.35)_60%,transparent_100%)]" />
-    <!-- Radial ambient breathing gold glow behind center hero content -->
-    <div class="absolute inset-0 z-10 hero-ambient-glow pointer-events-none" />
-    <!-- Top fade for header -->
-    <div class="absolute top-0 inset-x-0 h-32 z-10 bg-gradient-to-b from-charcoal-950/80 to-transparent" />
-    <!-- Amber cinematic tint -->
-    <div class="absolute inset-0 z-10 bg-gradient-to-br from-transparent via-transparent to-gold-900/10 pointer-events-none" />
+    <!-- ═══ CINEMATIC ATMOSPHERIC OVERLAYS ═══ -->
+    <div class="absolute inset-0 z-10 bg-gradient-to-t from-[#0A0C10] via-[#0A0C10]/65 to-[#0A0C10]/40 pointer-events-none" />
+    <div class="absolute top-0 inset-x-0 h-32 z-10 bg-gradient-to-b from-[#0A0C10]/85 to-transparent pointer-events-none" />
+    <div class="absolute inset-0 z-10 bg-[radial-gradient(ellipse_at_center,rgba(10,12,16,0.65)_0%,rgba(10,12,16,0.3)_65%,transparent_100%)] pointer-events-none" />
+    <div class="absolute inset-0 z-10 opacity-[0.025] bg-[radial-gradient(#F2EDE6_1px,transparent_1px)] [background-size:24px_24px] pointer-events-none" />
 
-    <!-- ═══ ENTRY GATE — ORNATE ROYAL HERITAGE FRAME ═══ -->
+    <!-- ═══ ENTRY GATE — SẮC PHONG HOÀNG GIA REVEAL ═══ -->
     <Transition name="gate-fade">
       <div
         v-if="!revealed"
-        class="absolute inset-0 z-40 flex flex-col items-center justify-center p-4 sm:p-6 bg-charcoal-950/85 backdrop-blur-xl overflow-y-auto"
+        class="absolute inset-0 z-40 flex flex-col items-center justify-center p-4 sm:p-6 bg-[#0A0C10]/85 backdrop-blur-xl overflow-y-auto"
       >
-        <!-- SVG Gradient Definition for Corner Filigrees -->
-        <svg class="sr-only" aria-hidden="true">
-          <defs>
-            <linearGradient id="goldFiligreeGrad" x1="0" y1="0" x2="40" y2="40" gradientUnits="userSpaceOnUse">
-              <stop stop-color="#F5E6C8" />
-              <stop offset="0.5" stop-color="#C9A96A" />
-              <stop offset="1" stop-color="#8F7138" />
-            </linearGradient>
-          </defs>
-        </svg>
-
         <template v-if="gateState === 'idle'">
-          <div class="w-full max-w-3xl lg:max-w-4xl my-auto">
-            <!-- ═══ ORNATE ROYAL HERITAGE PANEL ═══ -->
-            <div class="heritage-frame relative px-6 sm:px-12 md:px-16 py-8 sm:py-10 md:py-12 rounded-3xl bg-charcoal-950/85 backdrop-blur-2xl border border-gold-400/40 shadow-[0_0_90px_-15px_rgba(201,169,106,0.35)] flex flex-col items-center text-center">
+          <RoyalScrollReveal class="w-full max-w-3xl lg:max-w-4xl my-auto">
+            <!-- ═══ ORNATE SẮC PHONG ROYAL CONTENT PANEL ═══ -->
+            <div class="relative px-5 sm:px-10 md:px-14 pt-14 sm:pt-16 md:pt-18 pb-12 sm:pb-14 md:pb-16 flex flex-col items-center text-center">
 
-              <!-- 4 Ornate Filigree Corner SVG Glyphs -->
-              <svg class="corner-filigree corner-tl" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M2 38V14C2 7.37258 7.37258 2 14 2H38" stroke="url(#goldFiligreeGrad)" stroke-width="2" stroke-linecap="round" />
-                <path d="M6 34V16C6 10.4772 10.4772 6 16 6H34" stroke="url(#goldFiligreeGrad)" stroke-width="1" stroke-opacity="0.75" stroke-linecap="round" />
-                <path d="M14 14L17 11L20 14L17 17Z" fill="url(#goldFiligreeGrad)" />
-                <circle cx="8" cy="8" r="2.5" fill="#F3E5C8" />
-              </svg>
-              <svg class="corner-filigree corner-tr" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M2 38V14C2 7.37258 7.37258 2 14 2H38" stroke="url(#goldFiligreeGrad)" stroke-width="2" stroke-linecap="round" />
-                <path d="M6 34V16C6 10.4772 10.4772 6 16 6H34" stroke="url(#goldFiligreeGrad)" stroke-width="1" stroke-opacity="0.75" stroke-linecap="round" />
-                <path d="M14 14L17 11L20 14L17 17Z" fill="url(#goldFiligreeGrad)" />
-                <circle cx="8" cy="8" r="2.5" fill="#F3E5C8" />
-              </svg>
-              <svg class="corner-filigree corner-bl" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M2 38V14C2 7.37258 7.37258 2 14 2H38" stroke="url(#goldFiligreeGrad)" stroke-width="2" stroke-linecap="round" />
-                <path d="M6 34V16C6 10.4772 10.4772 6 16 6H34" stroke="url(#goldFiligreeGrad)" stroke-width="1" stroke-opacity="0.75" stroke-linecap="round" />
-                <path d="M14 14L17 11L20 14L17 17Z" fill="url(#goldFiligreeGrad)" />
-                <circle cx="8" cy="8" r="2.5" fill="#F3E5C8" />
-              </svg>
-              <svg class="corner-filigree corner-br" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M2 38V14C2 7.37258 7.37258 2 14 2H38" stroke="url(#goldFiligreeGrad)" stroke-width="2" stroke-linecap="round" />
-                <path d="M6 34V16C6 10.4772 10.4772 6 16 6H34" stroke="url(#goldFiligreeGrad)" stroke-width="1" stroke-opacity="0.75" stroke-linecap="round" />
-                <path d="M14 14L17 11L20 14L17 17Z" fill="url(#goldFiligreeGrad)" />
-                <circle cx="8" cy="8" r="2.5" fill="#F3E5C8" />
-              </svg>
+              <!-- Inner Ambient Golden Glow behind center title -->
+              <div class="absolute inset-0 pointer-events-none rounded-2xl bg-[radial-gradient(ellipse_at_50%_35%,rgba(212,175,55,0.18)_0%,rgba(199,166,100,0.05)_45%,transparent_75%)]" />
 
-              <!-- Top & Bottom Ambient Light Sweep Glow inside frame -->
-              <div class="absolute -top-px inset-x-16 sm:inset-x-28 h-px bg-gradient-to-r from-transparent via-gold-300 to-transparent opacity-90" />
-              <div class="absolute -bottom-px inset-x-16 sm:inset-x-28 h-px bg-gradient-to-r from-transparent via-gold-400/60 to-transparent opacity-70" />
-
-              <!-- Eyebrow Badge -->
-              <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-gold-500/15 border border-gold-400/40 backdrop-blur-md mb-4 shadow-sm">
-                <span class="w-1.5 h-1.5 rounded-full bg-gold-400 animate-pulse" />
-                <span class="text-gold-300 text-[10px] md:text-[11px] uppercase tracking-[0.25em] font-bold">
-                  Bảo Tàng Số Di Sản Bù Đăng · TP. Đồng Nai
-                </span>
+              <!-- 01 Institutional Eyebrow Label -->
+              <div class="relative z-10 inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[#1A1308]/90 border border-[#D4AF37]/50 text-[#F5E6C8] text-[10px] sm:text-[11.5px] uppercase tracking-[0.26em] font-bold backdrop-blur-md mb-4 shadow-[0_2px_14px_rgba(212,175,55,0.2)]">
+                <span class="w-1.5 h-1.5 rounded-full bg-[#E5B94C] animate-pulse shadow-[0_0_8px_#E5B94C]" />
+                <span>BẢO TÀNG SỐ DI SẢN BÙ ĐĂNG · TP. ĐỒNG NAI</span>
               </div>
 
-              <!-- H1 Title: Separated & Elevated with Regal Divider -->
-              <div class="flex flex-col items-center mb-4 md:mb-5 text-shadow-hero">
-                <h2 class="font-heading font-extrabold text-[clamp(1.75rem,4.2vw,3.2rem)] text-ivory tracking-tight leading-tight">
-                  Bảo Tàng Số Di Sản Bù Đăng
-                </h2>
+              <!-- 02 Main Title + 03 Regal Divider + 04 Subtitle -->
+              <div class="relative z-10 flex flex-col items-center mb-4 md:mb-5 w-full">
+                <!-- Title: Majestic Royal Luminous Typography -->
+                <h1 class="font-heading font-extrabold text-[clamp(1.65rem,3.6vw,3rem)] lg:text-[3.15rem] tracking-tight leading-[1.18] w-full text-center royal-title-gradient drop-shadow-[0_4px_16px_rgba(212,175,55,0.35)]">
+                  <span class="sm:inline whitespace-nowrap">Bảo Tàng Số </span><span class="whitespace-nowrap">Di Sản Bù Đăng</span>
+                </h1>
 
-                <!-- Elegant Heritage Divider between the 2 lines -->
-                <div class="flex items-center justify-center gap-3 my-2.5 w-full max-w-xs opacity-90">
-                  <span class="h-px flex-1 bg-gradient-to-r from-transparent via-gold-400 to-gold-400/70" />
-                  <span class="text-gold-400 text-xs">❖</span>
-                  <span class="h-px flex-1 bg-gradient-to-l from-transparent via-gold-400 to-gold-400/70" />
+                <!-- Elegant Heritage Divider -->
+                <div class="flex items-center justify-center gap-3.5 my-3 w-full max-w-xs opacity-90">
+                  <span class="h-px flex-1 bg-gradient-to-r from-transparent via-[#E5B94C] to-[#E5B94C]/70" />
+                  <span class="text-[#E5B94C] text-xs select-none drop-shadow-[0_0_6px_rgba(229,185,76,0.8)]">❖</span>
+                  <span class="h-px flex-1 bg-gradient-to-l from-transparent via-[#E5B94C] to-[#E5B94C]/70" />
                 </div>
 
-                <!-- Secondary Title Line -->
-                <span class="font-heading text-[clamp(1.1rem,2.6vw,1.75rem)] font-bold uppercase tracking-[0.22em] gold-shimmer-text">
+                <!-- Secondary Subtitle -->
+                <span class="font-heading text-[clamp(1.1rem,2.5vw,1.6rem)] font-bold uppercase tracking-[0.24em] text-[#F3DC9B] drop-shadow-[0_2px_8px_rgba(0,0,0,0.8)]">
                   Thành Phố Đồng Nai
                 </span>
               </div>
 
-              <!-- Statement Manifesto Quote with Decorative Heritage Quotes -->
-              <div class="relative max-w-2xl mx-auto my-3 px-6 sm:px-10">
-                <span class="absolute -top-3 left-0 font-serif text-3xl sm:text-4xl text-gold-400/40 select-none pointer-events-none">“</span>
-                <p class="font-accent italic text-ivory/95 text-sm sm:text-base md:text-lg leading-relaxed font-normal text-shadow-sm px-2">
+              <!-- 05 Emotional Manifesto Quote -->
+              <div class="relative z-10 max-w-2xl mx-auto my-2 px-6 sm:px-10">
+                <span class="absolute -top-2 left-1 font-serif text-3xl sm:text-4xl text-[#E5B94C]/50 select-none pointer-events-none">“</span>
+                <p class="font-accent italic text-[#FFFDF7] text-sm sm:text-base md:text-[1.12rem] leading-relaxed font-normal px-2 text-shadow-sm">
                   Di sản không chỉ thuộc về quá khứ — khi được số hóa, những câu chuyện của Bù Đăng sẽ tiếp tục được nhìn thấy, lắng nghe và trao truyền cho muôn đời sau.
                 </p>
-                <span class="absolute -bottom-5 right-0 font-serif text-3xl sm:text-4xl text-gold-400/40 select-none pointer-events-none">”</span>
+                <span class="absolute -bottom-5 right-1 font-serif text-3xl sm:text-4xl text-[#E5B94C]/50 select-none pointer-events-none">”</span>
               </div>
 
-              <!-- Description -->
-              <p class="text-paper-200/80 text-xs sm:text-sm leading-relaxed max-w-xl mx-auto mb-6 sm:mb-7 font-light">
-                Nền tảng bảo tồn và giới thiệu di sản văn hóa Bù Đăng trên không gian số — tư liệu thực địa chuẩn hóa, âm vang tiếng chày Bom Bo và ký ức cộng đồng.
+              <!-- Supporting Description -->
+              <p class="relative z-10 text-[#E0D8C8]/90 text-xs sm:text-sm leading-relaxed max-w-xl mx-auto mb-6 sm:mb-8 font-light">
+                Nền tảng bảo tồn và giới thiệu di sản văn hóa trên không gian số — tư liệu thực địa chuẩn hóa, âm vang tiếng chày Bom Bo và ký ức cộng đồng.
               </p>
 
-              <!-- Royal Jewel CTA Button -->
+              <!-- 06 Royal Jewel CTA Button -->
               <button
-                class="royal-cta-btn group relative inline-flex items-center gap-3.5 px-8 sm:px-11 py-4 sm:py-4.5 rounded-full font-bold text-sm sm:text-base cursor-pointer mb-6 sm:mb-8 overflow-hidden"
+                class="royal-cta-btn group relative z-10 inline-flex items-center gap-3.5 px-9 sm:px-11 py-4 sm:py-4.5 rounded-full font-extrabold text-xs sm:text-sm cursor-pointer mb-6 sm:mb-8 transition-all duration-300 overflow-hidden"
                 @click="startJourney"
               >
                 <!-- Specular shimmer sweep -->
                 <span class="royal-cta-shimmer" />
 
-                <!-- Outer glow ring -->
-                <span class="absolute inset-0 rounded-full border border-gold-200/60 pointer-events-none" />
+                <!-- Outer glow border ring -->
+                <span class="absolute inset-0 rounded-full border border-[#FFFDF5]/70 pointer-events-none" />
 
-                <!-- Inner content -->
-                <span class="relative z-10 w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-charcoal-950/25 border border-charcoal-900/40 flex items-center justify-center text-charcoal-950 shadow-inner group-hover:scale-110 transition-transform">
-                  <Icon name="mdi:compass-outline" class="w-4 h-4 sm:w-4.5 sm:h-4.5 text-charcoal-950" />
+                <!-- Inner compass icon & label -->
+                <span class="relative z-10 w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-[#120B04]/30 border border-[#241504]/40 flex items-center justify-center text-[#120B04] shadow-inner group-hover:scale-110 transition-transform">
+                  <Icon name="mdi:compass-outline" class="w-4 h-4 sm:w-4.5 sm:h-4.5 text-[#120B04]" />
                 </span>
-                <span class="relative z-10 text-charcoal-950 uppercase tracking-[0.18em] font-extrabold text-xs sm:text-sm drop-shadow-sm">
+                <span class="relative z-10 text-[#120B04] uppercase tracking-[0.2em] font-extrabold text-xs sm:text-sm drop-shadow-sm">
                   Bắt Đầu Hành Trình Di Sản
                 </span>
-                <Icon name="mdi:arrow-right" class="relative z-10 w-4 h-4 text-charcoal-950/80 group-hover:translate-x-1 transition-transform" />
+                <Icon name="mdi:arrow-right" class="relative z-10 w-4 h-4 text-[#120B04]/90 group-hover:translate-x-1.5 transition-transform" />
               </button>
 
-              <!-- Integrated Stats Dock (Two modular luxury capsules: 4 stats + 1 location badge) -->
-              <div class="w-full pt-5 sm:pt-6 border-t border-gold-400/25 flex flex-wrap items-center justify-center gap-2.5 sm:gap-3.5">
+              <!-- 07 Integrated Stats & City Badge Dock -->
+              <div class="relative z-10 w-full pt-4 sm:pt-5 border-t border-[#D4AF37]/30 flex flex-wrap items-center justify-center gap-2.5 sm:gap-3.5">
                 <!-- Platform Stats Capsule -->
-                <div class="inline-flex items-center flex-wrap justify-center gap-3 sm:gap-4 md:gap-5 px-4 sm:px-6 py-2.5 rounded-2xl sm:rounded-full bg-charcoal-900/85 border border-gold-400/25 shadow-lg">
+                <div class="inline-flex items-center flex-wrap justify-center gap-3 sm:gap-4 md:gap-5 px-4 sm:px-6 py-2.5 rounded-2xl sm:rounded-full bg-[#0E1118]/90 border border-[#D4AF37]/30 shadow-[0_8px_24px_rgba(0,0,0,0.6)]">
                   <div
                     v-for="stat in stats"
                     :key="stat.label"
-                    class="flex items-center gap-2 sm:gap-2.5 px-1 py-0.5 cursor-default group flex-shrink-0"
+                    class="flex items-center gap-2 px-1 py-0.5 cursor-default group flex-shrink-0"
                   >
-                    <div class="w-6.5 h-6.5 sm:w-7 sm:h-7 rounded-lg bg-gold-500/10 border border-gold-400/25 flex items-center justify-center flex-shrink-0 group-hover:bg-gold-500/25 transition-all">
-                      <Icon :name="stat.icon" class="w-3.5 h-3.5 text-gold-400" />
+                    <div class="w-6.5 h-6.5 rounded-lg bg-[#D4AF37]/15 border border-[#D4AF37]/30 flex items-center justify-center flex-shrink-0 group-hover:bg-[#D4AF37]/30 transition-all">
+                      <Icon :name="stat.icon" class="w-3.5 h-3.5 text-[#E5B94C]" />
                     </div>
                     <div class="flex flex-col text-left">
-                      <span class="font-heading font-bold text-ivory text-xs sm:text-sm leading-tight tabular-nums group-hover:text-gold-300 transition-colors">
+                      <span class="font-heading font-bold text-[#FFFDF7] text-xs sm:text-sm leading-tight tabular-nums group-hover:text-[#F3DC9B] transition-colors">
                         {{ stat.value }}{{ stat.suffix }}
                       </span>
-                      <span class="text-charcoal-300 text-[8px] sm:text-[9px] uppercase tracking-wider leading-none mt-0.5 font-medium whitespace-nowrap">
+                      <span class="text-[#A89F8E] text-[8px] sm:text-[9px] uppercase tracking-wider leading-none mt-0.5 font-medium whitespace-nowrap">
                         {{ stat.label }}
                       </span>
                     </div>
@@ -189,37 +142,38 @@
                 </div>
 
                 <!-- Heritage City Milestone Badge Capsule -->
-                <div class="inline-flex items-center gap-2.5 px-4 sm:px-5 py-2.5 rounded-2xl sm:rounded-full bg-charcoal-900/85 border border-gold-400/25 shadow-lg cursor-default group">
-                  <div class="w-6.5 h-6.5 sm:w-7 sm:h-7 rounded-lg bg-forest-500/20 border border-forest-500/40 flex items-center justify-center flex-shrink-0 group-hover:bg-forest-500/30 transition-colors">
-                    <Icon name="mdi:city" class="w-3.5 h-3.5 text-gold-400" />
+                <div class="inline-flex items-center gap-2.5 px-4 sm:px-5 py-2.5 rounded-2xl sm:rounded-full bg-[#0E1118]/90 border border-[#D4AF37]/30 shadow-[0_8px_24px_rgba(0,0,0,0.6)] cursor-default group">
+                  <div class="w-6.5 h-6.5 rounded-lg bg-[#D4AF37]/20 border border-[#D4AF37]/40 flex items-center justify-center flex-shrink-0 group-hover:bg-[#D4AF37]/35 transition-colors">
+                    <Icon name="mdi:city" class="w-3.5 h-3.5 text-[#E5B94C]" />
                   </div>
                   <div class="flex flex-col text-left whitespace-nowrap">
-                    <span class="font-heading font-semibold text-ivory text-xs sm:text-sm leading-tight">Thành Phố Đồng Nai</span>
-                    <span class="text-charcoal-300 text-[8px] sm:text-[9px] leading-none mt-0.5">TPTT thứ 7 · Từ 30/04/2026</span>
+                    <span class="font-heading font-semibold text-[#FFFDF7] text-xs sm:text-sm leading-tight">Thành Phố Đồng Nai</span>
+                    <span class="text-[#A89F8E] text-[8px] sm:text-[9px] leading-none mt-0.5">TPTT thứ 7 · Từ 30/04/2026</span>
                   </div>
                 </div>
               </div>
 
             </div>
-          </div>
+          </RoyalScrollReveal>
         </template>
 
+        <!-- Loading State for Cinematic Stream -->
         <template v-else-if="gateState === 'loading'">
-          <div class="gate-spinner-lg mb-6" />
-          <h2 class="font-heading font-bold text-ivory text-xl md:text-2xl mb-2">
+          <div class="gate-spinner mb-6" />
+          <h2 class="font-heading font-bold text-[#FFFDF7] text-xl md:text-2xl mb-2">
             Đang tải video toàn cảnh...
           </h2>
-          <p class="text-charcoal-300 text-sm max-w-xs mb-5">
+          <p class="text-neutral-300 text-xs sm:text-sm max-w-xs mb-5">
             Thuyết minh đã bắt đầu — video sẽ hiện ra ngay khi sẵn sàng.
           </p>
-          <div class="w-56 h-1 rounded-full bg-charcoal-800 overflow-hidden mb-5">
+          <div class="w-52 h-1 rounded-full bg-neutral-800 overflow-hidden mb-5">
             <div
-              class="h-full bg-gold-400 rounded-full transition-all duration-300"
-              :style="{ width: `${Math.max(bufferPercent, 6)}%` }"
+              class="h-full bg-[#D4AF37] rounded-full transition-all duration-300"
+              :style="{ width: `${Math.max(bufferPercent, 8)}%` }"
             />
           </div>
           <button
-            class="text-charcoal-400 text-xs underline underline-offset-4 hover:text-gold-400 transition-colors"
+            class="text-neutral-400 text-xs underline underline-offset-4 hover:text-[#D4AF37] transition-colors cursor-pointer"
             @click="useFallback"
           >
             Mạng chậm? Dùng ảnh thay thế
@@ -228,7 +182,7 @@
       </div>
     </Transition>
 
-    <!-- ═══ UNMUTE / AUDIO GUIDE BUTTON ═══ -->
+    <!-- ═══ AUDIO GUIDE FLOATING CONTROL ═══ -->
     <button
       id="hero-unmute-btn"
       class="absolute top-24 right-5 lg:right-8 z-20 hero-audio-btn"
@@ -239,7 +193,7 @@
       <div class="hero-audio-btn-inner">
         <Icon
           :name="isAudioGuideOn ? 'mdi:volume-high' : 'mdi:volume-off'"
-          class="w-4.5 h-4.5"
+          class="w-4 h-4 text-[#E5B94C]"
         />
         <span class="hero-audio-label">
           {{ isAudioGuideOn ? 'Thuyết Minh ON' : 'Nghe Thuyết Minh' }}
@@ -247,189 +201,160 @@
       </div>
     </button>
 
-    <!-- ═══ AMBIENT PARTICLES ═══ -->
-    <div class="absolute inset-0 z-10 pointer-events-none">
-      <div
-        v-for="n in 10"
-        :key="`p-${n}`"
-        class="hero-particle absolute rounded-full"
-        :style="{
-          width: `${2 + (n % 3)}px`,
-          height: `${2 + (n % 3)}px`,
-          left: `${8 + n * 8.5}%`,
-          top: `${15 + (n % 5) * 14}%`,
-          animationDelay: `${n * 0.6}s`,
-          animationDuration: `${6 + n * 0.8}s`,
-          opacity: 0.25 + (n % 4) * 0.1,
-        }"
-      />
-    </div>
-
-    <!-- ═══ SLIDE CAPTION — bottom-left overlay ═══ -->
+    <!-- ═══ SLIDE CAPTION (Bottom-Left Archival Label) ═══ -->
     <Transition name="caption-fade">
       <div
         :key="currentSlide"
-        class="hidden lg:block absolute bottom-16 left-10 z-20 pointer-events-none max-w-xs"
+        class="hidden lg:block absolute bottom-14 left-10 z-20 pointer-events-none max-w-xs"
       >
-        <div class="flex items-center gap-2 mb-1.5">
-          <span class="w-5 h-px bg-gold-400/80" />
-          <p class="text-gold-400 text-[9px] uppercase tracking-[0.3em] font-bold">
+        <div class="flex items-center gap-2 mb-1">
+          <span class="w-4 h-px bg-[#D4AF37]/70" />
+          <p class="text-[#E5B94C] text-[9px] uppercase tracking-[0.26em] font-semibold">
             {{ slides[currentSlide]?.label }}
           </p>
         </div>
-        <p class="text-ivory/60 text-xs leading-relaxed">
+        <p class="text-neutral-300/80 text-xs leading-relaxed font-light">
           {{ slides[currentSlide]?.caption }}
         </p>
       </div>
     </Transition>
 
-    <!-- ═══ SLIDE COUNTER — top-right ═══ -->
-    <div class="absolute top-24 right-6 lg:right-10 z-20 pointer-events-none hidden lg:flex items-center gap-2">
-      <span class="font-heading font-bold text-ivory/80 text-sm tabular-nums">{{ String(currentSlide + 1).padStart(2,'0') }}</span>
-      <span class="text-charcoal-400 text-xs">/</span>
-      <span class="text-charcoal-500 text-xs tabular-nums">{{ String(slides.length).padStart(2,'0') }}</span>
+    <!-- ═══ SLIDE COUNTER (Top-Right Archival Indicator) ═══ -->
+    <div class="absolute top-24 right-6 lg:right-10 z-20 pointer-events-none hidden lg:flex items-center gap-1.5 text-xs text-neutral-400">
+      <span class="font-heading font-medium text-[#FFFDF7] tabular-nums">{{ String(currentSlide + 1).padStart(2,'0') }}</span>
+      <span class="text-neutral-600">/</span>
+      <span class="text-neutral-500 tabular-nums">{{ String(slides.length).padStart(2,'0') }}</span>
     </div>
 
-    <!-- ═══ MAIN CONTENT: OPEN CINEMATIC FLYCAM VIEW (NO OBSC Patch/Frame) ═══ -->
-    <div class="relative z-20 flex-1 flex flex-col items-center justify-center py-20 lg:py-24 px-4 sm:px-6 text-center">
+    <!-- ═══ REVEALED MAIN HERO CONTENT (Open Cinematic View) ═══ -->
+    <div
+      v-if="revealed"
+      class="relative z-20 flex-1 flex flex-col items-center justify-center py-20 lg:py-24 px-4 sm:px-6 text-center"
+    >
       <div class="w-full max-w-4xl mx-auto flex flex-col items-center">
 
-        <!-- Eyebrow Badge -->
-        <div class="hero-item inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-charcoal-950/60 border border-gold-400/30 backdrop-blur-md mb-4 shadow-sm" style="--delay: 0s">
-          <span class="w-1.5 h-1.5 rounded-full bg-gold-400 animate-pulse" />
-          <span class="text-gold-300 text-[10px] md:text-[11px] uppercase tracking-[0.25em] font-bold">
-            Bảo Tàng Số Di Sản Bù Đăng · TP. Đồng Nai
+        <!-- 01 Eyebrow Badge -->
+        <div class="hero-item inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#0B0D12]/80 border border-[#D4AF37]/40 text-[#F5E6C8] text-[10px] sm:text-[11px] uppercase tracking-[0.25em] font-bold backdrop-blur-md mb-4 shadow-sm" style="--delay: 0s">
+          <span class="w-1.5 h-1.5 rounded-full bg-[#E5B94C] animate-pulse" />
+          <span>BẢO TÀNG SỐ DI SẢN BÙ ĐĂNG · TP. ĐỒNG NAI</span>
+        </div>
+
+        <!-- 02 H1 Title + Divider + Subtitle -->
+        <div class="hero-item flex flex-col items-center mb-5 w-full" style="--delay: 0.1s">
+          <h1 class="font-heading font-extrabold text-[clamp(1.85rem,4.8vw,3.6rem)] tracking-tight leading-[1.18] w-full text-center royal-title-gradient drop-shadow-lg">
+            <span class="sm:inline whitespace-nowrap">Bảo Tàng Số </span><span class="whitespace-nowrap">Di Sản Bù Đăng</span>
+          </h1>
+
+          <div class="flex items-center justify-center gap-3.5 my-3 w-full max-w-xs opacity-90">
+            <span class="h-px flex-1 bg-gradient-to-r from-transparent via-[#E5B94C] to-[#E5B94C]/70" />
+            <span class="text-[#E5B94C] text-xs select-none">❖</span>
+            <span class="h-px flex-1 bg-gradient-to-l from-transparent via-[#E5B94C] to-[#E5B94C]/70" />
+          </div>
+
+          <span class="font-heading text-[clamp(1.15rem,2.8vw,1.8rem)] font-bold uppercase tracking-[0.22em] text-[#F3DC9B]">
+            Thành Phố Đồng Nai
           </span>
         </div>
 
-        <!-- H1 Title: Separated & Elevated with Regal Divider -->
-        <h1 class="hero-item flex flex-col items-center mb-5 text-shadow-hero" style="--delay: 0.12s">
-          <span class="font-heading font-extrabold text-[clamp(2.2rem,5.5vw,4.2rem)] text-ivory tracking-tight leading-tight">
-            Bảo Tàng Số Di Sản Bù Đăng
-          </span>
-
-          <div class="flex items-center justify-center gap-3 my-2.5 w-full max-w-xs opacity-90">
-            <span class="h-px flex-1 bg-gradient-to-r from-transparent via-gold-400 to-gold-400/70" />
-            <span class="text-gold-400 text-xs">❖</span>
-            <span class="h-px flex-1 bg-gradient-to-l from-transparent via-gold-400 to-gold-400/70" />
-          </div>
-
-          <span class="font-heading text-[clamp(1.35rem,3.2vw,2.2rem)] font-bold uppercase tracking-[0.2em] gold-shimmer-text">
-            Thành Phố Đồng Nai
-          </span>
-        </h1>
-
-        <!-- Statement Manifesto Quote -->
-        <p class="hero-item font-accent italic text-ivory/95 text-base sm:text-lg md:text-xl lg:text-[1.3rem] leading-relaxed max-w-3xl mx-auto mb-4 sm:mb-5 font-normal text-shadow-hero text-center" style="--delay: 0.22s">
+        <!-- 03 Statement Manifesto Quote -->
+        <p class="hero-item font-accent italic text-[#FFFDF7] text-base sm:text-lg md:text-xl leading-relaxed max-w-2xl mx-auto mb-3 font-normal" style="--delay: 0.18s">
           “Di sản không chỉ thuộc về quá khứ — khi được số hóa, những câu chuyện của Bù Đăng sẽ tiếp tục được nhìn thấy, lắng nghe và trao truyền cho muôn đời sau.”
         </p>
 
         <!-- Description -->
-        <p class="hero-item text-paper-200/85 text-xs sm:text-sm md:text-base leading-relaxed max-w-2xl mx-auto mb-8 sm:mb-10 lg:mb-12 font-light text-shadow-hero text-center" style="--delay: 0.32s">
+        <p class="hero-item text-neutral-300 text-xs sm:text-sm md:text-base leading-relaxed max-w-xl mx-auto mb-8 sm:mb-10 font-light" style="--delay: 0.26s">
           Nền tảng bảo tồn và giới thiệu di sản văn hóa không gian số — tư liệu thực địa chuẩn hóa, âm vang tiếng chày Bom Bo và ký ức cộng đồng.
         </p>
 
-        <!-- Action Row: Clean, Balanced & Floating -->
-        <div class="hero-item flex flex-wrap items-center justify-center gap-4 sm:gap-5 md:gap-6 mb-8 sm:mb-10 lg:mb-12" style="--delay: 0.42s">
+        <!-- 04 Action Row -->
+        <div class="hero-item flex flex-wrap items-center justify-center gap-3.5 sm:gap-4 mb-8 sm:mb-10" style="--delay: 0.34s">
           <NuxtLink
             to="/explore"
-            class="btn-primary text-xs sm:text-sm px-7 sm:px-8 py-3.5 sm:py-4 shadow-lg shadow-gold-500/25 hover:shadow-gold-500/40 rounded-full font-bold flex-shrink-0 tracking-wide transition-all"
+            class="royal-cta-btn text-xs sm:text-sm px-7 sm:px-8 py-3.5 rounded-full font-bold tracking-wide flex items-center gap-2.5 transition-all duration-300 cursor-pointer shadow-md text-[#0E0B05]"
           >
-            <Icon name="mdi:compass-outline" class="w-4.5 h-4.5" />
-            Khám Phá Di Sản
-          </NuxtLink>
-          <NuxtLink
-            to="/map"
-            class="btn-ghost text-xs sm:text-sm px-7 sm:px-8 py-3.5 sm:py-4 border border-ivory/25 bg-charcoal-950/65 backdrop-blur-md text-ivory hover:border-gold-400/60 hover:text-gold-300 hover:bg-gold-500/15 rounded-full font-medium flex-shrink-0 tracking-wide transition-all"
-          >
-            <Icon name="mdi:map-outline" class="w-4.5 h-4.5" />
-            Bản Đồ Di Sản
+            <Icon name="mdi:compass-outline" class="w-4.5 h-4.5 text-[#0E0B05]" />
+            <span class="text-[#0E0B05] font-bold">Khám Phá Di Sản</span>
           </NuxtLink>
 
-          <!-- Audio Guide Pill in Action Row -->
+          <NuxtLink
+            to="/map"
+            class="museum-btn-secondary text-xs sm:text-sm px-7 sm:px-8 py-3.5 rounded-full font-medium tracking-wide flex items-center gap-2.5 transition-all duration-300 cursor-pointer"
+          >
+            <Icon name="mdi:map-outline" class="w-4.5 h-4.5 text-neutral-300" />
+            <span>Bản Đồ Di Sản</span>
+          </NuxtLink>
+
+          <!-- Audio Guide Pill -->
           <button
             type="button"
-            class="hero-audio-pill group inline-flex items-center gap-3 pl-2 pr-4 sm:pr-5 py-2 sm:py-2.5 rounded-full border border-gold-400/35 bg-charcoal-950/70 hover:bg-charcoal-900/90 hover:border-gold-400/70 transition-all duration-300 backdrop-blur-md shadow-lg shadow-black/40 cursor-pointer text-left flex-shrink-0"
+            class="museum-audio-pill group inline-flex items-center gap-3 pl-2 pr-4 py-2 rounded-full border border-[#D4AF37]/35 bg-[#0B0D12]/80 hover:bg-[#12151C] hover:border-[#D4AF37]/60 transition-all duration-300 backdrop-blur-md cursor-pointer text-left"
             :title="isAudioGuideOn ? 'Tắt thuyết minh' : 'Nghe thuyết minh Sóc Bom Bo'"
             @click="toggleHeroAudio"
           >
-            <div class="relative w-8 h-8 sm:w-9 sm:h-9 flex-shrink-0">
-              <img
-                src="/images/tranthiquyen.jpeg"
+            <div class="relative w-8 h-8 flex-shrink-0">
+              <NuxtImg
+                src="/images/tranthiquyen.webp"
                 alt="Trần Thị Quyên - Giọng đọc thuyết minh"
-                class="w-full h-full rounded-full object-cover object-top border border-gold-400/60 shadow-inner group-hover:scale-105 transition-transform duration-300"
+                class="w-full h-full rounded-full object-cover object-top border border-[#D4AF37]/50 group-hover:scale-105 transition-transform duration-300"
+                width="32"
+                height="32"
                 loading="eager"
+                @error="(e: any) => { e.target.src = '/images/tranthiquyen.jpg' }"
               />
-              <span class="absolute -bottom-0.5 -right-0.5 w-3.5 h-3.5 rounded-full bg-charcoal-950 border border-gold-400/60 flex items-center justify-center">
-                <Icon :name="isAudioGuideOn ? 'mdi:volume-high' : 'mdi:headphones'" class="w-2 h-2 text-gold-400" />
+              <span class="absolute -bottom-0.5 -right-0.5 w-3 h-3 rounded-full bg-[#0A0C10] border border-[#D4AF37]/60 flex items-center justify-center">
+                <Icon :name="isAudioGuideOn ? 'mdi:volume-high' : 'mdi:headphones'" class="w-2 h-2 text-[#E5B94C]" />
               </span>
             </div>
             <div class="flex flex-col">
               <div class="flex items-center gap-1.5">
-                <span class="text-gold-300 text-[11px] font-bold uppercase tracking-wider leading-tight">Audio Thuyết Minh</span>
-                <div class="flex items-end gap-[2px] h-3 px-0.5">
-                  <span class="w-[2px] bg-gold-400 rounded-full soundwave-bar" :class="{ 'soundwave-active': isAudioGuideOn }" style="--bar-h: 12px; --bar-delay: 0.1s" />
-                  <span class="w-[2px] bg-gold-400 rounded-full soundwave-bar" :class="{ 'soundwave-active': isAudioGuideOn }" style="--bar-h: 7px; --bar-delay: 0.3s" />
-                  <span class="w-[2px] bg-gold-400 rounded-full soundwave-bar" :class="{ 'soundwave-active': isAudioGuideOn }" style="--bar-h: 13px; --bar-delay: 0s" />
-                  <span class="w-[2px] bg-gold-400 rounded-full soundwave-bar" :class="{ 'soundwave-active': isAudioGuideOn }" style="--bar-h: 9px; --bar-delay: 0.2s" />
+                <span class="text-[#F3DC9B] text-[10.5px] font-bold uppercase tracking-wider leading-tight">Audio Thuyết Minh</span>
+                <div class="flex items-end gap-[2px] h-2.5 px-0.5">
+                  <span class="w-[2px] bg-[#E5B94C] rounded-full soundwave-bar" :class="{ 'soundwave-active': isAudioGuideOn }" style="--bar-h: 10px; --bar-delay: 0.1s" />
+                  <span class="w-[2px] bg-[#E5B94C] rounded-full soundwave-bar" :class="{ 'soundwave-active': isAudioGuideOn }" style="--bar-h: 6px; --bar-delay: 0.3s" />
+                  <span class="w-[2px] bg-[#E5B94C] rounded-full soundwave-bar" :class="{ 'soundwave-active': isAudioGuideOn }" style="--bar-h: 11px; --bar-delay: 0s" />
                 </div>
               </div>
-              <span class="text-ivory/70 text-[10px] leading-tight mt-0.5">{{ audioCount }} track · Giọng đọc địa phương</span>
+              <span class="text-neutral-300 text-[9.5px] leading-tight">{{ audioCount }} track · Giọng đọc Bù Đăng</span>
             </div>
             <Icon
               :name="isAudioGuideOn ? 'mdi:pause-circle' : 'mdi:play-circle'"
-              class="w-4.5 h-4.5 text-gold-400/80 group-hover:text-gold-400 group-hover:scale-110 transition-all ml-0.5"
+              class="w-4.5 h-4.5 text-[#E5B94C]/80 group-hover:text-[#F3DC9B] ml-0.5"
             />
           </button>
         </div>
 
-        <!-- Floating Stats Dock (Modular Luxury Glass Capsules) -->
-        <div class="hero-item w-full flex flex-wrap items-center justify-center gap-3 sm:gap-4 px-4" style="--delay: 0.54s">
-          <!-- Platform Stats Capsule -->
-          <div class="glass-dock inline-flex items-center flex-wrap justify-center gap-3 sm:gap-4 md:gap-6 px-4 sm:px-6 md:px-8 py-2.5 sm:py-3 rounded-2xl sm:rounded-full bg-charcoal-950/80 border border-gold-400/25 backdrop-blur-xl shadow-2xl shadow-black/50">
-            <div
-              v-for="stat in stats"
-              :key="stat.label"
-              class="flex items-center gap-2 sm:gap-2.5 px-1 py-0.5 cursor-default group flex-shrink-0"
-            >
-              <div class="w-7 h-7 sm:w-8 sm:h-8 rounded-lg sm:rounded-xl bg-gold-500/10 border border-gold-400/25 flex items-center justify-center flex-shrink-0 group-hover:bg-gold-500/25 group-hover:border-gold-400/40 transition-all shadow-sm">
-                <Icon :name="stat.icon" class="w-3.5 h-3.5 sm:w-4 sm:h-4 text-gold-400" />
-              </div>
-              <div class="flex flex-col text-left">
-                <span class="font-heading font-bold text-ivory text-xs sm:text-sm lg:text-base leading-tight tabular-nums group-hover:text-gold-300 transition-colors">
-                  {{ stat.value }}{{ stat.suffix }}
-                </span>
-                <span class="text-charcoal-300 text-[8px] sm:text-[9px] lg:text-[10px] uppercase tracking-wider leading-none mt-0.5 sm:mt-1 font-semibold whitespace-nowrap">
-                  {{ stat.label }}
-                </span>
-              </div>
+        <!-- 05 Revealed Metadata Bar -->
+        <div class="hero-item w-full flex flex-wrap items-center justify-center gap-x-4 sm:gap-x-5 md:gap-x-6 gap-y-2 px-4 sm:px-6 py-2.5 sm:py-3 rounded-2xl bg-[#0B0D12]/80 border border-[#D4AF37]/30 backdrop-blur-md max-w-3xl shadow-xl" style="--delay: 0.42s">
+          <div
+            v-for="(stat, idx) in stats"
+            :key="stat.label"
+            class="flex items-center gap-2 cursor-default group flex-shrink-0"
+          >
+            <Icon :name="stat.icon" class="w-3.5 h-3.5 text-[#E5B94C]" />
+            <div class="flex items-baseline gap-1.5 whitespace-nowrap">
+              <span class="font-heading font-bold text-[#FFFDF7] text-xs sm:text-sm tabular-nums">
+                {{ stat.value }}{{ stat.suffix }}
+              </span>
+              <span class="text-neutral-400 text-[9.5px] sm:text-[10px] uppercase tracking-wider">
+                {{ stat.label }}
+              </span>
             </div>
-          </div>
-
-          <!-- Heritage City Milestone Badge Capsule -->
-          <div class="glass-dock inline-flex items-center gap-2.5 sm:gap-3 px-4 sm:px-6 py-2.5 sm:py-3 rounded-2xl sm:rounded-full bg-charcoal-950/80 border border-gold-400/25 backdrop-blur-xl shadow-2xl shadow-black/50 cursor-default group">
-            <div class="w-7 h-7 sm:w-8 sm:h-8 rounded-lg sm:rounded-xl bg-forest-500/20 border border-forest-500/40 flex items-center justify-center flex-shrink-0 group-hover:bg-forest-500/30 transition-colors shadow-sm">
-              <Icon name="mdi:city" class="w-3.5 h-3.5 sm:w-4 sm:h-4 text-gold-400" />
-            </div>
-            <div class="flex flex-col text-left whitespace-nowrap">
-              <span class="font-heading font-semibold text-ivory text-xs sm:text-sm leading-tight">Thành Phố Đồng Nai</span>
-              <span class="text-charcoal-300 text-[8px] sm:text-[9px] lg:text-[10px] leading-none mt-0.5 sm:mt-1 font-medium">TPTT thứ 7 · Từ 30/04/2026</span>
-            </div>
+            <span v-if="idx < stats.length - 1" class="hidden sm:inline text-[#D4AF37]/25 ml-2.5 sm:ml-3 select-none">/</span>
           </div>
         </div>
 
       </div>
     </div>
 
-    <!-- ═══ SLIDE INDICATORS ═══ -->
-    <div class="absolute bottom-[100px] lg:bottom-[56px] right-6 lg:right-10 z-20 flex flex-col gap-2">
+    <!-- ═══ SLIDE INDICATORS (Vertical dots) ═══ -->
+    <div class="absolute bottom-[90px] lg:bottom-[50px] right-6 lg:right-10 z-20 flex flex-col gap-2">
       <button
         v-for="(_, i) in slides"
         :key="`dot-${i}`"
         class="rounded-full transition-all duration-500 cursor-pointer"
         :class="currentSlide === i
-          ? 'w-1 h-7 bg-gold-400'
-          : 'w-1 h-3 bg-ivory/25 hover:bg-ivory/50'"
+          ? 'w-1 h-6 bg-[#E5B94C]'
+          : 'w-1 h-2.5 bg-neutral-600 hover:bg-neutral-400'"
         :aria-label="`Slide ${i + 1}`"
         :aria-current="currentSlide === i ? 'true' : undefined"
         @click="goToSlide(i)"
@@ -437,11 +362,11 @@
     </div>
 
     <!-- ═══ SCROLL INDICATOR ═══ -->
-    <div class="absolute bottom-6 left-1/2 -translate-x-1/2 z-20 flex flex-col items-center gap-2">
-      <div class="w-5 h-8 border border-ivory/20 rounded-full flex justify-center pt-1.5 hover:border-gold-400/40 transition-colors">
-        <div class="w-1 h-1.5 bg-gold-400/70 rounded-full scroll-dot" />
+    <div class="absolute bottom-5 left-1/2 -translate-x-1/2 z-20 flex flex-col items-center gap-1.5 pointer-events-none">
+      <div class="w-4 h-7 border border-neutral-500/40 rounded-full flex justify-center pt-1">
+        <div class="w-0.5 h-1 bg-[#E5B94C]/90 rounded-full scroll-dot" />
       </div>
-      <span class="text-ivory/30 text-[9px] uppercase tracking-widest">Cuộn xuống</span>
+      <span class="text-neutral-400 text-[8.5px] uppercase tracking-[0.24em]">Cuộn Xuống</span>
     </div>
 
   </section>
@@ -460,12 +385,15 @@ const audioStore = useAudioStore()
 const heroVideoRef = ref<HTMLVideoElement | null>(null)
 const videoLoaded = ref(false)
 const isJourneyStarted = useState<boolean>('isJourneyStarted', () => false)
-const gateState = ref<'idle' | 'loading' | 'ready' | 'fallback'>(isJourneyStarted.value ? 'ready' : 'idle')
+const gateState = ref<'idle' | 'loading' | 'ready' | 'fallback'>(
+  isJourneyStarted.value ? 'ready' : 'idle'
+)
 const revealed = computed(() => gateState.value === 'ready' || gateState.value === 'fallback')
 const bufferPercent = ref(0)
 const enableVideo = ref(true)
 const isAudioGuideOn = ref(audioStore.isPlaying && audioStore.currentTrack?.id === 'khu-bao-ton-soc-bom-bo')
 let fallbackTimer: ReturnType<typeof setTimeout> | undefined
+let slideInterval: ReturnType<typeof setInterval>
 const audioCount = HERITAGES.filter((h) => h.audio).length
 const questionCount = QUIZZES.reduce((sum, q) => sum + q.questions.length, 0)
 
@@ -476,7 +404,7 @@ const animatedAudio = ref(0)
 const animatedQuestions = ref(0)
 
 function runCounters() {
-  const animateCount = (target: number, setter: (n: number) => void, duration = 1400) => {
+  const animateCount = (target: number, setter: (n: number) => void, duration = 1200) => {
     if (!target) {
       setter(0)
       return
@@ -507,7 +435,7 @@ const bomBoAudio: HeritageAudio = {
   narrator: 'Trần Thị Quyên · Di Sản Bù Đăng',
   duration: 560,
   url: '/audio/khu-bao-ton-soc-bom-bo.mp3',
-  coverImage: '/images/tranthiquyen.jpeg',
+  coverImage: '/images/tranthiquyen.webp',
 }
 
 function playHeroAudio() {
@@ -516,7 +444,6 @@ function playHeroAudio() {
   isAudioGuideOn.value = true
 }
 
-// Toggle Bom Bo audio guide from hero section
 function toggleHeroAudio() {
   if (isAudioGuideOn.value) {
     audioStore.pause()
@@ -526,7 +453,6 @@ function toggleHeroAudio() {
   }
 }
 
-// Track real download progress so the loading state feels alive instead of a bare spinner
 function onVideoProgress() {
   const v = heroVideoRef.value
   if (!v || !v.duration || !v.buffered.length) return
@@ -534,7 +460,7 @@ function onVideoProgress() {
     const bufferedEnd = v.buffered.end(v.buffered.length - 1)
     bufferPercent.value = Math.min(100, Math.round((bufferedEnd / v.duration) * 100))
   } catch {
-    // buffered range can throw if the video has no data yet — ignore
+    // buffered range can throw if the video has no data yet
   }
 }
 
@@ -545,8 +471,6 @@ function clearFallbackTimer() {
   }
 }
 
-// Video actually able to play smoothly — this is the only path that shows video
-// instead of the fallback slideshow, matching what the visitor expects to see.
 function markVideoReady() {
   videoLoaded.value = true
   if (gateState.value === 'loading') {
@@ -558,17 +482,12 @@ function markVideoReady() {
   }
 }
 
-// Only reached by explicit user choice ("Dùng ảnh thay thế") or the loading timeout —
-// never as a silent default when video simply hasn't finished buffering yet.
 function useFallback() {
   clearFallbackTimer()
   isJourneyStarted.value = true
   if (gateState.value !== 'ready') gateState.value = 'fallback'
 }
 
-// Entry gate: user gesture unlocks autoplay-with-sound in every browser.
-// Narration starts immediately; video keeps the gate up (with visible progress)
-// until it can actually play, instead of dropping straight to static images.
 function startJourney() {
   isJourneyStarted.value = true
   playHeroAudio()
@@ -578,9 +497,6 @@ function startJourney() {
     return
   }
 
-  // Video may have already finished buffering silently while the gate sat
-  // idle (fast connections, or localhost) — its 'canplay' event fired before
-  // there was a 'loading' state to resolve. Skip the loading screen entirely.
   if (videoLoaded.value) {
     gateState.value = 'ready'
     nextTick(() => {
@@ -591,23 +507,32 @@ function startJourney() {
 
   gateState.value = 'loading'
   nextTick(() => {
-    // Calling .play() on the click gesture matters most on iOS Safari, which
-    // otherwise throttles preload over cellular regardless of the attribute.
     heroVideoRef.value?.play().catch(() => {})
   })
-  fallbackTimer = setTimeout(useFallback, 10000)
+  fallbackTimer = setTimeout(useFallback, 8000)
+}
+
+function startAutoPlay() {
+  slideInterval = setInterval(() => {
+    currentSlide.value = (currentSlide.value + 1) % slides.length
+  }, 6500)
+}
+
+function goToSlide(i: number) {
+  currentSlide.value = i
+  clearInterval(slideInterval)
+  startAutoPlay()
 }
 
 onMounted(() => {
   runCounters()
+  startAutoPlay()
+
   const conn = (navigator as unknown as { connection?: { saveData?: boolean; effectiveType?: string } }).connection
   if (conn && (conn.saveData || ['slow-2g', '2g', '3g'].includes(conn.effectiveType ?? ''))) {
     enableVideo.value = false
   }
 
-  // With SSR the <video> tag is in the initial HTML and can start buffering —
-  // and fire 'canplay' — before Vue finishes hydrating and attaches the
-  // template listener. Check readyState directly to catch that missed event.
   nextTick(() => {
     if ((heroVideoRef.value?.readyState ?? 0) >= 3) {
       markVideoReady()
@@ -618,7 +543,6 @@ onMounted(() => {
   })
 })
 
-// Sync button state with global audio store
 watch(() => audioStore.isPlaying, (playing) => {
   if (!playing && isAudioGuideOn.value) {
     isAudioGuideOn.value = false
@@ -628,6 +552,7 @@ watch(() => audioStore.isPlaying, (playing) => {
 onUnmounted(() => {
   heroVideoRef.value?.pause()
   clearFallbackTimer()
+  clearInterval(slideInterval)
 })
 
 const slides = [
@@ -669,33 +594,17 @@ const slides = [
 ]
 
 const currentSlide = ref(0)
-let slideInterval: ReturnType<typeof setInterval>
-
-function goToSlide(i: number) {
-  currentSlide.value = i
-  clearInterval(slideInterval)
-  startAutoPlay()
-}
-
-function startAutoPlay() {
-  slideInterval = setInterval(() => {
-    currentSlide.value = (currentSlide.value + 1) % slides.length
-  }, 6500)
-}
-
-onMounted(() => startAutoPlay())
-onUnmounted(() => clearInterval(slideInterval))
 
 const stats = computed(() => [
-  { icon: 'mdi:castle', value: String(animatedHeritages.value || heritageStore.totalCount), suffix: '', label: 'Di sản số hóa' },
-  { icon: 'mdi:book-open-variant', value: String(animatedPosts.value || COMMUNITY_POSTS.length), suffix: '', label: 'Ký ức cộng đồng' },
+  { icon: 'mdi:bank-outline', value: String(animatedHeritages.value || heritageStore.totalCount), suffix: '', label: 'Di sản số hóa' },
+  { icon: 'mdi:book-open-outline', value: String(animatedPosts.value || COMMUNITY_POSTS.length), suffix: '', label: 'Ký ức cộng đồng' },
   { icon: 'mdi:headphones', value: String(animatedAudio.value || audioCount), suffix: '', label: 'Audio guide' },
   { icon: 'mdi:help-circle-outline', value: String(animatedQuestions.value || questionCount), suffix: '', label: 'Câu hỏi lịch sử' },
 ])
 </script>
 
 <style scoped>
-/* ── Hero video background ── */
+/* ── Hero video ── */
 .hero-video {
   position: absolute;
   inset: 0;
@@ -704,139 +613,54 @@ const stats = computed(() => [
   object-fit: cover;
   opacity: 0;
   transition: opacity 1.2s ease;
-  /* Natural, vibrant color grade */
-  filter: saturate(1.4) contrast(1.06) brightness(1.04);
+  filter: contrast(1.05) brightness(0.95);
 }
 .hero-video--loaded {
   opacity: 1;
 }
 
-/* ── Entry gate ── */
-.gate-fade-enter-active { transition: opacity 0.4s ease; }
-.gate-fade-leave-active { transition: opacity 0.7s ease; }
+/* ── Royal Luminous Gradient Title ── */
+.royal-title-gradient {
+  background: linear-gradient(180deg, #FFFFFF 0%, #FFF4D6 55%, #F0D598 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* ── Gate transitions ── */
+.gate-fade-enter-active { transition: opacity 0.5s ease; }
+.gate-fade-leave-active { transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1); }
 .gate-fade-enter-from,
 .gate-fade-leave-to { opacity: 0; }
-.gate-cta { animation: gatePulse 2.4s ease-in-out infinite; }
-@keyframes gatePulse {
-  0%, 100% { box-shadow: 0 0 0 0 rgba(201, 169, 106, 0.35); }
-  50% { box-shadow: 0 0 0 10px rgba(201, 169, 106, 0); }
-}
-.gate-spinner-lg {
-  width: 44px;
-  height: 44px;
+
+.gate-spinner {
+  width: 38px;
+  height: 38px;
   border-radius: 9999px;
-  border: 3px solid rgba(201, 169, 106, 0.25);
-  border-top-color: rgba(201, 169, 106, 0.95);
+  border: 2px solid rgba(212, 175, 55, 0.2);
+  border-top-color: #D4AF37;
   animation: gateSpin 0.9s linear infinite;
 }
 @keyframes gateSpin {
   to { transform: rotate(360deg); }
 }
 
-/* ── Ambient breathing aura ── */
-.hero-ambient-glow {
-  background: radial-gradient(ellipse at center, rgba(201, 169, 106, 0.18) 0%, rgba(201, 169, 106, 0.04) 45%, transparent 70%);
-  animation: ambientBreathe 8s ease-in-out infinite alternate;
-}
-@keyframes ambientBreathe {
-  0% { transform: scale(0.92); opacity: 0.65; }
-  100% { transform: scale(1.08); opacity: 1; }
-}
-
-/* ── Gold Shimmer text ── */
-.gold-shimmer-text {
-  background: linear-gradient(
-    110deg,
-    #c9a96a 0%,
-    #e8d3a7 25%,
-    #ffffff 45%,
-    #e8d3a7 65%,
-    #c9a96a 100%
-  );
-  background-size: 200% auto;
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  animation: goldShimmer 7s ease-in-out infinite;
-}
-@keyframes goldShimmer {
-  0%, 15% { background-position: 200% center; }
-  85%, 100% { background-position: -200% center; }
-}
-
-/* ── Soundwave animation ── */
-.soundwave-bar {
-  height: 3px;
-  opacity: 0.5;
-  transition: all 0.3s ease;
-}
-.soundwave-active {
-  opacity: 1;
-  animation: soundwaveJump 0.8s ease-in-out infinite alternate;
-  animation-delay: var(--bar-delay, 0s);
-}
-.hero-audio-pill:hover .soundwave-bar:not(.soundwave-active) {
-  opacity: 0.8;
-  height: 6px;
-}
-@keyframes soundwaveJump {
-  0% { height: 3px; }
-  100% { height: var(--bar-h, 12px); }
-}
-
-/* ── Heritage Frame & Ornate Filigree Corners ── */
-.heritage-frame {
-  box-shadow: 0 25px 60px -10px rgba(0, 0, 0, 0.8), 0 0 50px -10px rgba(201, 169, 106, 0.35), inset 0 1px 2px 0 rgba(255, 255, 255, 0.15);
-  transition: all 0.5s ease;
-}
-.heritage-frame::before {
-  content: '';
-  position: absolute;
-  inset: 8px;
-  border-radius: calc(1.5rem - 8px);
-  border: 1px solid rgba(201, 169, 106, 0.2);
-  pointer-events: none;
-}
-.corner-filigree {
-  position: absolute;
-  width: 38px;
-  height: 38px;
-  pointer-events: none;
-  z-index: 10;
-  filter: drop-shadow(0 0 6px rgba(201, 169, 106, 0.5));
-}
-.corner-tl {
-  top: -2px;
-  left: -2px;
-}
-.corner-tr {
-  top: -2px;
-  right: -2px;
-  transform: scaleX(-1);
-}
-.corner-bl {
-  bottom: -2px;
-  left: -2px;
-  transform: scaleY(-1);
-}
-.corner-br {
-  bottom: -2px;
-  right: -2px;
-  transform: scale(-1);
-}
-
 /* ── Royal Jewel CTA Button ── */
 .royal-cta-btn {
-  background: linear-gradient(135deg, #F5E6C8 0%, #D4AF37 40%, #C9A96A 70%, #AA8232 100%);
-  box-shadow: 0 10px 30px -5px rgba(201, 169, 106, 0.65), inset 0 2px 3px rgba(255, 255, 255, 0.75), inset 0 -2px 3px rgba(0, 0, 0, 0.35);
-  transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+  background: linear-gradient(135deg, #E5B94C 0%, #D4AF37 50%, #B8860B 100%);
+  color: #0E0B05;
+  box-shadow: 0 4px 18px -2px rgba(212, 175, 55, 0.35), inset 0 1px 1px rgba(255, 255, 255, 0.45), inset 0 -1px 2px rgba(0, 0, 0, 0.2);
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
 }
 .royal-cta-btn:hover {
-  transform: translateY(-2px) scale(1.03);
-  box-shadow: 0 16px 42px -5px rgba(201, 169, 106, 0.85), inset 0 2px 4px rgba(255, 255, 255, 0.95), inset 0 -2px 3px rgba(0, 0, 0, 0.2);
+  background: linear-gradient(135deg, #ECC562 0%, #DEBA47 50%, #C49216 100%);
+  color: #0A0804;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px -2px rgba(212, 175, 55, 0.45), inset 0 1px 2px rgba(255, 255, 255, 0.6);
 }
 .royal-cta-btn:active {
-  transform: translateY(1px) scale(0.98);
+  transform: translateY(0) scale(0.99);
 }
+
 .royal-cta-shimmer {
   position: absolute;
   top: 0;
@@ -852,17 +676,35 @@ const stats = computed(() => [
   65%, 100% { left: 200%; }
 }
 
-/* ── Glass dock specular hover ── */
-.glass-dock {
-  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37), inset 0 1px 1px 0 rgba(255, 255, 255, 0.1);
-  transition: all 0.3s ease;
+.museum-btn-secondary {
+  background: rgba(11, 13, 18, 0.75);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  color: #EDE6DB;
+  backdrop-filter: blur(10px);
 }
-.glass-dock:hover {
-  border-color: rgba(201, 169, 106, 0.25);
-  box-shadow: 0 12px 40px 0 rgba(0, 0, 0, 0.45), inset 0 1px 1px 0 rgba(201, 169, 106, 0.2);
+.museum-btn-secondary:hover {
+  background: rgba(20, 24, 32, 0.9);
+  border-color: rgba(212, 175, 55, 0.5);
+  color: #FFFFFF;
 }
 
-/* ── Hero audio guide button ── */
+/* ── Soundwave animation ── */
+.soundwave-bar {
+  height: 2px;
+  opacity: 0.5;
+  transition: all 0.3s ease;
+}
+.soundwave-active {
+  opacity: 1;
+  animation: soundwaveJump 0.8s ease-in-out infinite alternate;
+  animation-delay: var(--bar-delay, 0s);
+}
+@keyframes soundwaveJump {
+  0% { height: 2px; }
+  100% { height: var(--bar-h, 10px); }
+}
+
+/* ── Hero audio button ── */
 .hero-audio-btn {
   cursor: pointer;
 }
@@ -870,27 +712,26 @@ const stats = computed(() => [
   display: flex;
   align-items: center;
   gap: 0.4rem;
-  padding: 0.45rem 0.9rem 0.45rem 0.7rem;
+  padding: 0.4rem 0.85rem;
   border-radius: 9999px;
-  background: rgba(0, 0, 0, 0.45);
+  background: rgba(11, 13, 18, 0.75);
   backdrop-filter: blur(14px);
-  border: 1px solid rgba(255, 255, 255, 0.15);
-  color: rgba(255, 255, 255, 0.75);
+  border: 1px solid rgba(212, 175, 55, 0.35);
+  color: #EDE6DB;
   font-size: 0.75rem;
-  font-weight: 600;
+  font-weight: 500;
   letter-spacing: 0.02em;
   transition: all 0.25s ease;
-  white-space: nowrap;
 }
 .hero-audio-btn:hover .hero-audio-btn-inner {
-  background: rgba(201, 169, 106, 0.25);
-  border-color: rgba(201, 169, 106, 0.5);
-  color: #fff;
+  background: rgba(18, 21, 28, 0.9);
+  border-color: rgba(212, 175, 55, 0.6);
+  color: #FFFFFF;
 }
 .hero-audio-btn.is-active .hero-audio-btn-inner {
-  background: rgba(201, 169, 106, 0.2);
-  border-color: rgba(201, 169, 106, 0.45);
-  color: #DEC89D;
+  background: rgba(20, 24, 32, 0.85);
+  border-color: rgba(212, 175, 55, 0.75);
+  color: #E5B94C;
 }
 .hero-audio-label {
   display: none;
@@ -905,50 +746,44 @@ const stats = computed(() => [
 .hero-slide-enter-from,
 .hero-slide-leave-to { opacity: 0; }
 
-/* ── Ken Burns ── */
 .ken-burns-active {
-  animation: kenburns 20s ease-out infinite alternate;
+  animation: kenburns 22s ease-out infinite alternate;
 }
 @keyframes kenburns {
-  0% { transform: scale(1.08) translateX(0px); }
-  100% { transform: scale(1) translateX(-12px); }
+  0% { transform: scale(1.05) translateX(0px); }
+  100% { transform: scale(1) translateX(-8px); }
 }
 
 /* ── Caption transition ── */
-.caption-fade-enter-active { transition: opacity 0.9s ease 0.4s, transform 0.9s ease 0.4s; }
+.caption-fade-enter-active { transition: opacity 0.8s ease 0.3s, transform 0.8s ease 0.3s; }
 .caption-fade-leave-active { transition: opacity 0.3s ease; }
-.caption-fade-enter-from { opacity: 0; transform: translateY(6px); }
+.caption-fade-enter-from { opacity: 0; transform: translateY(4px); }
 .caption-fade-leave-to { opacity: 0; }
 
-/* ── Hero content items ── */
+/* ── Hero content entrance ── */
 .hero-item {
-  animation: heroFadeUp 0.9s cubic-bezier(0.16, 1, 0.3, 1) both;
+  animation: heroFadeUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) both;
   animation-delay: var(--delay, 0s);
 }
 @keyframes heroFadeUp {
-  from { opacity: 0; transform: translateY(28px); }
+  from { opacity: 0; transform: translateY(20px); }
   to { opacity: 1; transform: translateY(0); }
-}
-
-/* ── Ambient particles ── */
-.hero-particle {
-  background: radial-gradient(circle, rgba(201, 169, 106, 0.6) 0%, transparent 70%);
-  animation: floatParticle var(--dur, 7s) ease-in-out var(--delay, 0s) infinite alternate;
-}
-@keyframes floatParticle {
-  from { transform: translateY(0px) scale(1); opacity: 0.2; }
-  to   { transform: translateY(-22px) scale(1.5); opacity: 0.5; }
 }
 
 /* ── Scroll dot ── */
 .scroll-dot {
-  animation: scrollBounce 1.6s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+  animation: scrollBounce 1.8s cubic-bezier(0.4, 0, 0.6, 1) infinite;
 }
 @keyframes scrollBounce {
-  0%, 100% { transform: translateY(0); opacity: 0.5; }
-  50%       { transform: translateY(10px); opacity: 1; }
+  0%, 100% { transform: translateY(0); opacity: 0.4; }
+  50%       { transform: translateY(8px); opacity: 1; }
 }
 
-/* ── Stat pill hover ── */
-.stat-pill { transition: all 0.2s ease; }
+@media (prefers-reduced-motion: reduce) {
+  .hero-item, .scroll-dot, .ken-burns-active, .soundwave-active {
+    animation: none !important;
+    transform: none !important;
+    opacity: 1 !important;
+  }
+}
 </style>

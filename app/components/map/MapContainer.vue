@@ -89,6 +89,7 @@ let map: any = null
 let LInstance: any = null
 const activeMarkers: any[] = []
 let routePolyline: any = null
+let routeGlowPolyline: any = null
 const isLocating = ref(false)
 const nearbyHeritage = ref<Heritage | null>(null)
 const nearbyDistance = ref(0)
@@ -212,6 +213,8 @@ function playNearbyAudio(h: Heritage) {
   }
 }
 
+let resizeObserver: ResizeObserver | null = null
+
 onMounted(async () => {
   if (!mapEl.value) return
 
@@ -231,13 +234,19 @@ onMounted(async () => {
     zoom: 11,
     zoomControl: true,
     attributionControl: false,
+    preferCanvas: true,
   })
 
-  // OpenStreetMap — dark cinematic tile theme via CSS filter (no API key required)
+  // OpenStreetMap — miễn phí vĩnh viễn, không cần API key
+  // Dark warm theme áp vào leaflet-tile-pane (1 lần composite, không dùng className)
   L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright" style="color:#C7A664">OpenStreetMap</a> contributors',
+    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright" style="color:#C7A664" target="_blank" rel="noopener">OpenStreetMap</a> contributors',
+    subdomains: ['a', 'b', 'c'],
     maxZoom: 19,
-    className: 'map-tiles-dark',
+    keepBuffer: 8,
+    updateWhenIdle: false,
+    updateWhenZooming: false,
+    updateInterval: 150,
   }).addTo(map)
 
   // Listen to zoom changes to update clusters dynamically
@@ -249,6 +258,22 @@ onMounted(async () => {
 
   // Add heritage markers
   addMarkers(L)
+
+  // Ensure map tile calculations are immediately synced with layout bounds
+  nextTick(() => {
+    map?.invalidateSize()
+    setTimeout(() => {
+      map?.invalidateSize()
+    }, 250)
+  })
+
+  // Auto handle container resizes (e.g. sidebar toggle, window resize)
+  if (typeof window !== 'undefined' && 'ResizeObserver' in window && mapEl.value) {
+    resizeObserver = new ResizeObserver(() => {
+      map?.invalidateSize()
+    })
+    resizeObserver.observe(mapEl.value)
+  }
 })
 
 const categoryIcons: Record<string, string> = {
@@ -485,6 +510,10 @@ function updateRouteLine() {
     routePolyline.remove()
     routePolyline = null
   }
+  if (routeGlowPolyline) {
+    routeGlowPolyline.remove()
+    routeGlowPolyline = null
+  }
   const route = props.selectedRoute
   if (!route || !route.stops) return
 
@@ -509,7 +538,7 @@ function updateRouteLine() {
     lineJoin: 'round',
   }).addTo(map)
   // Glow effect layer
-  LInstance.polyline(latlngs, {
+  routeGlowPolyline = LInstance.polyline(latlngs, {
     color: route.color || '#C7A664',
     weight: 10,
     opacity: 0.12,
@@ -526,10 +555,18 @@ watch(() => props.selectedRoute, () => {
 }, { deep: true })
 
 onUnmounted(() => {
+  resizeObserver?.disconnect()
+  resizeObserver = null
   if (routePolyline) {
     routePolyline.remove()
+    routePolyline = null
+  }
+  if (routeGlowPolyline) {
+    routeGlowPolyline.remove()
+    routeGlowPolyline = null
   }
   map?.remove()
+  map = null
 })
 </script>
 
@@ -623,12 +660,20 @@ onUnmounted(() => {
   color: #C7A664 !important;
 }
 
-/* OpenStreetMap Dark Theme Tile Filter */
-:deep(.map-tiles-dark) {
-  filter: brightness(0.6) invert(1) contrast(3) hue-rotate(200deg) saturate(0.3) brightness(0.7);
+/* Heritage Dark Map — filter áp vào tile-pane (1 lần composite thay vì từng tile)
+   Cách này tránh black gap khi zoom vì GPU chỉ xử lý filter 1 lần cho toàn bộ pane
+   Marker pane nằm tách biệt nên không bị ảnh hưởng */
+:deep(.leaflet-tile-pane) {
+  filter: invert(100%) hue-rotate(200deg) sepia(20%) brightness(85%) contrast(90%) saturate(0.7);
+  will-change: transform;
+  transform: translateZ(0);
+}
+
+:deep(.leaflet-tile-pane) {
+  transform: translateZ(0);
 }
 
 :deep(.leaflet-container) {
-  background: #0d0b09 !important;
+  background: #12100E !important;
 }
 </style>

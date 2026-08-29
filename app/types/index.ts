@@ -320,3 +320,9 @@ export interface InvestmentOpportunity {
   potential: string
   contactEmail: string
 }
+
+// =========================================================
+// 360° VIRTUAL TOUR EXPORTS
+// =========================================================
+export * from './virtualTour'
+

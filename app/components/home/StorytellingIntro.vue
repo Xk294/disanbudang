@@ -1,5 +1,5 @@
 <template>
-  <section class="section relative overflow-hidden bg-charcoal-900 border-t border-b border-charcoal-800" aria-label="Storytelling introduction">
+  <section id="intro-story" class="section relative overflow-hidden bg-charcoal-900 border-t border-b border-charcoal-800" aria-label="Storytelling introduction">
     <!-- Subtle textured background -->
     <div class="noise-overlay" />
     <div class="absolute inset-0 bg-dark-earth opacity-40 pointer-events-none" />

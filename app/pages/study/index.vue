@@ -124,11 +124,11 @@
     </section>
 
     <!-- ================================================== -->
-    <!-- STICKY TAB NAVIGATION                              -->
+    <!-- STICKY TAB NAVIGATION V2 — 3 Primary + Secondary  -->
     <!-- ================================================== -->
     <div ref="stickyNavRef" class="sticky top-[72px] z-30 bg-charcoal-950/95 backdrop-blur-2xl border-b border-charcoal-800/50 shadow-2xl shadow-charcoal-950/50">
       <div class="max-w-screen-2xl mx-auto px-4 sm:px-6">
-        <div class="flex items-center gap-1 overflow-x-auto scrollbar-none py-2">
+        <div class="flex items-center gap-1 py-2">
           <!-- User XP mini-badge -->
           <div class="hidden lg:flex items-center gap-2 mr-4 shrink-0 pl-1 border-r border-charcoal-800 pr-4">
             <div class="w-7 h-7 rounded-lg bg-gradient-to-tr from-earth-700 to-gold-500 flex items-center justify-center font-heading font-bold text-charcoal-900 text-xs shadow">
@@ -142,14 +142,15 @@
             </div>
           </div>
 
+          <!-- Primary tabs: 3 cốt lõi -->
           <button
-            v-for="item in navItems"
+            v-for="item in primaryNavItems"
             :key="item.id"
             class="flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-semibold whitespace-nowrap transition-all duration-200 shrink-0 group relative"
             :class="activeTab === item.id
               ? 'bg-gold-500/12 text-gold-400 border border-gold-500/25 shadow-inner'
               : 'text-charcoal-350 hover:text-ivory hover:bg-charcoal-900'"
-            @click="activeTab = item.id; scrollToContent()"
+            @click="activeTab = item.id; scrollToContent(); showSecondaryNav = false"
             :aria-label="`Chuyển sang ${item.label}`"
             :aria-current="activeTab === item.id ? 'page' : undefined"
           >
@@ -158,12 +159,40 @@
             <span v-if="item.badge" class="px-1.5 py-0.5 rounded-full text-3xs font-bold" :class="activeTab === item.id ? 'bg-gold-500/20 text-gold-300' : 'bg-charcoal-800 text-charcoal-400'">
               {{ item.badge }}
             </span>
-            <!-- Active underline indicator -->
             <span v-if="activeTab === item.id" class="absolute bottom-0 left-2 right-2 h-0.5 bg-gold-400 rounded-full" />
           </button>
 
+          <!-- Nếu đang ở secondary tab, hiện tab đó luôn visible -->
+          <button
+            v-if="secondaryNavItems.some(s => s.id === activeTab)"
+            :key="activeTab"
+            class="flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-semibold whitespace-nowrap bg-gold-500/12 text-gold-400 border border-gold-500/25 shadow-inner shrink-0 group relative"
+            :aria-current="'page'"
+          >
+            <Icon :name="secondaryNavItems.find(s => s.id === activeTab)!.icon" class="w-4 h-4" />
+            {{ secondaryNavItems.find(s => s.id === activeTab)!.label }}
+            <span class="absolute bottom-0 left-2 right-2 h-0.5 bg-gold-400 rounded-full" />
+          </button>
+
+          <!-- Divider -->
+          <div class="w-px h-4 bg-charcoal-800 mx-1.5 shrink-0" />
+
+          <!-- "Thêm" dropdown toggle -->
+          <button
+            class="flex items-center gap-1.5 px-3 py-2 rounded-xl text-xs font-semibold whitespace-nowrap transition-all duration-200 shrink-0 relative"
+            :class="showSecondaryNav
+              ? 'text-gold-400 bg-gold-500/10 border border-gold-500/25'
+              : 'text-charcoal-400 hover:text-ivory hover:bg-charcoal-900'"
+            :aria-expanded="showSecondaryNav"
+            @click="showSecondaryNav = !showSecondaryNav"
+          >
+            <Icon name="mdi:view-grid-outline" class="w-4 h-4" />
+            <span class="hidden sm:inline">Thêm</span>
+            <Icon :name="showSecondaryNav ? 'mdi:chevron-up' : 'mdi:chevron-down'" class="w-3.5 h-3.5" />
+          </button>
+
+          <!-- Right utility: Search -->
           <div class="ml-auto shrink-0 flex items-center gap-2 pl-2 border-l border-charcoal-800">
-            <!-- Search shortcut -->
             <button
               class="flex items-center gap-1.5 px-3 py-2 rounded-xl border border-charcoal-800 bg-charcoal-900/60 hover:border-gold-500/40 text-charcoal-400 hover:text-gold-400 text-xs font-semibold transition-all duration-300"
               @click="searchOverlayOpen = true"
@@ -174,8 +203,31 @@
             </button>
           </div>
         </div>
+
+        <!-- Secondary tabs dropdown panel -->
+        <Transition name="slide-down">
+          <div v-if="showSecondaryNav" class="flex flex-wrap items-center gap-1 pb-2.5 pt-0.5 border-t border-charcoal-800/60">
+            <button
+              v-for="item in secondaryNavItems"
+              :key="item.id"
+              class="flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-medium whitespace-nowrap transition-all duration-200 shrink-0 relative"
+              :class="activeTab === item.id
+                ? 'text-gold-400 bg-gold-500/12 border border-gold-500/25'
+                : 'text-charcoal-400 hover:text-ivory hover:bg-charcoal-900'"
+              @click="activeTab = item.id; scrollToContent(); showSecondaryNav = false"
+              :aria-current="activeTab === item.id ? 'page' : undefined"
+            >
+              <Icon :name="item.icon" class="w-3.5 h-3.5" />
+              {{ item.label }}
+              <span v-if="'badge' in item && item.badge" class="px-1 py-0.5 rounded-full text-[9px] font-bold bg-charcoal-800 text-charcoal-400">
+                {{ item.badge }}
+              </span>
+            </button>
+          </div>
+        </Transition>
       </div>
     </div>
+
 
     <!-- ================================================== -->
     <!-- MAIN CONTENT AREA                                  -->
@@ -744,100 +796,6 @@
         </div>
       </div>
 
-      <!-- ================================================ -->
-      <!-- MODULE: AI TRỢ LÝ                               -->
-      <!-- ================================================ -->
-      <div v-if="activeTab === 'ai'" class="max-w-4xl mx-auto space-y-6 animate-section-in flex flex-col" style="min-height: calc(100vh - 200px)">
-        <div class="border-b border-charcoal-850 pb-5 flex items-center justify-between">
-          <div>
-            <span class="section-label">Trợ lý thông minh</span>
-            <h3 class="font-heading text-2xl font-bold text-ivory mt-1">AI Khảo Cứu Di Sản</h3>
-            <p class="text-charcoal-400 text-xs mt-0.5 max-w-lg">Đặt câu hỏi bằng tiếng Việt để tìm hiểu lịch sử, văn hóa và con người Thành Phố Đồng Nai từ kho dữ liệu số.</p>
-          </div>
-          <button class="text-3xs uppercase tracking-wider font-semibold text-charcoal-400 hover:text-gold-400 transition-colors flex items-center gap-1" @click="clearChat" aria-label="Xóa lịch sử trò chuyện">
-            <Icon name="mdi:delete-sweep-outline" class="w-4 h-4" />
-            Xóa hội thoại
-          </button>
-        </div>
-
-        <!-- Conversation Box -->
-        <div class="flex-1 bg-charcoal-950 border border-charcoal-800 rounded-2xl p-5 overflow-y-auto space-y-4 min-h-[380px] flex flex-col">
-          <template v-if="aiMessages.length <= 1">
-            <div class="flex gap-4 p-4 rounded-xl text-sm bg-gold-500/5 border border-gold-500/10 mr-12 shrink-0">
-              <div class="w-8 h-8 rounded-lg bg-gold-500 text-charcoal-950 flex items-center justify-center shrink-0 shadow-gold/20 shadow">
-                <Icon name="mdi:robot" class="w-4 h-4" />
-              </div>
-              <div class="space-y-1.5 text-left">
-                <span class="block text-2xs font-bold uppercase tracking-wider text-charcoal-350">Trợ lý AI Di sản Đồng Nai</span>
-                <p class="leading-relaxed text-charcoal-200 select-text whitespace-pre-wrap">{{ aiMessages[0]?.text || 'Xin chào! Tôi là trợ lý AI di sản Thành Phố Đồng Nai. Bạn muốn tìm hiểu lịch sử nào hôm nay?' }}</p>
-              </div>
-            </div>
-
-            <!-- Suggestion chips when empty -->
-            <div class="space-y-3 my-auto">
-              <p class="text-charcoal-500 text-xs text-center font-semibold uppercase tracking-widest">Câu hỏi gợi ý</p>
-              <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                <button v-for="chip in aiChips" :key="chip" class="p-3.5 bg-charcoal-900 border border-charcoal-800 hover:border-gold-500/40 rounded-xl text-2xs text-charcoal-300 hover:text-gold-400 text-left transition-all duration-300 flex items-start gap-2.5 group" @click="sendAiMessage(chip)">
-                  <Icon name="mdi:lightbulb-outline" class="w-4 h-4 text-gold-400/60 group-hover:text-gold-400 shrink-0 mt-0.5 transition-colors" />
-                  {{ chip }}
-                </button>
-              </div>
-            </div>
-          </template>
-
-          <template v-else>
-            <div
-              v-for="(msg, idx) in aiMessages"
-              :key="idx"
-              class="flex gap-4 p-4 rounded-xl text-sm"
-              :class="msg.role === 'user' ? 'bg-charcoal-900 border border-charcoal-800 self-end ml-12 flex-row-reverse' : 'bg-gold-500/5 border border-gold-500/10 mr-12'"
-            >
-              <div class="w-8 h-8 rounded-lg flex items-center justify-center shrink-0" :class="msg.role === 'user' ? 'bg-gradient-to-tr from-earth-700 to-gold-600 text-charcoal-900 font-bold' : 'bg-gold-500 text-charcoal-950 shadow-gold/20 shadow'">
-                <Icon :name="msg.role === 'user' ? 'mdi:account' : 'mdi:robot'" class="w-4 h-4" />
-              </div>
-              <div class="space-y-1.5 text-left flex-1">
-                <span class="block text-2xs font-bold uppercase tracking-wider text-charcoal-350">{{ msg.role === 'user' ? 'Bạn' : 'Trợ lý AI Di sản' }}</span>
-                <p class="leading-relaxed text-charcoal-200 select-text whitespace-pre-wrap font-body">{{ msg.text }}</p>
-              </div>
-            </div>
-          </template>
-
-          <div v-if="isAiThinking" class="flex gap-4 p-4 rounded-xl bg-gold-500/5 border border-gold-500/10 mr-12 text-sm">
-            <div class="w-8 h-8 rounded-lg bg-gold-500 text-charcoal-950 flex items-center justify-center shrink-0">
-              <Icon name="mdi:robot" class="w-4 h-4 animate-spin" />
-            </div>
-            <div class="space-y-2 text-left flex-1">
-              <span class="block text-2xs font-bold uppercase tracking-wider text-charcoal-350">Trợ lý AI Di sản</span>
-              <div class="flex gap-1 items-center">
-                <div v-for="d in 3" :key="d" class="w-2 h-2 rounded-full bg-gold-400 animate-bounce" :style="{ animationDelay: (d * 0.15) + 's' }" />
-                <span class="text-charcoal-400 text-2xs ml-2">Đang đọc kho dữ liệu di sản...</span>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- Input area -->
-        <div class="relative flex items-center gap-3">
-          <input
-            v-model="aiInput"
-            type="text"
-            placeholder="Hỏi về cồng chiêng Bom Bo, Chiến khu Đ, trảng cỏ Bù Lạch..."
-            class="flex-1 bg-charcoal-900/50 border border-charcoal-800 rounded-2xl px-5 py-4 text-sm focus:outline-none focus:border-gold-500/50 focus:ring-1 focus:ring-gold-500/10 pr-14 text-ivory placeholder-charcoal-400 transition-all duration-200"
-            @keydown.enter="sendAiMessage(aiInput)"
-          />
-          <!-- ================================================ -->
-          <!-- MODULE: BẢN ĐỒ — đã chuyển hẳn sang /map        -->
-          <!-- ================================================ -->
-          <button
-            class="absolute right-3 top-1/2 -translate-y-1/2 w-10 h-10 rounded-xl bg-gold-500 text-charcoal-950 hover:bg-gold-400 flex items-center justify-center transition-all duration-300 hover:scale-105 active:scale-95 shadow-lg shadow-gold-500/20 disabled:opacity-40 disabled:cursor-not-allowed"
-            @click="sendAiMessage(aiInput)"
-            :disabled="!aiInput.trim() || isAiThinking"
-            aria-label="Gửi câu hỏi"
-          >
-            <Icon name="mdi:send" class="w-4 h-4" />
-          </button>
-        </div>
-      </div>
 
 
       <!-- ================================================ -->
@@ -1559,8 +1517,29 @@ import { useStudySeo } from '~/composables/useMuseumSeo'
 import { useSwal } from '~/composables/useSwal'
 import { useQuizStore } from '~/stores/quiz'
 import { useCollectionsStore } from '~/stores/collections'
-import EmptyState from '~/components/study/EmptyState.vue'
 import { NuxtLink } from '#components'
+import type { SchoolResourceExtended, TextAnnotation, GlossaryTerm, MapLandmark, ImageStory } from '~/types/study'
+import {
+  typeLabels,
+  typeIcons,
+  glossaryCategories,
+  difficultyFilters,
+  fontSizes,
+  mediaSubtabs,
+  secondaryNavItems,
+  lessonCatalogData,
+  heritageClusters,
+  heritageSpotlights,
+  communityStoriesExplore,
+  heritageFacts,
+  heritageLabItems,
+  historyTimeline,
+  staticResources,
+  glossaryData,
+  imageStoriesData,
+  mockVideos,
+  mockAudios,
+} from '~/data/studyData'
 
 // Inject EducationalOrganization + LearningResource schema
 useStudySeo()
@@ -1627,28 +1606,10 @@ watch(() => route.query.tab, (newTab) => {
 })
 
 // ──────────────────────────────────────────────
-// TYPE MAPS
-// ──────────────────────────────────────────────
-const typeLabels: Record<string, string> = {
-  research: 'Nghiên cứu',
-  presentation: 'Slide bài giảng',
-  artwork: 'Dự án nghệ thuật',
-  document: 'Tài liệu giáo án',
-  video: 'Video phóng sự'
-}
-
-const typeIcons: Record<string, string> = {
-  research: 'mdi:file-document-outline',
-  presentation: 'mdi:presentation-play',
-  artwork: 'mdi:palette-outline',
-  document: 'mdi:folder-open-outline',
-  video: 'mdi:video-outline'
-}
-
-// ──────────────────────────────────────────────
 // STATE
 // ──────────────────────────────────────────────
 const activeTab = ref('lessons')
+const showSecondaryNav = ref(false)
 
 // Gamification derived from REAL persisted quiz progress (quizStore, LocalStorage) —
 // no fabricated numbers. XP formula: 10/point + 5/heritage visited + 50/badge.
@@ -1675,21 +1636,8 @@ const activeGlossaryCat = ref('all')
 const glossaryMode = ref<'list' | 'flashcards'>('list')
 const activeHighlightPen = ref(false)
 
-const glossaryCategories = ['all', 'Tâm Linh', 'Ẩm Thực', 'Địa Danh', 'Vật Dụng']
-
-const difficultyFilters = [
-  { id: 'easy', label: 'Dễ', dot: '●', color: 'text-green-400' },
-  { id: 'medium', label: 'Trung bình', dot: '●', color: 'text-gold-400' },
-  { id: 'hard', label: 'Nâng cao', dot: '●', color: 'text-red-400' }
-]
-
 // Lesson catalog
-const lessonCatalog = ref([
-  { id: 'chien-khu-d', title: 'Chiến Khu Đ - Căn Cứ Địa Cách Mạng Huyền Thoại', subject: 'Lịch sử địa phương', tldr: 'Hệ thống căn cứ địa cách mạng nằm sâu trong rừng nguyên sinh Thành Phố Đồng Nai, đóng vai trò quyết định trong kháng chiến chống Pháp và Mỹ.', coverImage: '/images/heritage/lich-su/chien-khu-d-md.webp', xpReward: 80, estimatedMinutes: 12, availableBlocks: ['Timeline', 'Flashcards', 'Quiz', 'Tự luận', 'Hotspot'], hasContent: true },
-  { id: 'cong-chieng-stieng', title: 'Cồng Chiêng S\'tiêng - Tiếng Nói Của Đại Ngàn', subject: 'Văn hóa dân tộc', tldr: 'Di sản văn hóa phi vật thể UNESCO, cồng chiêng là tiếng nói tâm linh của đồng bào S\'tiêng Thành Phố Đồng Nai.', coverImage: '/images/heritage/van-hoa-phi-vat-the/cong-chieng-md.webp', xpReward: 75, estimatedMinutes: 10, availableBlocks: ['Flashcards', 'Quiz', 'Thuật ngữ', 'Gợi mở'], hasContent: true },
-  { id: 'soc-bom-bo', title: 'Sóc Bom Bo - Tiếng Chày Giã Gạo Kháng Chiến', subject: 'Lịch sử cách mạng', tldr: 'Nơi khởi nguồn bài ca bất hủ, ghi dấu sự đồng lòng kiên trung giã gạo thâu đêm nuôi quân của đồng bào S\'tiêng.', coverImage: '/images/heritage/lich-su/soc-bom-bo-md.webp', xpReward: 90, estimatedMinutes: 15, availableBlocks: ['Timeline', 'Flashcards', 'Quiz', 'Tự luận'], hasContent: true },
-  { id: 'trang-co-bu-lach', title: 'Danh Thắng Trảng Cỏ Bù Lạch - Kỳ Quan Thiên Nhiên', subject: 'Địa lý địa phương', tldr: 'Khám phá thung lũng trảng cỏ xanh mướt tự nhiên bao quanh hồ nước trong veo giữa lòng rừng già Thành Phố Đồng Nai.', coverImage: '/images/heritage/img-disanbudang/Trang-co-Bu-Lach.png', xpReward: 70, estimatedMinutes: 8, availableBlocks: ['Hotspot', 'Quiz', 'Gallery'], hasContent: true }
-])
+const lessonCatalog = ref(lessonCatalogData)
 
 // Real badges earned through quizzes (persisted by quizStore)
 const userBadges = computed(() =>
@@ -1706,16 +1654,16 @@ const activeCollectionName = computed(() =>
 )
 
 // 9 tabs — 'passport' tab for Digital Heritage Passport
-const navItems = computed(() => [
+// 3 primary core tabs — mọi người dùng đều cần; secondary tabs còn lại vẫn accessible
+const primaryNavItems = computed(() => [
   { id: 'lessons', label: 'Bài Học', icon: 'mdi:book-open-variant', badge: 'Mới' },
-  { id: 'passport', label: 'Hộ Chiếu Số', icon: 'mdi:book-account-outline', badge: '✨ Mới' },
-  { id: 'explore', label: 'Khám Phá', icon: 'mdi:compass-outline', badge: '' },
   { id: 'research', label: 'Thư Viện', icon: 'mdi:library-outline', badge: String(allResources.value.length) },
-  { id: 'lab', label: 'Trải Nghiệm Số', icon: 'mdi:flask-outline', badge: '✨' },
-  { id: 'glossary', label: 'Từ Điển', icon: 'mdi:translate' },
-  { id: 'media', label: 'Đa Phương Tiện', icon: 'mdi:image-multiple-outline' },
-  { id: 'achievements', label: 'Thành Tích', icon: 'mdi:trophy-outline' },
-  { id: 'ai', label: 'AI Trợ Lý', icon: 'mdi:robot' },
+])
+
+// Unified navItems for template (all tabs, primary first)
+const navItems = computed(() => [
+  ...primaryNavItems.value,
+  ...secondaryNavItems,
 ])
 
 // ──────────────────────────────────────────────
@@ -1773,7 +1721,7 @@ function goToLearningStep(step: { tab: string; action?: string }) {
 const learningPath = computed(() => [
   { title: 'Khám phá', desc: 'Tìm hiểu tổng quan', icon: 'mdi:compass-outline', tab: 'explore', xp: 20, done: quizStore.userProgress.visitedHeritages.length > 0 },
   { title: 'Hiểu sâu', desc: 'Đọc toàn văn tài liệu', icon: 'mdi:book-open-variant', tab: 'research', action: 'read', xp: 40, done: quizStore.userProgress.visitedHeritages.length >= 3 },
-  { title: 'Nghiên cứu', desc: 'Phân tích học thuật', icon: 'mdi:magnify', tab: 'ai', xp: 60, done: false },
+  { title: 'Nghiên cứu', desc: 'Đọc tài liệu gốc PDF', icon: 'mdi:magnify', tab: 'research', xp: 60, done: false },
   { title: 'Từ điển S\'tiêng', desc: 'Học thuật ngữ bản địa', icon: 'mdi:translate', tab: 'glossary', xp: 80, done: false },
   { title: 'Làm Quiz', desc: 'Kiểm tra hiểu biết', icon: 'mdi:help-circle-outline', tab: 'lessons', action: 'quiz', xp: 100, done: quizStore.userProgress.completedQuizzes.length > 0 },
   { title: 'Nhận huy hiệu', desc: 'Chứng chỉ di sản', icon: 'mdi:trophy', tab: 'achievements', xp: 150, done: quizStore.userProgress.earnedBadges.length > 0 },
@@ -1785,183 +1733,9 @@ const currentStepIndex = computed(() => {
   return idx
 })
 
-// ──────────────────────────────────────────────
-// EXPLORE TAB DATA
-// ──────────────────────────────────────────────
-const heritageClusters = [
-  {
-    id: 'bu-dang',
-    name: 'Bù Đăng',
-    desc: 'Căn cứ kháng chiến, rừng nguyên sinh, làng nghề và lễ hội bản địa người S\'tiêng.',
-    icon: 'mdi:tree-outline',
-    iconBg: 'bg-green-500/15',
-    iconColor: 'text-green-400',
-    bgGradient: 'bg-gradient-to-br from-green-950/60 to-charcoal-950',
-    borderColor: 'border-green-900/50 hover:border-green-600/40',
-    tagColor: 'text-green-400',
-    tag: '5 di sản'
-  },
-  {
-    id: 'bom-bo',
-    name: 'Sóc Bom Bo',
-    desc: 'Cồng chiêng, nhà dài, huyền thoại nhịp chày giã gạo nuôi quân kháng chiến.',
-    icon: 'mdi:fire',
-    iconBg: 'bg-orange-500/15',
-    iconColor: 'text-orange-400',
-    bgGradient: 'bg-gradient-to-br from-orange-950/60 to-charcoal-950',
-    borderColor: 'border-orange-900/50 hover:border-orange-600/40',
-    tagColor: 'text-orange-400',
-    tag: '3 di sản'
-  },
-  {
-    id: 'phuoc-long',
-    name: 'Phước Long',
-    desc: 'Núi Bà Rá, hồ Thác Mơ, Chiến thắng Phước Long lịch sử 06/01/1975.',
-    icon: 'mdi:mountain',
-    iconBg: 'bg-blue-500/15',
-    iconColor: 'text-blue-400',
-    bgGradient: 'bg-gradient-to-br from-blue-950/60 to-charcoal-950',
-    borderColor: 'border-blue-900/50 hover:border-blue-600/40',
-    tagColor: 'text-blue-400',
-    tag: '2 di sản'
-  },
-  {
-    id: 'loc-ninh',
-    name: 'Lộc Ninh',
-    desc: 'Căn cứ Tà Thiết, Nhà Giao Tế — cửa ngõ kết nối Chiến khu Đ và vùng biên giới.',
-    icon: 'mdi:shield-star-outline',
-    iconBg: 'bg-purple-500/15',
-    iconColor: 'text-purple-400',
-    bgGradient: 'bg-gradient-to-br from-purple-950/60 to-charcoal-950',
-    borderColor: 'border-purple-900/50 hover:border-purple-600/40',
-    tagColor: 'text-purple-400',
-    tag: '1 di sản'
-  }
-]
-
-const heritageSpotlights = [
-  {
-    slug: 'soc-bom-bo',
-    name: 'Sóc Bom Bo — Tiếng Chày Giã Gạo Kháng Chiến',
-    desc: 'Địa danh lịch sử hào hùng, nơi đồng bào S\'tiêng đốt đuốc giã gạo thâu đêm nuôi quân kháng chiến chống Mỹ.',
-    image: '/images/heritage/lich-su/soc-bom-bo-lg.webp',
-    location: 'Xã Bù Đăng, Thành Phố Đồng Nai',
-    tag: 'Lịch sử',
-    tagClass: 'bg-red-500/20 border-red-500/40 text-red-300',
-    audioGuide: true
-  },
-  {
-    slug: 'trang-co-bu-lach',
-    name: 'Trảng Cỏ Bù Lạch — Kỳ Quan Thiên Nhiên',
-    desc: 'Đồng cỏ tự nhiên hiếm gặp rộng gần 140 ha nằm giữa rừng già nguyên sinh, hệ sinh thái độc đáo bậc nhất Đông Nam Bộ.',
-    image: '/images/heritage/danh-thang/bu-lach-lg.webp',
-    location: 'Xã Bù Đăng, Thành Phố Đồng Nai',
-    tag: 'Danh thắng',
-    tagClass: 'bg-green-500/20 border-green-500/40 text-green-300',
-    audioGuide: false
-  },
-  {
-    slug: 'cong-chieng-stieng',
-    name: 'Cồng Chiêng S\'tiêng — Cùng Mạch Nguồn UNESCO',
-    desc: 'Cồng chiêng S\'tiêng Bù Đăng chung cội nguồn với Không gian văn hóa cồng chiêng Tây Nguyên (UNESCO 2005), đang được cộng đồng gìn giữ.',
-    image: '/images/heritage/van-hoa-phi-vat-the/cong-chieng-md.webp',
-    location: 'Sóc Bom Bo, Thành Phố Đồng Nai',
-    tag: 'Phi vật thể',
-    tagClass: 'bg-gold-500/20 border-gold-500/40 text-gold-300',
-    audioGuide: true
-  }
-]
-
-const communityStoriesExplore = [
-  {
-    id: 'story-1',
-    title: 'Tiếng Chiêng Vang Đêm Mừng Lúa Mới',
-    category: 'Ký ức S\'tiêng',
-    excerpt: 'Cứ đến tháng 11 âm lịch, cả buôn sóc thức đêm. Tiếng chiêng vang lên từ nhà già làng, lan ra khắp rừng. Trẻ em không ai ngủ — chúng biết đó là đêm Yang Sri về.',
-    narrator: 'Già làng Điểu Lên, 83 tuổi',
-    icon: 'mdi:music-note',
-    iconBg: 'bg-gold-500/15',
-    iconColor: 'text-gold-400'
-  },
-  {
-    id: 'story-2',
-    title: 'Đêm Giã Gạo Nuôi Quân Năm 1965',
-    category: 'Kháng chiến',
-    excerpt: 'Bộ đội thiếu gạo, cả sóc Bom Bo đốt đuốc lồ ô, đứng thành hàng dài giã từ chập tối đến bình minh. Không ai bảo ai — người mệt thì người khác vào thay.',
-    narrator: 'Nghệ nhân Thị Bay, 78 tuổi',
-    icon: 'mdi:fire',
-    iconBg: 'bg-red-500/15',
-    iconColor: 'text-red-400'
-  },
-  {
-    id: 'story-3',
-    title: 'Dak Mơ — Nguồn Nước Của Ước Mơ',
-    category: 'Huyền thoại',
-    excerpt: 'Tổ tiên người S\'tiêng kể: ngày xưa có cô gái uống nước suối Dak Mơ mà khỏi bệnh. Từ đó dân làng gọi nguồn nước ấy là "nước của ước mơ" — Dak Mơ, tên Thác Mơ ngày nay.',
-    narrator: 'Nghệ nhân Điểu Nhân, 71 tuổi',
-    icon: 'mdi:water',
-    iconBg: 'bg-blue-500/15',
-    iconColor: 'text-blue-400'
-  },
-  {
-    id: 'story-4',
-    title: 'Bí Quyết Pha Màu Thổ Cẩm Từ Rừng',
-    category: 'Làng nghề',
-    excerpt: 'Không phải ai cũng biết: màu đen bền nhất phải lấy từ vỏ cây Krông ngâm ba ngày ba đêm. Màu đỏ thì củ nghệ đỏ pha nước chua me rừng. Nghệ nhân già giờ còn lại mấy người.',
-    narrator: 'Nghệ nhân Thị Rét, 72 tuổi',
-    icon: 'mdi:palette',
-    iconBg: 'bg-orange-500/15',
-    iconColor: 'text-orange-400'
-  },
-  {
-    id: 'story-5',
-    title: 'Yang Bri — Thần Rừng Bảo Vệ Buôn Sóc',
-    category: 'Tâm linh',
-    excerpt: 'Trước khi vào rừng già, người S\'tiêng phải xin phép Yang Bri. Lấy củi thì chỉ lấy cây khô. Không ai được chặt cây tươi vô cớ — người vi phạm sẽ bị rừng "phạt" bằng bệnh tật.',
-    narrator: 'Già làng Điểu Nhuôn, 79 tuổi',
-    icon: 'mdi:tree',
-    iconBg: 'bg-green-500/15',
-    iconColor: 'text-green-400'
-  },
-  {
-    id: 'story-6',
-    title: 'Đàn Đá — Tiếng Vọng Từ Ngàn Năm',
-    category: 'Nhạc cụ cổ',
-    excerpt: 'Ông nội tôi tìm được bộ đàn đá trong rừng sâu khi còn nhỏ. Ông gõ thử, âm thanh vang như tiếng trời. Bộ đàn đó đã nằm trong rừng ít nhất vài ngàn năm — ông chưa bao giờ dám bán.',
-    narrator: 'Ông Điểu Thắng, 65 tuổi',
-    icon: 'mdi:music-box',
-    iconBg: 'bg-earth-500/15',
-    iconColor: 'text-earth-400'
-  }
-]
-
-const heritageFacts = [
-  { value: '11', label: 'Di sản số hóa', icon: 'mdi:database-outline', iconBg: 'bg-gold-500/10', iconColor: 'text-gold-400' },
-  { value: '4', label: 'Audio guide hoàn thiện', icon: 'mdi:headphones', iconBg: 'bg-blue-500/10', iconColor: 'text-blue-400' },
-  { value: '6', label: 'Ký ức cộng đồng', icon: 'mdi:microphone-outline', iconBg: 'bg-orange-500/10', iconColor: 'text-orange-400' },
-  { value: '2000+', label: 'Năm lịch sử', icon: 'mdi:history', iconBg: 'bg-purple-500/10', iconColor: 'text-purple-400' }
-]
-
-const heritageLabItems = [
-  { id: 'timeline', title: 'Dòng Thời Gian Lịch Sử', desc: 'Hành trình thời gian từ thời kỳ tiền sử đến hiện đại qua các sự kiện quan trọng của Thành Phố Đồng Nai.', icon: 'mdi:timeline-clock', iconBg: 'bg-gold-500/10', iconColor: 'text-gold-400', gradientBg: 'bg-gold-400', active: true },
-  { id: 'storymap', title: 'Bản Đồ Câu Chuyện', desc: 'Bản đồ câu chuyện tích hợp ảnh, văn bản và audio theo từng địa điểm di sản.', icon: 'mdi:map-legend', iconBg: 'bg-blue-500/10', iconColor: 'text-blue-400', gradientBg: 'bg-blue-400', active: false },
-  { id: 'compare', title: 'So Sánh Xưa & Nay', desc: 'So sánh hình ảnh di sản xưa và nay — thấy sự thay đổi qua thời gian.', icon: 'mdi:compare', iconBg: 'bg-purple-500/10', iconColor: 'text-purple-400', gradientBg: 'bg-purple-400', active: true },
-  { id: 'audio', title: 'Lời Kể Nhân Chứng', desc: 'Lời kể của nhân chứng lịch sử — những câu chuyện sống động chưa được viết thành sách.', icon: 'mdi:microphone', iconBg: 'bg-orange-500/10', iconColor: 'text-orange-400', gradientBg: 'bg-orange-400', active: false },
-  { id: 'artifact', title: 'Xem Hiện Vật', desc: 'Xem hiện vật bảo tàng với chú thích học thuật và thông tin phân tích.', icon: 'mdi:museum', iconBg: 'bg-earth-500/10', iconColor: 'text-earth-400', gradientBg: 'bg-earth-400', active: true },
-  { id: 'tour', title: 'Tham Quan Ảo', desc: 'Tour tham quan ảo 360° tại các địa điểm di tích lịch sử và danh thắng Thành Phố Đồng Nai.', icon: 'mdi:rotate-3d', iconBg: 'bg-green-500/10', iconColor: 'text-green-400', gradientBg: 'bg-green-400', active: false }
-]
-
 const activeLabItems = heritageLabItems.filter(i => i.active)
 const comingSoonLabItems = heritageLabItems.filter(i => !i.active)
 const labFeatures = activeLabItems.map(i => ({ label: i.title, icon: i.icon }))
-
-const historyTimeline = [
-  { year: 'Thế kỷ 3-4', tag: 'Khảo cổ', tagBg: 'bg-earth-500/10 text-earth-400', title: 'Đàn đá tiền sử', desc: 'Những bộ đàn đá cổ đại nhất được phát hiện trong lòng đất đỏ bazan Thành Phố Đồng Nai, âm thanh từ thời tiền sử.' },
-  { year: '1945 - 1954', tag: 'Kháng chiến', tagBg: 'bg-red-500/10 text-red-400', title: 'Chiến Khu Đ thành lập', desc: 'Hệ thống căn cứ địa cách mạng kiên cố, điểm tựa cho cuộc kháng chiến chống Pháp tại miền Đông Nam Bộ.' },
-  { year: '1960s', tag: 'Văn hóa', tagBg: 'bg-gold-500/10 text-gold-400', title: 'Tiếng chày Sóc Bom Bo', desc: 'Đồng bào S\'tiêng đốt đuốc giã gạo thâu đêm nuôi quân giải phóng — bài ca huyền thoại ra đời.' },
-  { year: '2005', tag: 'UNESCO', tagBg: 'bg-blue-500/10 text-blue-400', title: 'Cồng chiêng Tây Nguyên được vinh danh', desc: 'UNESCO công nhận Không gian văn hóa cồng chiêng Tây Nguyên (5 tỉnh Tây Nguyên) là Di sản phi vật thể. Cồng chiêng S\'tiêng Bù Đăng chung mạch nguồn văn hóa này.' },
-  { year: '2026', tag: 'Số hóa', tagBg: 'bg-green-500/10 text-green-400', title: 'Cổng Học Tập Di Sản Số ra mắt', desc: 'Trang web di sản số hóa Thành Phố Đồng Nai ra mắt, mang lịch sử địa phương đến với học sinh khắp nơi.' }
-]
 
 const gamificationStats = computed(() => [
   { label: 'Tổng XP', value: String(userXP.value), icon: 'mdi:star', color: 'text-gold-400' },
@@ -1982,21 +1756,10 @@ const communityStats = computed(() => [
 // ──────────────────────────────────────────────
 // MODAL STATE
 // ──────────────────────────────────────────────
-interface SchoolResourceExtended {
-  id: string; title: string; description: string
-  type: 'research' | 'presentation' | 'artwork' | 'document' | 'video'
-  subject: string; grade: string; school: string; author: string
-  coverImage?: string; publishedAt: string; featured: boolean
-  downloadCount: number; motivation?: string; keyFindings?: string[]
-  fileSize?: string; quizId?: string; pages?: string[]
-  difficulty?: number
-}
-
 const selectedResource = ref<SchoolResourceExtended | null>(null)
 const activeModalTab = ref<'overview' | 'document'>('overview')
 const currentDocPage = ref(0)
 const fontSizeLevel = ref(2)
-const fontSizes = ['14px', '16px', '18px', '20px']
 const fontSizeValue = computed(() => fontSizes[fontSizeLevel.value - 1])
 
 onMounted(() => {
@@ -2014,7 +1777,6 @@ watch(fontSizeLevel, (newVal) => {
 const selectedText = ref('')
 const activeNoteInput = ref('')
 
-interface TextAnnotation { id: string; bookId: string; page: number; text: string; note?: string }
 const userAnnotations = ref<TextAnnotation[]>([])
 const bookHighlights = computed(() => {
   if (!selectedResource.value) return []
@@ -2082,121 +1844,10 @@ const { data: resourcesContent, pending, error, refresh } = await useAsyncData('
   return queryCollection('school').all()
 })
 
-// Static fallback: always show real documents even when CMS isn't loaded
-const staticResources: SchoolResourceExtended[] = [
-  {
-    id: 'res-001',
-    title: 'Lịch Sử Hình Thành Chiến Khu Đ Qua Lời Kể Nhân Chứng Lịch Sử',
-    description: 'Nghiên cứu điền dã ghi chép lại câu chuyện chiến đấu kiên cường của các cựu chiến binh Chiến khu Đ năm xưa.',
-    type: 'research', subject: 'Lịch sử địa phương', grade: '12',
-    school: 'THPT Lê Quý Đôn', author: 'Nhóm học sinh 12A1',
-    coverImage: '/images/heritage/lich-su/chien-khu-d-md.webp',
-    publishedAt: '2024-04-10', featured: true, downloadCount: 234, fileSize: '3.6 MB', difficulty: 3,
-    motivation: 'Thế hệ cựu chiến binh Chiến khu Đ nay đều đã tuổi cao sức yếu. Chúng em muốn chạy đua với thời gian để lưu giữ lại những câu chuyện hào hùng chân thực nhất từ lời kể của họ.',
-    keyFindings: ['Ghi âm và chép lại hơn 30 giờ phỏng vấn trực tiếp từ 12 nhân chứng lịch sử.', 'Phác thảo và số hóa sơ đồ hoạt động quân sự của 3 điểm đóng quân cũ.', 'Sưu tầm hình ảnh tư liệu của 15 loại hiện vật, vũ khí tự chế thời chiến.'],
-    quizId: 'quiz-001',
-    pages: ['<h2>CHƯƠNG I: BỐI CẢNH LỊCH SỬ</h2><p>Chiến Khu Đ là một trong những hệ thống căn cứ địa quan trọng bậc nhất của lực lượng kháng chiến tại khu vực miền Đông Nam Bộ trong giai đoạn từ năm 1945 đến năm 1975.</p><blockquote>"Nếu không ghi chép lại ngay hôm nay, những trang sử sống động từ lời kể của thế hệ đi trước sẽ vĩnh viễn nằm lại dưới lòng đất mẹ." — Lời mở đầu đề tài nghiên cứu.</blockquote>', '<h2>CHƯƠNG II: PHƯƠNG PHÁP KHẢO CỨU ĐIỀN DÃ</h2><p>Trong quá trình thực hiện từ tháng 9 năm 2023 đến tháng 3 năm 2024, nhóm chúng em đã tiến hành 12 đợt điền dã thực tế vào sâu các buôn sóc bản địa. Nhóm đã phỏng vấn và ghi âm được hơn 30 giờ chia sẻ từ các cựu chiến binh.</p>', '<h2>CHƯƠNG III: ĐỀ XUẤT GIẢI PHÁP BẢO TỒN DI SẢN SỐ</h2><p>Để di sản Chiến Khu Đ mãi trường tồn và tiếp cận gần hơn với thế hệ học sinh Gen Z, nhóm nghiên cứu đề xuất ba giải pháp thực tế:<br/>1. Xây dựng cổng thông tin số di sản<br/>2. Thiết lập tour học tập ảo<br/>3. Lồng ghép giáo dục địa phương</p>']
-  },
-  {
-    id: 'res-002',
-    title: "Phân Tích Hoa Văn Thổ Cẩm S'tiêng: Ngôn Ngữ Không Lời",
-    description: 'Nghiên cứu 23 mẫu hoa văn thổ cẩm truyền thống, giải mã ý nghĩa biểu tượng hạt gạo, dãy núi và chim rừng.',
-    type: 'research', subject: 'Văn hóa dân tộc', grade: '9',
-    school: 'THCS Nguyễn Trường Tộ', author: 'Nhóm học sinh 9A',
-    coverImage: '/images/heritage/van-hoa-phi-vat-the/di-san-ban-dia-md.webp',
-    publishedAt: '2024-03-20', featured: false, downloadCount: 156, fileSize: '2.8 MB', difficulty: 2,
-    motivation: "Khi quan sát những tấm vải dệt của người S'tiêng, chúng em nhận thấy mỗi họa tiết đều đối xứng tuyệt đối và mang sắc màu núi rừng.",
-    keyFindings: ['Số hóa 23 mẫu hoa văn thêu tay truyền thống.', 'Giải mã ý nghĩa: Họa tiết hình thoi chéo biểu thị hạt gạo no ấm.', 'Hồ sơ hóa quy trình pha nhuộm màu tự nhiên từ lá cây rừng.'],
-    quizId: 'quiz-002',
-    pages: ['<h2>CHƯƠNG I: HOA VĂN THỔ CẨM</h2><p>Nghề dệt thổ cẩm cổ truyền là biểu tượng văn hóa rực rỡ nhất thể hiện óc sáng tạo nghệ thuật của đồng bào S\'tiêng.</p><blockquote>"Học hoa văn dệt là học cách người xưa trò chuyện với núi rừng, trời đất." — Nghệ nhân Thị Rét.</blockquote>', '<h2>CHƯƠNG II: PHƯƠNG PHÁP VÀ KẾT QUẢ</h2><p>Nhóm thực hiện 3 đợt gặp gỡ nghệ nhân Thị Rét (72 tuổi) và số hóa 23 mẫu hoa văn bằng phương pháp chụp ảnh macro tỉ lệ 1:1. Phát hiện: họa tiết "Sơk Pơng" (hạt gạo bốn mùa) — lời cầu nguyện cho mùa màng bội thu.</p>', '<h2>CHƯƠNG III: QUY TRÌNH NHUỘM MÀU TỰ NHIÊN</h2><p>Màu đen từ vỏ cây Krông, màu đỏ từ củ nghệ đỏ pha me rừng, màu xanh từ lá chàm ven suối. Toàn bộ quy trình được biên soạn thành tài liệu hướng dẫn 8 bước.</p>']
-  },
-  {
-    id: 'res-003',
-    title: "Âm Nhạc Cồng Chiêng - Di Sản Sống Của Người S'tiêng",
-    description: 'Tài liệu thuyết trình đa phương tiện về lịch sử, ý nghĩa tâm linh và vai trò của cồng chiêng trong đời sống cộng đồng.',
-    type: 'presentation', subject: 'Giáo dục địa phương', grade: '11',
-    school: 'THPT Lê Quý Đôn', author: 'Vũ Quang Huy',
-    coverImage: '/images/heritage/van-hoa-phi-vat-the/cong-chieng-md.webp',
-    publishedAt: '2024-05-01', featured: false, downloadCount: 312, fileSize: '4.8 MB', difficulty: 1,
-    motivation: 'Tiếng cồng chiêng là linh hồn kết nối con người với thế giới thần linh của người bản địa.',
-    keyFindings: ['Số hóa 6 bản thu âm cồng chiêng cổ tiêu biểu.', 'Xây dựng sơ đồ bố trí không gian trình diễn cồng chiêng.', 'Tổng hợp 12 tài liệu nghiên cứu chuyên sâu về nhạc cụ đồng.'],
-    quizId: 'quiz-002',
-    pages: ['<h2>PHẦN I: CỒNG CHIÊNG TRONG ĐỜI SỐNG TÂM LINH</h2><p>Cồng chiêng không đơn thuần là nhạc cụ mà là tiếng nói tâm linh thiêng liêng nhất. Mỗi chiếc chiêng đều có vị thần <strong>Yang Ching</strong> ngự trị.</p><blockquote>"Tiếng chiêng là hơi thở của đại ngàn." — Cựu binh Điểu Lên.</blockquote>', '<h2>PHẦN II: CẤU TRÚC DÀN NHẠC</h2><p>Một bộ cồng chiêng S\'tiêng hoàn chỉnh gồm 6-12 chiếc, sắp xếp theo thang âm riêng. Trong trình diễn, người đánh chiêng đứng thành vòng tròn, phụ nữ múa xoang ngược chiều — tượng trưng âm dương đối xứng.</p>', '<h2>PHẦN III: NGUY CƠ MAI MỘT</h2><p>Tại Sóc Bom Bo chỉ còn 4 người đàn ông cao tuổi thành thạo kỹ thuật đánh chiêng truyền thống. Nhóm đề xuất thành lập Câu lạc bộ Cồng chiêng học sinh tại các trường THPT.</p>']
-  },
-  {
-    id: 'res-004',
-    title: "Nghi Thức Lễ Hội Mừng Lúa Mới Của Người S'tiêng",
-    description: 'Báo cáo điền dã chi tiết về các bước tế lễ thần Yang lúa và cộng đồng trong dịp tết lớn nhất năm của buôn sóc.',
-    type: 'document', subject: 'Giáo dục địa phương', grade: '10',
-    school: 'THPT Lê Quý Đôn', author: 'Trần Thị Mai',
-    coverImage: '/images/heritage/img-disanbudang/le-hoi-mung-lua-moi.png',
-    publishedAt: '2024-05-15', featured: false, downloadCount: 198, fileSize: '1.9 MB', difficulty: 1,
-    motivation: 'Nhằm xây dựng tài liệu tham khảo giảng dạy chính thống cho phân môn Giáo dục địa phương.',
-    keyFindings: ['Hệ thống hóa 5 bước tế lễ chính thức của lễ hội Mừng lúa mới.', 'Sưu tầm và biên dịch 3 bài khấn cầu thần Yang lúa.', 'Lập danh mục 8 lễ vật bắt buộc trong mâm cúng cộng đồng.'],
-    pages: ['<h2>CHƯƠNG I: Ý NGHĨA TÂM LINH LỄ MỪNG LÚA MỚI</h2><p>Lễ <strong>cúng tạ ơn Yang Sri</strong> là nét đẹp văn hóa tâm linh quan trọng bậc nhất của đồng bào S\'tiêng tại Xã Bù Đăng, tổ chức vào tháng 11-12 âm lịch.</p><blockquote>"Yang Sri về kho lúa thì buôn sóc mới no ấm." — Già làng Điểu Nhuôn.</blockquote>', '<h2>CHƯƠNG II: NĂM BƯỚC TẾ LỄ</h2><ol><li>Lễ rước Yang Sri từ ruộng về kho</li><li>Lễ mổ heo, gà cúng Yang</li><li>Đọc bài khấn tiếng S\'tiêng</li><li>Uống rượu cần cộng đồng</li><li>Lễ đóng cửa kho lúa</li></ol>', '<h2>CHƯƠNG III: TÀI LIỆU GIẢNG DẠY</h2><p>Bộ tài liệu gồm giáo án 2 tiết, phiếu học tập 12 câu hỏi, 3 bài khấn kèm phiên âm và dịch nghĩa. Đã thí điểm thành công tại THPT Lê Quý Đôn.</p>']
-  },
-  {
-    id: 'res-005',
-    title: 'Kỹ Thuật Chế Tác Đàn Đá & Nhạc Cụ Tre Nứa Bản Địa Bù Đăng',
-    description: 'Nghiên cứu khảo sát khảo cổ học học sinh về cách chọn đá, ghè đẽo đá tạo âm thanh tự nhiên Đông Nam Bộ.',
-    type: 'artwork', subject: 'Nghệ thuật cổ truyền', grade: '11',
-    school: 'THPT Chuyên Quang Trung', author: 'Nhóm Vật lý - Lịch sử',
-    coverImage: '/images/heritage/van-hoa-phi-vat-the/van-hoa-stieng-lg.webp',
-    publishedAt: '2024-06-10', featured: false, downloadCount: 145, fileSize: '5.2 MB', difficulty: 3,
-    motivation: 'Đàn đá là một trong những nhạc cụ cổ xưa nhất của nhân loại được phát hiện tại Việt Nam.',
-    keyFindings: ['Khảo sát chi tiết 3 bộ đàn đá cổ được gìn giữ bởi các dòng họ lâu đời.', 'Đo đạc tần số âm thanh của từng thanh đá.', 'Tái dựng quy trình ghè đẽo cân chỉnh âm thanh.'],
-    pages: ['<h2>CHƯƠNG I: ĐÀN ĐÁ TỪ LÒNG ĐẤT CỔ XƯA</h2><p>Đàn đá là biểu tượng âm nhạc của cư dân tiền sử sông Đồng Nai. Người xưa biết <strong>lựa chọn đá tự nhiên</strong> có mật độ phù hợp để phát ra âm thanh.</p><blockquote>"Chọn đá đàn là nghệ thuật lắng nghe lòng đá." — Nghệ nhân Điểu Nhân.</blockquote>', '<h2>CHƯƠNG II: PHÂN TÍCH VẬT LÝ ÂM THANH</h2><p>Phân tích bằng Spectroid cho thấy đàn đá tạo thang âm pentatonic đặc trưng Đông Nam Á. Đá sừng (hornfels) cho âm thanh trong nhất.</p>', '<h2>CHƯƠNG III: NHẠC CỤ TRE NỨA VÀ PHỤC DỰNG</h2><p>Ngoài đàn đá, nhóm khảo sát Đinh Tăk Ta, Đinh Pơng và Brô. Đã thực hành tái dựng một chiếc Đinh Tăk Ta hoàn chỉnh trong 4 giờ theo hướng dẫn nghệ nhân.</p>']
-  },
-  {
-    id: 'res-006',
-    title: 'Phóng Sự: Nhịp Chày Sóc Bom Bo - Ký Ức Không Ngủ',
-    description: 'Phóng sự tài liệu ghi lại hành trình phục dựng cảnh giã gạo nuôi quân bằng ánh đuốc lồ ô tại Sóc Bom Bo.',
-    type: 'video', subject: 'Lịch sử địa phương', grade: '10',
-    school: 'THPT Chuyên Quang Trung', author: 'CLB Truyền Thông Măng Non',
-    coverImage: '/images/heritage/lich-su/soc-bom-bo-lg.webp',
-    publishedAt: '2024-07-02', featured: false, downloadCount: 187, fileSize: '218 MB', difficulty: 2,
-    motivation: 'Chúng em muốn ghi hình lại chính xác động tác giã gạo chày tay trước khi thế hệ nghệ nhân cuối cùng không còn nữa.',
-    keyFindings: ['Quay và dựng phóng sự dài 12 phút, phục dựng cảnh giã gạo cùng 8 nghệ nhân.', 'Ghi lại nguyên bản giai điệu hò giã gạo cổ truyền.', 'Phỏng vấn 3 thế hệ trong một gia đình S\'tiêng.'],
-    quizId: 'quiz-011',
-    pages: ['<h2>MỞ ĐẦU: VÌ SAO CHÚNG EM LÀM PHÓNG SỰ NÀY</h2><p>Năm 1965, đồng bào S\'tiêng ở sóc Bom Bo đốt đuốc lồ ô, thức trắng đêm giã gạo để tiếp tế cho bộ đội. Câu chuyện ấy đã đi vào âm nhạc Việt Nam nhưng hình ảnh thực tế chưa từng được ghi hình đầy đủ.</p><blockquote>"Tụi nhỏ quay được cảnh này, bà mừng lắm, vì rồi bà cũng không giã nổi chày nữa." — Nghệ nhân Thị Bay, 78 tuổi.</blockquote>', '<h2>PHẦN 1: PHỤC DỰNG ĐÊM GIÃ GẠO</h2><p>Nhóm phục dựng đúng bối cảnh: cối gỗ, chày tay, đuốc lồ ô. Phát hiện thú vị: nhịp chày có nhịp nhanh-chậm xen kẽ để nhiều người thay phiên suốt đêm không kiệt sức.</p>', '<h2>PHẦN 2: BA THẾ HỆ, MỘT KÝ ỨC</h2><p>Phỏng vấn bà (từng giã gạo thời chiến), mẹ (nghe kể lại) và cháu (học qua bài hát). Phóng sự khép lại bằng cảnh ba thế hệ cùng hát "Tiếng chày trên sóc Bom Bo" dưới ánh đuốc phục dựng.</p>']
-  },
-  {
-    id: 'res-007',
-    title: 'Trảng Cỏ Bù Lạch - Khảo Sát Hệ Sinh Thái Đồng Cỏ Hiếm Giữa Đại Ngàn',
-    description: 'Đề tài nghiên cứu khoa học khảo sát thảm thực vật, hệ động vật và giá trị sinh thái độc đáo của trảng cỏ tự nhiên.',
-    type: 'research', subject: 'Sinh học - Địa lý', grade: '12',
-    school: 'THPT Chuyên Quang Trung', author: 'Nhóm học sinh 12 Sinh',
-    coverImage: '/images/heritage/danh-thang/bu-lach-lg.webp',
-    publishedAt: '2024-08-14', featured: false, downloadCount: 141, fileSize: '4.1 MB', difficulty: 3,
-    motivation: 'Giữa vùng rừng nhiệt đới, một thảm cỏ tự nhiên rộng hàng trăm hecta tồn tại bất thường.',
-    keyFindings: ['Ghi nhận 34 loài thực vật đặc trưng, trong đó 5 loài chưa được định danh.', 'Lý giải nguyên nhân hình thành trảng cỏ dựa trên thổ nhưỡng tầng đất mỏng.', 'Ghi hình bằng bẫy ảnh 6 loài động vật hoang dã.'],
-    quizId: 'quiz-009',
-    pages: ['<h2>CHƯƠNG I: MỘT ĐỒNG CỎ GIỮA RỪNG GIÀ</h2><p>Trảng cỏ Bù Lạch là quần thể đồng cỏ tự nhiên hiếm gặp giữa rừng nhiệt đới thường xanh Thành Phố Đồng Nai.</p><blockquote>"Đất ở đây mỏng, mùa mưa ngập, mùa khô nứt nẻ — cây to không sống nổi, chỉ có cỏ mới trụ được." — Cán bộ kiểm lâm.</blockquote>', '<h2>CHƯƠNG II: PHƯƠNG PHÁP KHẢO SÁT THỰC ĐỊA</h2><p>Nhóm tiến hành 4 đợt khảo sát theo bốn mùa, lập 12 ô tiêu chuẩn 10mx10m. Tầng đất mặt trung bình chỉ 15-20cm trước khi gặp lớp đá ong.</p>', '<h2>CHƯƠNG III: GIÁ TRỊ BẢO TỒN</h2><p>Đề xuất: khoanh vùng bảo vệ khu lõi, xây tuyến quan sát động vật kiểm soát, đưa nội dung khảo sát vào chương trình giáo dục địa phương.</p>']
-  },
-  {
-    id: 'res-008',
-    title: 'Giáo Án Trải Nghiệm: Thác Đứng - Đọc Câu Chuyện Địa Chất Qua Từng Bậc Đá',
-    description: 'Tài liệu giáo án tổ chức tiết học trải nghiệm ngoài trời tại Thác Đứng, kết hợp địa lý, địa chất và kỹ năng quan sát.',
-    type: 'document', subject: 'Giáo dục địa phương', grade: '9',
-    school: 'THCS Nguyễn Trường Tộ', author: 'Tổ Địa Lý - Sinh Học',
-    coverImage: '/images/heritage/danh-thang/thac-dung-lg.webp',
-    publishedAt: '2024-09-05', featured: false, downloadCount: 176, fileSize: '2.2 MB', difficulty: 1,
-    motivation: 'Học sinh thường chỉ biết Thác Đứng như điểm chụp ảnh. Giáo án này giúp các em nhìn thấy hàng triệu năm địa chất ẩn sau từng bậc đá.',
-    keyFindings: ['Thiết kế 3 trạm quan sát thực địa với phiếu học tập riêng.', 'Xây dựng bộ 10 câu hỏi dẫn dắt học sinh tự suy luận.', 'Tỉ lệ học sinh hứng thú đạt 92% trong lớp thí điểm.'],
-    quizId: 'quiz-010',
-    pages: ['<h2>PHẦN I: MỤC TIÊU BÀI HỌC</h2><p>Sau tiết học, học sinh mô tả được quá trình hình thành các bậc đá tại Thác Đứng do bào mòn chênh lệch.</p><blockquote>"Một buổi học ngoài trời đúng nghĩa là khi học sinh tự đặt câu hỏi trước khi giáo viên kịp giảng." — Tổ bộ môn.</blockquote>', '<h2>PHẦN II: TỔ CHỨC 3 TRẠM QUAN SÁT</h2><p><strong>Trạm 1 - Chân thác:</strong> Quan sát bậc đá, nhận diện độ cứng các lớp đá.<br/><strong>Trạm 2 - Dòng chảy:</strong> Đo tốc độ dòng chảy, thảo luận mối liên hệ với bào mòn.<br/><strong>Trạm 3 - Thảm thực vật:</strong> Nhận diện cây ưa ẩm, vai trò giữ đất.</p>', '<h2>PHẦN III: PHIẾU ĐÁNH GIÁ VÀ MỞ RỘNG</h2><p>Kết quả thí điểm: học sinh nhớ bài lâu hơn đáng kể. Đặc biệt khái niệm "bào mòn chênh lệch" — trước đó nhiều em cho là khó hình dung khi chỉ học qua sách giáo khoa.</p>']
-  }
-]
-
 const resources = computed<SchoolResourceExtended[]>(() => {
   // Use CMS data when available, fall back to static resources
   if (resourcesContent.value && resourcesContent.value.length >= 8) {
     return resourcesContent.value.map(item => {
-      // Nuxt Content v3 nests all non-standard frontmatter fields under `.meta`;
-      // only `title`/`description` live on the item root for `type: 'page'` collections.
-      // `id` is a reserved built-in field (Nuxt's own doc id, e.g. "school/school/res-001.md"),
-      // so the frontmatter's own `id: res-001` never survives into `.meta.id` — recover it
-      // from `.stem` (file path without extension) instead.
       const raw = item as any
       const meta = raw.meta ?? {}
       const id = raw.stem?.split('/').pop() ?? raw.id
@@ -2248,16 +1899,9 @@ const filteredPapers = computed(() => {
 })
 
 // ──────────────────────────────────────────────
-// GLOSSARY
+// GLOSSARY & 3D FLASHCARDS
 // ──────────────────────────────────────────────
-interface GlossaryTerm { term: string; pronunciation: string; definition: string; category: 'Tâm Linh' | 'Ẩm Thực' | 'Địa Danh' | 'Vật Dụng'; isFlipped?: boolean }
-const glossary = ref<GlossaryTerm[]>([
-  { term: 'Yang Ching', pronunciation: '/Giàng Chinh/', definition: 'Linh hồn ngự trị trong cồng chiêng theo tâm linh S\'tiêng. Cồng chiêng là vật thiêng kết nối trời đất.', category: 'Tâm Linh', isFlipped: false },
-  { term: 'Đ\'rắp S\'lung', pronunciation: '/Đơ-rắp Sơ-lung/', definition: 'Rượu cần lên men gạo hoặc ngô truyền thống từ các loại men lá rừng tự nhiên.', category: 'Ẩm Thực', isFlipped: false },
-  { term: 'Dak Mơ', pronunciation: '/Đác Mơ/', definition: 'Trong tiếng S\'tiêng là nguồn nước của ước mơ, nguồn gốc tên gọi của Thác Mơ.', category: 'Địa Danh', isFlipped: false },
-  { term: 'Yang Bri', pronunciation: '/Giàng Bri/', definition: 'Thần rừng vĩ đại, vị thần bảo vệ buôn làng khỏi thiên tai và thú dữ.', category: 'Tâm Linh', isFlipped: false },
-  { term: 'Bro', pronunciation: '/Brô/', definition: 'Đàn tre truyền thống làm từ thân cây tre khô, phát ra âm thanh mộc mạc.', category: 'Vật Dụng', isFlipped: false }
-])
+const glossary = ref<GlossaryTerm[]>(glossaryData)
 
 const filteredGlossary = computed(() => glossary.value.filter(word => {
   const matchesCat = activeGlossaryCat.value === 'all' || word.category === activeGlossaryCat.value
@@ -2269,7 +1913,6 @@ const filteredGlossary = computed(() => glossary.value.filter(word => {
 // ──────────────────────────────────────────────
 // MAP LANDMARKS
 // ──────────────────────────────────────────────
-interface MapLandmark { id: string; name: string; desc: string; icon: string; x: number; y: number; audioGuide?: boolean; paper?: SchoolResourceExtended }
 const mapLandmarks = ref<MapLandmark[]>([
   { id: 'site-1', name: 'Sóc Bom Bo', desc: 'Địa danh lịch sử hào hùng, nơi đồng bào dân tộc S\'tiêng đốt đuốc giã gạo thâu đêm suốt sáng để nuôi quân kháng chiến cứu nước.', icon: 'mdi:fire', x: 25, y: 35, audioGuide: true, paper: resources.value[2] },
   { id: 'site-2', name: 'Trảng Cỏ Bù Lạch', desc: 'Tuyệt tác thiên nhiên hoang sơ rộng gần 140 ha ôm trọn lòng hồ nước ngọt trong lành nằm giữa rừng già nguyên sinh Bù Đăng.', icon: 'mdi:nature', x: 50, y: 20, paper: resources.value[1] },
@@ -2280,67 +1923,15 @@ const mapLandmarks = ref<MapLandmark[]>([
 // ──────────────────────────────────────────────
 // MEDIA
 // ──────────────────────────────────────────────
-interface ImageStory { title: string; tag: string; image: string; story: string }
-const imageStories = ref<ImageStory[]>([
-  { title: 'Thác Mơ Bù Đăng Hùng Vĩ', tag: 'Thiên Nhiên', image: '/images/heritage/img-disanbudang/thac-mo-dong-nai.png', story: 'Ngọn thác biểu tượng nằm nép mình giữa rừng già nguyên sinh Bù Đăng. Dòng nước trắng xóa như dải lụa đổ từ trên cao, tạo nên cảnh sắc huyền ảo thơ mộng và gắn liền với thần thoại cội nguồn Dak Mơ xa xưa của người S\'tiêng bản địa.' },
-  { title: 'Trảng Cỏ Bù Lạch Xanh Mướt', tag: 'Thiên Nhiên', image: '/images/heritage/img-disanbudang/Trang-co-Bu-Lach.png', story: 'Tuyệt tác thiên nhiên hoang sơ rộng gần 140 hecta bao bọc lấy một lòng hồ nước ngọt trong mát quanh năm. Trảng cỏ là không gian sinh hoạt lễ hội cộng đồng độc đáo và là bài học thực địa địa lý sinh động nhất.' },
-  { title: 'Cồng Chiêng & Vũ Điệu Xoang', tag: 'Văn Hóa', image: '/images/heritage/van-hoa-phi-vat-the/cong-chieng-md.webp', story: 'Âm thanh cồng chiêng ngân vang kết nối buôn làng, là linh hồn sinh hoạt tâm linh và nghệ thuật biểu diễn của đồng bào S\'tiêng Bù Đăng — chung cội nguồn với Cồng chiêng Tây Nguyên (UNESCO 2005).' }
-])
+const imageStories = ref<ImageStory[]>(imageStoriesData)
 const selectedImageItem = ref<ImageStory | null>(null)
 function hideOnImageError(e: string | Event) {
   if (e instanceof Event) (e.target as HTMLImageElement).style.display = 'none'
 }
 
-const mockVideos = [
-  { title: 'Flycam Trảng Cỏ Bù Lạch Mùa Khô', cat: 'Thiên nhiên', duration: '3:22', thumb: '/images/heritage/danh-thang/bu-lach-lg.webp' },
-  { title: 'Lễ hội mừng lúa mới sóc Bom Bo 2024', cat: 'Văn hóa', duration: '6:10', thumb: '/images/heritage/img-disanbudang/Mung-Lua-Moi.png' }
-]
-
-const mediaSubtabs = [
-  { id: 'photos', label: 'Kho Ảnh', icon: 'mdi:image-multiple-outline' },
-  { id: 'videos', label: 'Phim Tư Liệu', icon: 'mdi:video' },
-  { id: 'audios', label: 'Audio', icon: 'mdi:volume-high' }
-]
 const activeMediaSubtab = ref('photos')
 
-const mockAudios = [
-  { title: 'Tiếng cồng chiêng sóc Bom Bo cổ', cat: 'Âm nhạc bản địa', duration: '3:45', icon: 'mdi:music-note' },
-  { title: 'Phiên âm dạy nói tiếng S\'tiêng cơ bản', cat: 'Ngôn ngữ học', duration: '5:20', icon: 'mdi:microphone' },
-  { title: 'Truyền thuyết nguồn nước thần kỳ Dak Mơ', cat: 'Podcast truyện kể', duration: '7:15', icon: 'mdi:headphones' }
-]
 
-// ──────────────────────────────────────────────
-// AI CHATBOT
-// ──────────────────────────────────────────────
-interface AIMessage { role: 'user' | 'assistant'; text: string }
-const aiMessages = ref<AIMessage[]>([{ role: 'assistant', text: 'Xin chào! Tôi là trợ lý AI di sản Thành Phố Đồng Nai. Bạn muốn tìm hiểu lịch sử, văn hóa hoặc địa danh nào hôm nay?' }])
-const aiChips = ['Chiến khu Đ là gì?', 'Lễ hội Mừng Lúa Mới diễn ra khi nào?', 'So sánh người S\'tiêng với M\'nông', 'Từ Dak Mơ nghĩa là gì?']
-const aiInput = ref('')
-const isAiThinking = ref(false)
-
-function generateAiResponse(inputVal: string): string {
-  const query = inputVal.toLowerCase().trim()
-  if (query.includes('chiến khu') || query.includes('chien khu')) return 'Chiến Khu Đ là hệ thống căn cứ địa cách mạng vô cùng hiểm yếu nằm sâu trong lòng rừng nguyên sinh Xã Bù Đăng, Thành Phố Đồng Nai. Nơi đây được bảo vệ bởi địa thế hiểm trở và tinh thần đoàn kết kiên cường của đồng bào du kích S\'tiêng.'
-  if (query.includes('lúa mới') || query.includes('lua moi')) return 'Lễ hội Mừng Lúa Mới của đồng bào S\'tiêng thường diễn ra vào cuối vụ mùa thu hoạch (tháng 10-12 âm lịch). Đây là dịp người dân tạ ơn thần linh (Yang) và thắt chặt tình đoàn kết buôn làng bằng cồng chiêng và rượu cần Đ\'rắp S\'lung.'
-  if (query.includes('cồng chiêng') || query.includes('cong chieng')) return 'Dàn nhạc cồng chiêng S\'tiêng thường bao gồm từ 6 đến 12 chiếc chiêng bằng đồng không có núm. Không gian văn hóa cồng chiêng Tây Nguyên (5 tỉnh Tây Nguyên) được UNESCO vinh danh năm 2005; cồng chiêng S\'tiêng Bù Đăng chung mạch nguồn nhưng nằm ngoài phạm vi hồ sơ công nhận.'
-  if (query.includes('s\'tiêng') || query.includes('m\'nông')) return 'Đồng bào S\'tiêng nổi tiếng với nghề dệt thổ cẩm Rơ-let tinh xảo và cồng chiêng, trong khi người M\'nông có kiến trúc nhà sàn gỗ đặc thù. Cả hai đều là dân tộc thiểu số lâu đời tại Thành Phố Đồng Nai.'
-  if (query.includes('dak mơ') || query.includes('thác mơ')) return 'Trong ngôn ngữ S\'tiêng, "Dak" có nghĩa là nước, "Dak Mơ" tức là "nguồn nước của ước mơ". Đây chính là cội nguồn của danh thắng Thác Mơ hùng vĩ, biểu trưng cho sinh khí dạt dào nuôi dưỡng đại ngàn Thành Phố Đồng Nai.'
-  return 'Tôi đã ghi nhận câu hỏi của bạn. Thành Phố Đồng Nai là vùng đất giàu lịch sử cách mạng, có danh thắng trảng cỏ Bù Lạch tuyệt đẹp và nét dệt thổ cẩm, cồng chiêng S\'tiêng lâu đời. Bạn muốn hỏi chi tiết hơn về chủ đề nào?'
-}
-
-function sendAiMessage(msgText: string) {
-  if (!msgText.trim() || isAiThinking.value) return
-  aiMessages.value.push({ role: 'user', text: msgText })
-  aiInput.value = ''; isAiThinking.value = true
-  setTimeout(() => {
-    isAiThinking.value = false
-    aiMessages.value.push({ role: 'assistant', text: generateAiResponse(msgText) })
-  }, 1200)
-}
-
-function clearChat() {
-  aiMessages.value = [{ role: 'assistant', text: 'Tôi đã làm sạch lịch sử hội thoại. Bạn có câu hỏi nghiên cứu mới nào không?' }]
-}
 
 // ──────────────────────────────────────────────
 // GAMIFICATION / BOOKMARKS
@@ -2442,7 +2033,16 @@ function openResource(res: SchoolResourceExtended) {
 
 function downloadFile(resource: SchoolResourceExtended) {
   resource.downloadCount++
-  swal.fire({ title: 'Tải tài liệu thành công!', html: `Hệ thống đang chuẩn bị tải PDF <strong>"${resource.title}"</strong> (${resource.fileSize ?? '2.4 MB'}).`, icon: 'success', background: '#221D17', color: '#F5F1EA', confirmButtonColor: '#C7A664', confirmButtonText: 'Đóng lại' })
+  if (resource.fileUrl) {
+    const a = document.createElement('a')
+    a.href = resource.fileUrl
+    a.download = resource.fileUrl.split('/').pop() ?? resource.title
+    document.body.appendChild(a)
+    a.click()
+    document.body.removeChild(a)
+  } else {
+    swal.fire({ title: 'Tải tài liệu thành công!', html: `Hệ thống đang chuẩn bị tải PDF <strong>"${resource.title}"</strong> (${resource.fileSize ?? '2.4 MB'}).`, icon: 'success', background: '#221D17', color: '#F5F1EA', confirmButtonColor: '#C7A664', confirmButtonText: 'Đóng lại' })
+  }
 }
 
 function startResourceQuiz(resource: SchoolResourceExtended) {
@@ -2460,10 +2060,8 @@ function openImageModal(item: ImageStory) { selectedImageItem.value = item }
 
 function handleEmptyStateAction(actionType: string, payload?: string) {
   if (actionType === 'explore-heritage') searchOverlayOpen.value = true
-  else if (actionType === 'ask-ai') { activeTab.value = 'ai'; scrollToContent() }
+  else if (['ask-ai', 'ask-ai-topic', 'send-prompt'].includes(actionType)) { navigateTo('/?ai=true') }
   else if (['open-map', 'explore-map', 'explore-roadmap'].includes(actionType)) { navigateTo('/map') }
-  else if (actionType === 'ask-ai-topic') { activeTab.value = 'ai'; if (payload) sendAiMessage(payload); scrollToContent() }
-  else if (actionType === 'send-prompt') { if (payload) sendAiMessage(payload) }
   else if (actionType === 'start-learning') { activeTab.value = 'lessons'; scrollToContent() }
   else if (actionType === 'pronounce-word') { if (payload) pronounceTerm(payload, '') }
   else if (actionType === 'teacher-activity') { swal.fire({ title: payload || 'Hoạt động giáo viên', text: `Tính năng "${payload}" đang phát triển.`, icon: 'info', background: '#221D17', color: '#F5F1EA', confirmButtonColor: '#C7A664' }) }
@@ -2651,4 +2249,13 @@ function handleEmptyStateAction(actionType: string, payload?: string) {
   cursor: pointer;
 }
 .btn-ghost:hover { color: rgb(253 250 243); background: rgb(28 26 22); }
+.slide-down-enter-active,
+.slide-down-leave-active {
+  transition: all 0.25s cubic-bezier(0.19, 1, 0.22, 1);
+}
+.slide-down-enter-from,
+.slide-down-leave-to {
+  opacity: 0;
+  transform: translateY(-6px);
+}
 </style>

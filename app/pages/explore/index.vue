@@ -48,46 +48,51 @@
         <NuxtLink
           to="/explore/virtual-tour"
           id="virtual-tour-entry"
-          class="group flex items-center gap-5 rounded-2xl overflow-hidden border border-charcoal-800 hover:border-gold-500/50 transition-all duration-400 relative"
-          style="background: linear-gradient(135deg, #1A140F 0%, #221D17 100%);"
+          class="group flex items-center gap-5 rounded-2xl overflow-hidden border border-gold-500/30 hover:border-gold-500/70 transition-all duration-400 relative p-1"
+          style="background: linear-gradient(135deg, #1A140F 0%, #241C15 50%, #1A140F 100%);"
         >
           <!-- Thumbnail strip -->
-          <div class="hidden sm:flex flex-shrink-0 h-[88px] w-[220px] overflow-hidden relative">
-            <img
-              src="/video/virtual-tour/trang-co/poster.jpg"
-              alt="Trảng Cỏ Bù Lạch"
-              class="w-1/2 h-full object-cover"
-            />
+          <div class="hidden sm:flex flex-shrink-0 h-[92px] w-[230px] rounded-xl overflow-hidden relative border border-charcoal-800">
             <img
               src="/video/virtual-tour/bom-bo/poster.jpg"
               alt="Khu Bảo Tồn Bom Bo"
-              class="w-1/2 h-full object-cover"
+              class="w-1/2 h-full object-cover group-hover:scale-105 transition-transform duration-700"
             />
-            <!-- overlay -->
-            <div class="absolute inset-0" style="background: linear-gradient(to right, transparent 60%, #1A140F 100%);" />
+            <img
+              src="/video/virtual-tour/trang-co/poster.jpg"
+              alt="Trảng Cỏ Bù Lạch"
+              class="w-1/2 h-full object-cover group-hover:scale-105 transition-transform duration-700"
+            />
+            <!-- 360 badge overlay -->
+            <div class="absolute inset-0 bg-charcoal-950/30 flex items-center justify-center">
+              <span class="px-2.5 py-1 rounded-full bg-charcoal-950/80 backdrop-blur-md border border-gold-500/40 text-[10px] font-bold text-gold-400 flex items-center gap-1">
+                <Icon name="mdi:rotate-3d-variant" class="w-3.5 h-3.5" />
+                360° TOUR
+              </span>
+            </div>
           </div>
 
           <!-- Text content -->
-          <div class="flex-1 py-4 pl-4 sm:pl-0 pr-2">
+          <div class="flex-1 py-3 pl-3 sm:pl-0 pr-2">
             <div class="flex items-center gap-2 mb-1">
               <span class="inline-flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-widest text-gold-400 bg-gold-500/10 border border-gold-500/20 rounded-full px-2.5 py-0.5">
-                <span class="w-1.5 h-1.5 rounded-full bg-gold-400 animate-pulse inline-block" />
-                MỚI
+                <span class="w-1.5 h-1.5 rounded-full bg-gold-400 animate-ping inline-block" />
+                360° STREET VIEW
               </span>
-              <span class="text-[10px] font-semibold uppercase tracking-widest text-charcoal-500">Tính năng</span>
+              <span class="text-[10px] font-semibold uppercase tracking-widest text-charcoal-400">Bảo tàng số</span>
             </div>
-            <h3 class="font-heading text-ivory text-base font-bold leading-snug mb-0.5 group-hover:text-gold-300 transition-colors">
-              🎬 Chuyến Tham Quan Ảo
+            <h3 class="font-heading text-ivory text-base md:text-lg font-bold leading-snug mb-0.5 group-hover:text-gold-300 transition-colors">
+              🏛️ Chuyến Tham Quan Ảo 360° — Sóc Bom Bo & Trảng Cỏ Bù Lạch
             </h3>
             <p class="text-charcoal-400 text-xs leading-relaxed">
-              Trảng Cỏ Bù Lạch · Khu Bảo Tồn Sóc Bom Bo — Trải nghiệm cinematic trong 30 giây
+              Xoay 360°, chuyển đổi giữa các điểm nhìn, tương tác hiện vật khảo cổ và lắng nghe Audio Guide
             </p>
           </div>
 
           <!-- Arrow CTA -->
           <div class="flex-shrink-0 pr-5 flex items-center">
-            <div class="w-9 h-9 rounded-full bg-gold-500/15 border border-gold-500/30 flex items-center justify-center group-hover:bg-gold-500/30 transition-all duration-300 group-hover:scale-110">
-              <Icon name="mdi:play" class="w-4 h-4 text-gold-400 ml-0.5" />
+            <div class="w-10 h-10 rounded-full bg-gold-500/15 border border-gold-500/30 flex items-center justify-center group-hover:bg-gold-500 group-hover:text-charcoal-950 transition-all duration-300 group-hover:scale-110">
+              <Icon name="mdi:rotate-3d" class="w-5 h-5 text-gold-400 group-hover:text-charcoal-950 transition-colors" />
             </div>
           </div>
         </NuxtLink>
@@ -466,8 +471,14 @@ const activeCluster = ref('')
 const sortOrder = ref('views')
 // Data is a static local import — no artificial loading state needed
 const isLoading = ref(false)
-const activeMainTab = ref('heritage')
+const activeMainTab = ref(route.query.tab === 'community' ? 'community' : 'heritage')
 const activeCommunityTab = ref('all')
+
+watch(() => route.query.tab, (newTab) => {
+  if (newTab === 'community' || newTab === 'heritage') {
+    activeMainTab.value = newTab
+  }
+})
 
 const mainTabs = computed(() => [
   { id: 'heritage', label: 'Di Sản', icon: 'mdi:archive-outline', count: store.totalCount },
