@@ -128,7 +128,7 @@ const timeline = [
   {
     year: 'Kỷ nguyên số',
     title: 'Số hóa & Kết nối thế giới',
-    description: 'Bản đồ tương tác đa năng, audio guide tự nhiên, mã QR tra cứu di tích và kho lưu trữ số hóa do cộng đồng đóng góp giúp di sản Thành Phố Đồng Nai vươn xa, kết nối thế hệ trẻ trong và ngoài nước.',
+    description: 'Bản đồ tương tác đa năng, audio guide tự nhiên và kho lưu trữ số hóa do cộng đồng đóng góp giúp di sản Thành Phố Đồng Nai vươn xa, kết nối thế hệ trẻ trong và ngoài nước.',
     quote: 'Bảo tàng số đưa lịch sử Đồng Nai vượt không gian đến gần hơn với những người con xa xứ và du khách toàn cầu.',
     artifact: 'Bản đồ di sản thông minh',
     related: 'Cổng thông tin Di Sản Bù Đăng',

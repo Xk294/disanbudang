@@ -27,9 +27,6 @@
     <!-- 9. Tin tức: Sự kiện và bài viết mới nhất -->
     <NewsSection />
 
-    <!-- 10. Cơ hội đầu tư: Tiềm năng kinh tế & phát triển bền vững vùng cao nguyên Đồng Nai -->
-    <HomeInvestmentSection />
-
     <!-- 11. FAQ: SEO + giải đáp thắc mắc -->
     <FAQSection />
 

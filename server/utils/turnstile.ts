@@ -56,7 +56,12 @@ export async function requireClient(
   // Origin check — prevents cross-site form submissions in production
   if (!import.meta.dev) {
     const origin = getHeader(event, 'origin') ?? ''
-    if (origin !== 'https://disanbudang.com') {
+    const isAllowedOrigin =
+      origin === 'https://disanbudang.com' ||
+      origin === 'https://www.disanbudang.com' ||
+      origin.endsWith('.disanbudang.pages.dev') ||
+      origin.endsWith('.pages.dev')
+    if (!isAllowedOrigin) {
       throw createError({ statusCode: 403, message: 'Invalid request origin' })
     }
   }

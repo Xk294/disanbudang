@@ -99,7 +99,7 @@
             <Icon name="mdi:magnify" class="w-4 h-4 text-gold-400/80 shrink-0" />
             <span class="hidden xl:inline text-xs font-normal text-charcoal-300">Tìm kiếm...</span>
             <span class="inline xl:hidden text-xs font-normal text-charcoal-300">Tìm</span>
-            <kbd class="hidden xl:inline-flex items-center px-1.5 py-0.5 text-[9px] font-mono bg-charcoal-800/80 border border-charcoal-700/60 rounded text-charcoal-400">⌘K</kbd>
+            <kbd class="hidden xl:inline-flex items-center px-1.5 py-0.5 text-[9px] font-mono bg-charcoal-800/80 border border-charcoal-700/60 rounded text-charcoal-400">{{ shortcutKey }}</kbd>
           </button>
 
           <!-- AI Assistant Trigger Button (Refined Obsidian Glass & Pulsing Sparkle Aura) -->
@@ -433,7 +433,16 @@ const communityResults = computed(() => {
     .slice(0, 3)
 })
 
+const shortcutKey = ref('⌘K')
+
 if (import.meta.client) {
+  onMounted(() => {
+    if (typeof navigator !== 'undefined') {
+      const isMac = /(Mac|iPhone|iPod|iPad)/i.test(navigator.userAgent || navigator.platform || '')
+      shortcutKey.value = isMac ? '⌘K' : 'Ctrl+K'
+    }
+  })
+
   useEventListener(window, 'scroll', () => {
     isScrolled.value = window.scrollY > 20
   })

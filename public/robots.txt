@@ -1,4 +1,7 @@
 User-Agent: *
-Disallow:
+Allow: /
+Disallow: /admin
+Disallow: /me
 
 Sitemap: https://disanbudang.com/sitemap.xml
+

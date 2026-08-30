@@ -148,7 +148,7 @@
                   </div>
                   <div class="flex flex-col text-left whitespace-nowrap">
                     <span class="font-heading font-semibold text-[#FFFDF7] text-xs sm:text-sm leading-tight">Thành Phố Đồng Nai</span>
-                    <span class="text-[#A89F8E] text-[8px] sm:text-[9px] leading-none mt-0.5">TPTT thứ 7 · Từ 30/04/2026</span>
+                    <span class="text-[#A89F8E] text-[8px] sm:text-[9px] leading-none mt-0.5">TPTTTƯ thứ 7 · Từ 30/04/2026</span>
                   </div>
                 </div>
               </div>

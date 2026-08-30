@@ -2,7 +2,7 @@ import type { Ref } from 'vue'
 import type { Heritage, NewsArticle } from '~/types'
 
 const SITE_NAME = 'Di Sản Bù Đăng'
-const SITE_DESCRIPTION = 'Số hóa di sản văn hóa phi vật thể S\'Tiêng, M\'Nông tại Xã Bù Đăng - Thành Phố Đồng Nai. 16 di sản, audio guide, bản đồ GPS, Quiz lịch sử địa phương.'
+const SITE_DESCRIPTION = 'Số hóa di sản văn hóa phi vật thể S\'Tiêng, M\'Nông tại Xã Bù Đăng - Thành Phố Đồng Nai. 16 di sản, audio guide, bản đồ tương tác, Quiz lịch sử địa phương.'
 const SITE_URL = 'https://disanbudang.com'
 const DEFAULT_IMAGE = '/images/og-default.jpg'
 
@@ -32,7 +32,12 @@ export function ensureTrailingSlash(path: string): string {
 
 export function isArticleRoute(path: string): boolean {
   const normalized = path.toLowerCase()
-  return normalized.includes('/heritage/') || normalized.includes('/news/') || normalized.includes('/study/lesson/')
+  return (
+    normalized.includes('/heritage/') ||
+    normalized.includes('/news/') ||
+    normalized.includes('/study/lesson/') ||
+    normalized.includes('/explore/virtual-tour')
+  )
 }
 
 export function buildBreadcrumbSchema(path: string, pageTitle?: string) {
@@ -148,17 +153,13 @@ export function useMuseumSeo(input: MuseumSeoInput = {}) {
             '@id': `${SITE_URL}/#organization`,
             'name': SITE_NAME,
             'alternateName': [
-              'Di Sản Bù Đăng',
               'Bảo Tàng Số Di Sản Thành Phố Đồng Nai',
-              'di san bu dang',
-              'disanbudang',
-              'disanbudang.com',
-              'bao tang so di san thanh pho dong nai',
+              'Di Sản Bù Đăng',
             ],
             'url': `${SITE_URL}/`,
             'logo': `${SITE_URL}/favicon/icon-192.png`,
             'description': SITE_DESCRIPTION,
-            'foundingDate': '2026',
+            'foundingDate': '2025',
             'founder': {
               '@type': 'Person',
               '@id': `${SITE_URL}/#author`,

@@ -16,7 +16,7 @@
       <Icon name="mdi:chevron-right" class="w-4 h-4 text-charcoal-400 shrink-0" />
       
       <span v-if="index === crumbs.length - 1" class="text-gold-400 font-semibold truncate max-w-[200px] sm:max-w-xs">
-        {{ (isMounted && leafLabel) ? leafLabel : crumb.label }}
+        {{ crumb.label }}
       </span>
       
       <NuxtLink
@@ -35,11 +35,10 @@
 </template>
 
 <script setup lang="ts">
+import { HERITAGES } from '~/data/heritages'
+import { NEWS_ARTICLES } from '~/data/posts'
+
 const route = useRoute()
-const isMounted = ref(false)
-onMounted(() => {
-  isMounted.value = true
-})
 
 // Lookup table for static segments
 const lookupTable: Record<string, string> = {
@@ -52,6 +51,7 @@ const lookupTable: Record<string, string> = {
   contact: 'Liên Hệ',
   heritage: 'Chi Tiết Di Sản',
   explore: 'Khám Phá',
+  'virtual-tour': 'Tour Ảo 360°',
   lesson: 'Bài Học',
 }
 
@@ -68,6 +68,31 @@ const activeRoutes = new Set([
   '/explore/',
 ])
 
+// Retrieve the dynamic leaf label set by pages using useBreadcrumb
+const leafLabel = computed(() => {
+  const state = useState<string>(`breadcrumb-label-${route.path}`)
+  return state.value || ''
+})
+
+function getSegmentTitle(segment: string, isLast: boolean): string {
+  if (isLast && leafLabel.value) {
+    return leafLabel.value
+  }
+  if (lookupTable[segment]) {
+    return lookupTable[segment]!
+  }
+  // Try to find matching heritage
+  const heritage = HERITAGES.find((h) => h.slug === segment)
+  if (heritage) return heritage.title
+
+  // Try to find matching news article
+  const news = NEWS_ARTICLES.find((n) => n.slug === segment)
+  if (news) return news.title
+
+  const formatted = segment.replace(/-/g, ' ')
+  return formatted.charAt(0).toUpperCase() + formatted.slice(1)
+}
+
 const crumbs = computed(() => {
   // Split path and filter empty parts
   const segments = route.path.split('/').filter(Boolean)
@@ -80,21 +105,16 @@ const crumbs = computed(() => {
     
     // Ensure trailing slash is added consistently
     const formattedPath = `${currentPath}/`
-    const label = lookupTable[segment] || segment.replace(/-/g, ' ')
+    const isLast = i === segments.length - 1
+    const label = getSegmentTitle(segment, isLast)
     const isLink = activeRoutes.has(formattedPath)
     
     list.push({
-      label: label.charAt(0).toUpperCase() + label.slice(1),
+      label,
       path: formattedPath,
       isLink,
     })
   }
   return list
-})
-
-// Retrieve the dynamic leaf label set by pages using useBreadcrumb
-const leafLabel = computed(() => {
-  const state = useState<string>(`breadcrumb-label-${route.path}`)
-  return state.value || ''
 })
 </script>

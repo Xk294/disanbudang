@@ -9,6 +9,25 @@ export default defineNuxtConfig({
     },
   },
 
+  nitro: {
+    prerender: {
+      crawlLinks: true,
+      routes: [
+        '/',
+        '/about',
+        '/explore',
+        '/explore/virtual-tour',
+        '/study',
+        '/map',
+        '/invest',
+        '/contact',
+        '/contribute',
+        '/news',
+      ],
+      ignore: ['/admin', '/me'],
+    },
+  },
+
   site: {
     url: 'https://disanbudang.com',
     name: 'Di Sản Bù Đăng',
@@ -59,7 +78,7 @@ export default defineNuxtConfig({
 
   sitemap: {
     strictNuxtContentPaths: false,
-    exclude: ['/404'],
+    exclude: ['/404', '/admin', '/admin/**', '/me', '/me/**'],
     sources: [],
     zeroRuntime: true,
   },
@@ -135,6 +154,7 @@ export default defineNuxtConfig({
 
   app: {
     head: {
+      htmlAttrs: { lang: 'vi' },
       charset: 'utf-8',
       viewport: 'width=device-width, initial-scale=1',
       title: 'Di Sản Bù Đăng — Bảo Tàng Số Thành Phố Đồng Nai',
@@ -144,7 +164,7 @@ export default defineNuxtConfig({
           content:
             'Bảo tàng số di sản văn hóa, lịch sử và thiên nhiên Thành Phố Đồng Nai - từ Biên Hòa, Sóc Bom Bo đến Chiến Khu Đ, núi Bà Rá. Khám phá và bảo tồn di sản qua không gian số tương tác.',
         },
-        { name: 'theme-color', content: '#FBF8F2' },
+        { name: 'theme-color', content: '#0A0C10' },
         { property: 'og:type', content: 'website' },
         { property: 'og:locale', content: 'vi_VN' },
         {
@@ -185,7 +205,14 @@ export default defineNuxtConfig({
 
   vite: {
     optimizeDeps: {
-      include: ['leaflet'],
+      include: [
+        'leaflet',
+        '@vue/devtools-core',
+        '@vue/devtools-kit',
+        'firebase/app',
+        'firebase/auth',
+        'sweetalert2',
+      ],
     },
   },
 })

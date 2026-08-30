@@ -209,10 +209,5 @@ const audioFeatures = [
     title: 'Phát Ngay Trên Trình Duyệt',
     desc: 'Nhấn Play để nghe thuyết minh ngay — không cần tải về, chạy xuyên suốt khi lướt trang.',
   },
-  {
-    icon: 'mdi:qrcode-scan',
-    title: 'QR Thực Địa',
-    desc: 'Quét QR tại di tích để nghe ngay thuyết minh tại chỗ — trải nghiệm immersive.',
-  },
 ]
 </script>

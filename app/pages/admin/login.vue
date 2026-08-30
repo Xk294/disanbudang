@@ -39,6 +39,8 @@ definePageMeta({
   layout: 'admin',
 })
 
+useHead({ meta: [{ name: 'robots', content: 'noindex,nofollow' }] })
+
 const { user, authReady, isAdmin, initAuthListener, signInWithGoogle, signOut } = useAuth()
 const loading = ref(false)
 const error = ref('')

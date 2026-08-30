@@ -429,7 +429,7 @@ import type { Heritage, HeritageCategory_Meta, PostType } from '~/types'
 definePageMeta({ layout: 'default' })
 useMuseumSeo({
   title: 'Thư Viện Di Sản & Ký Ức Cộng Đồng',
-  description: '11 di sản số hóa đầy đủ dữ liệu học thuật cùng ký ức do người dân Thành Phố Đồng Nai đóng góp. Di tích lịch sử, danh thắng, văn hóa phi vật thể S\'Tiêng có tọa độ và nguồn gốc tư liệu.',
+  description: '16 di sản số hóa đầy đủ dữ liệu học thuật cùng ký ức do người dân Thành Phố Đồng Nai đóng góp. Di tích lịch sử, danh thắng, văn hóa phi vật thể S\'Tiêng có tọa độ và nguồn gốc tư liệu.',
 })
 
 // CollectionPage + ItemList schema — chuẩn cho trang danh sách (rich results)

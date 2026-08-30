@@ -344,10 +344,10 @@ export function processAiQuery(rawQuery: string): AiResponse {
   }
 
   // If we matched a specific heritage in the official database with high relevance
-  if (matchedHeritages.length > 0 && highestScore < 12) {
-    const h = matchedHeritages[0]
+  const h = matchedHeritages[0]
+  if (h && highestScore < 12) {
     const catName = CATEGORIES.find(c => c.id === h.category)?.label || 'Di sản địa phương'
-    const clusterName = CLUSTERS.find(c => c.id === h.cluster)?.name || 'Khu vực Bù Đăng'
+    const clusterName = CLUSTERS.find(c => c.id === h.cluster)?.label || 'Khu vực Bù Đăng'
 
     const answer = `📍 **${h.title}**
 *${h.subtitle}*

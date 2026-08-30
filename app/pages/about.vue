@@ -237,7 +237,7 @@
               <Icon :name="stat.icon" class="w-6 h-6 transition-colors duration-300" :class="stat.iconColor" />
             </div>
             <p class="font-heading font-bold text-ivory text-4xl lg:text-5xl mb-2 tabular-nums group-hover:text-gold-300 transition-colors">
-              {{ statsAnimated ? stat.displayValue : '0' }}{{ stat.suffix }}
+              {{ stat.displayValue }}{{ stat.suffix }}
             </p>
             <p class="text-charcoal-500 text-[10px] uppercase tracking-wider font-semibold">{{ stat.label }}</p>
           </div>
@@ -444,7 +444,7 @@
 
                   <!-- Real photo -->
                   <NuxtImg
-                    src="/images/Fouderdisanbudang.jpg"
+                    src="/images/founder-nguyen-xuan-kiet.jpg"
                     alt="Nguyễn Xuân Kiệt — Tác giả & Nhà phát triển"
                     class="absolute inset-0 w-full h-full object-cover object-top transition-transform duration-700 group-hover:scale-105"
                   />
@@ -586,62 +586,6 @@
       </div>
     </section>
 
-    <!-- ══════════════════════════════════════════════════════════
-         6. INVESTMENT OPPORTUNITY — Cơ hội đầu tư & phát triển bền vững
-         ══════════════════════════════════════════════════════════ -->
-    <section class="py-20 lg:py-28 bg-charcoal-900 border-t border-charcoal-800/60 relative overflow-hidden" aria-label="Cơ hội đầu tư">
-      <div class="absolute top-0 right-1/3 w-[500px] h-[500px] bg-gold-500/5 rounded-full blur-[140px] pointer-events-none" />
-
-      <div class="container-heritage relative z-10">
-        <div class="max-w-4xl mx-auto rounded-3xl border border-gold-500/30 bg-gradient-to-b from-charcoal-950/90 to-charcoal-950 p-8 sm:p-12 relative overflow-hidden shadow-2xl reveal">
-          <div class="relative z-10 text-center">
-            <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-gold-500/10 border border-gold-500/25 text-gold-400 text-3xs uppercase font-bold tracking-widest mb-5">
-              <Icon name="mdi:handshake-outline" class="w-4 h-4 text-gold-400" />
-              <span>Phát Triển Bền Vững Cùng Địa Phương</span>
-            </div>
-
-            <h2 class="font-heading font-bold text-ivory text-3xl sm:text-4xl lg:text-5xl leading-tight mb-5">
-              Cơ Hội Đầu Tư Vùng<br />
-              <span class="text-gradient-gold">Cao Nguyên Đồng Nai</span>
-            </h2>
-
-            <p class="text-charcoal-300 text-sm sm:text-base leading-relaxed max-w-2xl mx-auto mb-8">
-              Bên cạnh việc số hóa và bảo tồn các giá trị lịch sử — văn hóa, vùng cao nguyên đất đỏ bazan đang đón đầu làn sóng đầu tư mới trong nông nghiệp công nghệ cao, du lịch sinh thái và phát triển hạ tầng kết nối.
-            </p>
-
-            <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-8 text-center">
-              <div class="bg-charcoal-900/80 border border-charcoal-800 rounded-2xl p-4">
-                <p class="font-heading font-bold text-2xl text-gold-400">68%</p>
-                <p class="text-charcoal-400 text-3xs uppercase tracking-wider mt-1">Độ che phủ rừng</p>
-              </div>
-              <div class="bg-charcoal-900/80 border border-charcoal-800 rounded-2xl p-4">
-                <p class="font-heading font-bold text-2xl text-ivory">500+ ha</p>
-                <p class="text-charcoal-400 text-3xs uppercase tracking-wider mt-1">Quỹ đất sạch</p>
-              </div>
-              <div class="bg-charcoal-900/80 border border-charcoal-800 rounded-2xl p-4">
-                <p class="font-heading font-bold text-2xl text-ivory">1.500 km²</p>
-                <p class="text-charcoal-400 text-3xs uppercase tracking-wider mt-1">Diện tích tự nhiên</p>
-              </div>
-              <div class="bg-charcoal-900/80 border border-charcoal-800 rounded-2xl p-4">
-                <p class="font-heading font-bold text-2xl text-emerald-400">Ưu đãi</p>
-                <p class="text-charcoal-400 text-3xs uppercase tracking-wider mt-1">Thuế & Mặt bằng</p>
-              </div>
-            </div>
-
-            <div class="flex flex-wrap items-center justify-center gap-4">
-              <NuxtLink to="/invest" class="btn-primary px-8 py-3.5 text-sm shadow-[0_0_20px_rgba(199,166,100,0.25)]">
-                <Icon name="mdi:briefcase-outline" class="w-4.5 h-4.5" />
-                Khám Phá Cơ Hội Đầu Tư
-              </NuxtLink>
-              <NuxtLink to="/contact" class="btn-ghost px-8 py-3.5 text-sm border border-ivory/20 text-ivory/80 hover:border-gold-400/50 hover:text-gold-300">
-                <Icon name="mdi:email-outline" class="w-4.5 h-4.5" />
-                Liên Hệ Hợp Tác
-              </NuxtLink>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
 
   </div>
 </template>
@@ -792,7 +736,7 @@ const cityQuickFacts = [
 const rawStats = computed(() => [
   { icon: 'mdi:castle', label: 'Di sản số hóa', raw: totalCount.value || 16, suffix: '', iconBg: 'bg-gold-500/10 group-hover:bg-gold-500/20', iconColor: 'text-gold-400' },
   { icon: 'mdi:headphones', label: 'Audio thuyết minh', raw: 2, suffix: '', iconBg: 'bg-brick-500/10 group-hover:bg-brick-500/20', iconColor: 'text-brick-400' },
-  { icon: 'mdi:gamepad-variant-outline', label: 'Câu hỏi lịch sử', raw: 160, suffix: '+', iconBg: 'bg-forest-500/10 group-hover:bg-forest-500/20', iconColor: 'text-forest-400' },
+  { icon: 'mdi:gamepad-variant-outline', label: 'Câu hỏi lịch sử', raw: 30, suffix: '', iconBg: 'bg-forest-500/10 group-hover:bg-forest-500/20', iconColor: 'text-forest-400' },
   { icon: 'mdi:school-outline', label: 'Trường tham gia', raw: 5, suffix: '+', iconBg: 'bg-earth-500/10 group-hover:bg-earth-500/20', iconColor: 'text-earth-400' },
   { icon: 'mdi:view-dashboard-outline', label: 'Phân hệ', raw: 5, suffix: '', iconBg: 'bg-copper-500/10 group-hover:bg-copper-500/20', iconColor: 'text-copper-400' },
   { icon: 'mdi:account-group', label: 'Ký ức cộng đồng', raw: 6, suffix: '', iconBg: 'bg-gold-500/10 group-hover:bg-gold-500/20', iconColor: 'text-gold-400' },
@@ -804,7 +748,8 @@ const animatedValues = ref<number[]>([0, 0, 0, 0, 0, 0])
 const projectStats = computed(() =>
   rawStats.value.map((s, i) => ({
     ...s,
-    displayValue: statsAnimated.value ? String(animatedValues.value[i] || s.raw) : '0',
+    // SSR renders raw value; JS animation overrides once client-side observer fires
+    displayValue: statsAnimated.value ? String(animatedValues.value[i] || s.raw) : String(s.raw),
   }))
 )
 
@@ -867,7 +812,7 @@ const pillars = computed(() => [
     iconBg: 'bg-brick-500/10 border-brick-500/25 group-hover:bg-brick-500/20',
     iconColor: 'text-brick-400',
     title: 'Cổng Học Tập Số Tương Tác',
-    desc: '160+ câu hỏi tìm hiểu lịch sử, 24 flashcard 3D thuật ngữ S\'tiêng và huy hiệu điện tử — nâng cao tinh thần tự học chủ động.',
+    desc: '30 câu hỏi tìm hiểu lịch sử, 24 flashcard thuật ngữ S\'tiêng và huy hiệu điện tử — nâng cao tinh thần tự học chủ động.',
     link: '/study',
     image: '/images/heritage/img-disanbudang/Nha-Dai-Truyen-Thong.png',
     imagePos: 'center 35%',

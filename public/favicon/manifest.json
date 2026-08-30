@@ -1,10 +1,10 @@
 {
-  "name": "Disanbudang",
-  "short_name": "Disan",
+  "name": "Di Sản Bù Đăng",
+  "short_name": "Bù Đăng",
   "start_url": "/",
   "display": "standalone",
-  "theme_color": "#FBF8F2",
-  "background_color": "#FBF8F2",
+  "theme_color": "#0A0C10",
+  "background_color": "#0A0C10",
   "icons": [
     {
       "src": "/favicon/icon-192.png",

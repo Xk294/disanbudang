@@ -80,7 +80,7 @@
           >
             <Icon name="mdi:magnify" class="w-5 h-5" />
             Tìm kiếm nhanh
-            <kbd class="hidden md:inline-flex items-center px-1.5 py-0.5 rounded text-3xs bg-charcoal-800 border border-charcoal-700 text-charcoal-400 font-mono">⌘K</kbd>
+            <kbd class="hidden md:inline-flex items-center px-1.5 py-0.5 rounded text-3xs bg-charcoal-800 border border-charcoal-700 text-charcoal-400 font-mono">{{ studyShortcutKey }}</kbd>
           </button>
         </div>
 
@@ -645,9 +645,9 @@
           <div>
             <span class="section-label">Tổng quan di sản</span>
             <h3 class="font-heading text-2xl font-bold text-ivory mt-1">Khám Phá Di Sản Thành Phố Đồng Nai</h3>
-            <p class="text-charcoal-400 text-xs mt-1 max-w-xl">Tìm hiểu tổng quan 11 di sản đã số hóa — lịch sử, cụm di sản, câu chuyện cộng đồng và hành trình khám phá thực tế.</p>
+            <p class="text-charcoal-400 text-xs mt-1 max-w-xl">Tìm hiểu tổng quan 16 di sản đã số hóa — lịch sử, cụm di sản, câu chuyện cộng đồng và hành trình khám phá thực tế.</p>
           </div>
-          <NuxtLink to="/library" class="shrink-0 px-5 py-2.5 bg-gold-500/10 border border-gold-500/25 hover:bg-gold-500/20 text-gold-400 font-bold rounded-xl text-sm transition-all inline-flex items-center gap-2">
+          <NuxtLink to="/explore" class="shrink-0 px-5 py-2.5 bg-gold-500/10 border border-gold-500/25 hover:bg-gold-500/20 text-gold-400 font-bold rounded-xl text-sm transition-all inline-flex items-center gap-2">
             <Icon name="mdi:compass-outline" class="w-4 h-4" />
             Xem thư viện di sản
           </NuxtLink>
@@ -1562,6 +1562,7 @@ function scrollToContent() {
   }
 }
 
+const studyShortcutKey = ref('⌘K')
 let keydownHandler: (e: KeyboardEvent) => void
 let scrollHandler: () => void
 
@@ -1571,6 +1572,11 @@ onMounted(() => {
     activeTab.value = route.query.tab as string
   }
   if (import.meta.client) {
+    if (typeof navigator !== 'undefined') {
+      const isMac = /(Mac|iPhone|iPod|iPad)/i.test(navigator.userAgent || navigator.platform || '')
+      studyShortcutKey.value = isMac ? '⌘K' : 'Ctrl+K'
+    }
+
     keydownHandler = (e: KeyboardEvent) => {
       if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 'k') {
         e.preventDefault()

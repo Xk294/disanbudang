@@ -181,7 +181,7 @@ const currentVideoPoster = computed(() => {
 })
 
 useMuseumSeo({
-  title: 'Khám Phá Không Gian 360° - Sóc Bom Bo & Trảng Cỏ Bù Lạch',
+  title: 'Tham Quan 360° Di Sản',
   description: 'Trải nghiệm không gian 360° Street View tương tác: tự nhìn quanh, di chuyển giữa các điểm nhìn, tìm hiểu hiện vật khảo cổ và nghe Audio Guide di sản Bù Đăng.',
   path: '/explore/virtual-tour',
 })

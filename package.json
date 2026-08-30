@@ -5,7 +5,7 @@
   "private": true,
   "scripts": {
     "build": "nuxt build",
-    "dev": "npm run killport && nuxt dev",
+    "dev": "npm run killport && NODE_OPTIONS='--max-old-space-size=4096' nuxt dev",
     "killport": "lsof -t -i:3000 | xargs kill -9 2>/dev/null || true",
     "generate": "nuxt generate && npm run validate:seo",
     "preview": "nuxt preview",

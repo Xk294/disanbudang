@@ -22,18 +22,18 @@
         </p>
 
         <div class="flex flex-wrap justify-center gap-3">
-          <NuxtLink to="/" class="btn-primary text-sm px-6 py-3.5">
+          <button @click="handleClearError('/')" class="btn-primary text-sm px-6 py-3.5 cursor-pointer">
             <Icon name="mdi:home-outline" class="w-5 h-5" />
             Về Trang Chủ
-          </NuxtLink>
-          <NuxtLink to="/explore" class="btn-secondary text-sm px-6 py-3.5 border-gold-500 text-gold-400 hover:bg-gold-500 hover:text-charcoal-900">
+          </button>
+          <button @click="handleClearError('/explore')" class="btn-secondary text-sm px-6 py-3.5 border-gold-500 text-gold-400 hover:bg-gold-500 hover:text-charcoal-900 cursor-pointer">
             <Icon name="mdi:compass-outline" class="w-5 h-5" />
             Khám Phá Di Sản
-          </NuxtLink>
-          <NuxtLink to="/map" class="btn-ghost text-sm px-6 py-3.5">
+          </button>
+          <button @click="handleClearError('/map')" class="btn-ghost text-sm px-6 py-3.5 cursor-pointer">
             <Icon name="mdi:map-outline" class="w-5 h-5" />
             Bản Đồ Tương Tác
-          </NuxtLink>
+          </button>
         </div>
 
         <!-- Decorative quote -->
@@ -50,8 +50,16 @@
 </template>
 
 <script setup lang="ts">
+useHead({
+  htmlAttrs: { lang: 'vi' },
+})
+
 useSeoMeta({
-  title: '404 — Trang Không Tồn Tại | Di Sản Thành Phố Đồng Nai',
+  title: '404 — Trang Không Tồn Tại | Di Sản Bù Đăng',
   description: 'Trang bạn tìm kiếm không tồn tại hoặc đã được di chuyển. Hãy quay lại trang chủ để khám phá di sản địa phương.',
 })
+
+function handleClearError(redirectPath: string) {
+  clearError({ redirect: redirectPath })
+}
 </script>

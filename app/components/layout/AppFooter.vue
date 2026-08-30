@@ -54,7 +54,7 @@
             <p class="flex items-start gap-2">
               <Icon name="mdi:map-marker-outline" class="w-4 h-4 text-gold-400 mt-0.5 shrink-0" />
               <span class="sr-only">Địa chỉ</span>
-              Thành Phố Đồng Nai, Việt Nam
+              Xã Bù Đăng, Thành phố Đồng Nai
             </p>
             <p class="flex items-center gap-2">
               <Icon name="mdi:phone-outline" class="w-4 h-4 text-gold-400 shrink-0" />
@@ -116,7 +116,7 @@ const footerLinks = [
     links: [
       { to: '/about', label: 'Về Dự Án' },
       { to: '/news', label: 'Bài Viết & Sự Kiện' },
-      { to: '/invest', label: 'Cơ Hội Đầu Tư' },
+      { to: '/contact', label: 'Hợp Tác & Đồng Hành' },
       { to: '/contribute', label: 'Đóng Góp Di Sản' },
     ],
   },

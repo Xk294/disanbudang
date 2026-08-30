@@ -51,32 +51,28 @@ const openIndex = ref<number | null>(null)
 
 const faqs = [
   {
-    question: "Thành Phố Đồng Nai là gì và có từ khi nào?",
-    answer: "Thành Phố Đồng Nai là thành phố trực thuộc Trung ương thứ 7 của Việt Nam, chính thức hoạt động từ 30/4/2026 trên cơ sở toàn bộ diện tích và dân số của tỉnh Đồng Nai (sau khi hợp nhất với tỉnh Bình Phước cũ ngày 1/7/2025). Thành phố có 95 xã, phường, diện tích hơn 12.700 km² và gần 4,5 triệu dân, đứng thứ 4 cả nước về quy mô kinh tế."
+    question: "Làm sao nghe audio thuyết minh hoặc xem ảnh 360° trên trang này?",
+    answer: "Vào trang chi tiết của bất kỳ di sản nào (mục Khám Phá), bạn sẽ thấy nút Phát Audio ngay đầu trang. Ảnh 360° có trong phần Virtual Tour — nhấn nút 'Tour 360°' để trải nghiệm toàn cảnh. Audio chạy ngay trên trình duyệt, không cần tải ứng dụng."
   },
   {
-    question: "Di sản nổi bật nhất của Thành Phố Đồng Nai gồm những gì?",
-    answer: "Di sản nổi bật nhất của Thành Phố Đồng Nai gồm Chiến Khu Đ huyền thoại, Sóc Bom Bo lịch sử, núi Bà Rá và hồ Thác Mơ, Căn cứ Tà Thiết, không gian văn hóa cồng chiêng và nghề dệt thổ cẩm của đồng bào dân tộc S'tiêng, M'nông, trải dài từ Biên Hòa đến vùng đất Bình Phước cũ."
+    question: "Giáo viên có thể dùng học liệu này trong lớp như thế nào?",
+    answer: "Toàn bộ nội dung trên Di Sản Bù Đăng miễn phí và có thể dùng trong tiết giáo dục địa phương. Mục Học Tập có 30 câu hỏi trắc nghiệm phân theo chủ đề, 24 flashcard thuật ngữ S'tiêng và tài liệu học sinh có thể tải về. Giáo viên có thể chiếu bản đồ tương tác trực tiếp trong lớp."
   },
   {
-    question: "Văn hóa S'tiêng có những nét đặc trưng đặc sắc nào?",
-    answer: "Văn hóa S'tiêng đặc trưng bởi nghệ thuật diễn xướng cồng chiêng Tây Nguyên (UNESCO công nhận Di sản văn hóa phi vật thể năm 2005), nghề dệt thổ cẩm thủ công, tiếng nói chữ viết riêng, cùng truyền thống sinh hoạt trong những ngôi nhà dài cổ truyền."
+    question: "Tôi muốn đóng góp tư liệu — cần chuẩn bị gì?",
+    answer: "Vào mục Đóng Góp, bạn điền form với thông tin di sản kèm ảnh hoặc mô tả. Chúng tôi xét duyệt trong 3-7 ngày. Tư liệu cần ghi rõ nguồn gốc (ai chụp, khi nào, ở đâu). Ký ức cộng đồng có thể là câu chuyện, hình ảnh hoặc ghi âm — không giới hạn thể loại."
   },
   {
-    question: "Sóc Bom Bo lịch sử nằm ở đâu và có thể tham quan như thế nào?",
-    answer: "Sóc Bom Bo nằm ở khu vực Bình Phước cũ thuộc Thành Phố Đồng Nai hiện nay. Bạn có thể tham quan Khu bảo tồn văn hóa dân tộc S'tiêng Sóc Bom Bo để trải nghiệm giã gạo, nghe tiếng cồng chiêng và giao lưu văn hóa."
+    question: "Đến thăm Sóc Bom Bo thì đi đường nào từ TP.HCM?",
+    answer: "Từ TP.HCM đi theo Quốc lộ 13 hướng Bình Dương, qua Bình Long rồi theo QL14 đến xã Bình Minh (huyện Bù Đăng cũ). Sóc Bom Bo thuộc Khu bảo tồn văn hóa dân tộc S'tiêng Sóc Bom Bo — cách TP.HCM khoảng 180 km, đi xe khoảng 3-4 tiếng. Xem bản đồ chi tiết trong mục Bản Đồ Di Sản."
   },
   {
-    question: "Vì sao dự án số hóa di sản này hướng đến toàn Thành Phố Đồng Nai?",
-    answer: "Khi phương pháp số hóa được kiểm chứng tại Bù Đăng, kiến trúc dữ liệu được thiết kế lại theo hướng đa địa bàn — không ràng buộc ranh giới hành chính. Khi Nghị quyết 30/2026/QH16 thành lập TP. Đồng Nai, hệ thống thích ứng mà không mất dữ liệu, vì kiến trúc đã được xây đúng ngay từ đầu."
+    question: "Vì sao tên là Di Sản Bù Đăng trong khi nay thuộc TP. Đồng Nai?",
+    answer: "Tên Di Sản Bù Đăng ghi lại nguồn gốc của dự án — nơi phương pháp số hóa được hình thành và kiểm chứng lần đầu tại Bù Đăng (nay là Xã Bù Đăng, TP. Đồng Nai). Đây là tên thương hiệu học thuật, không phải ranh giới địa lý. Nội dung đang mở rộng dần sang toàn bộ TP. Đồng Nai."
   },
   {
-    question: "Nếu dự án đã mở rộng ra Đồng Nai, vì sao tên vẫn là Di Sản Bù Đăng?",
-    answer: "Tên Di Sản Bù Đăng ghi lại nguồn gốc của mô hình — nơi phương pháp số hóa di sản phi vật thể dân tộc thiểu số được hình thành và kiểm chứng lần đầu. Đây là tên của phương pháp và thương hiệu học thuật, không phải ranh giới địa lý. Giống như một nghiên cứu khoa học giữ tên địa danh thí nghiệm đầu tiên dù sau đó được áp dụng rộng hơn. 'Bù Đăng' là bằng chứng về nơi mô hình được kiểm chứng — không phải giới hạn phạm vi."
-  },
-  {
-    question: "Cổng thông tin Di Sản Bù Đăng do ai thực hiện?",
-    answer: "Cổng thông tin Di Sản Bù Đăng do Nguyễn Xuân Kiệt thực hiện nhằm mục tiêu số hóa, lưu trữ và quảng bá các giá trị lịch sử, văn hóa và thiên nhiên của Thành Phố Đồng Nai đến với mọi thế hệ."
+    question: "Ai làm ra website này?",
+    answer: "Di Sản Bù Đăng là dự án cá nhân của Nguyễn Xuân Kiệt — học sinh nghiên cứu khoa học, thực hiện từ năm 2025. Dự án ra đời từ 7 tháng khảo sát thực địa tại các buôn sóc S'tiêng và M'nông vùng Bù Đăng. Liên hệ qua email nguyenxuankiet294@gmail.com hoặc số 0355 356 294."
   }
 ]
 

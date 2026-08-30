@@ -271,7 +271,7 @@ const messages = ref<ChatMessage[]>([
     content: defaultGreeting,
     relatedLinks: [
       { title: 'Khám phá Di Sản', url: '/explore', icon: 'mdi:compass' },
-      { title: 'Bản đồ GPS', url: '/map', icon: 'mdi:map-marker-radius' },
+      { title: 'Bản đồ tương tác', url: '/map', icon: 'mdi:map-marker-radius' },
       { title: 'Virtual Tour 360°', url: '/explore/virtual-tour', icon: 'mdi:video-360' }
     ]
   }

@@ -70,7 +70,7 @@
                   Hành Trình Qua Bản Đồ Số
                 </h3>
                 <p class="text-charcoal-300 text-sm leading-relaxed mb-5">
-                  Định vị tất cả {{ totalPins }} di sản trên bản đồ, lọc theo danh mục và lên lịch hành trình thực địa với GPS.
+                  Định vị tất cả {{ totalPins }} di sản trên bản đồ tương tác, lọc theo danh mục và lên lịch hành trình thực địa.
                 </p>
                 <span class="inline-flex items-center gap-2 text-gold-400 text-sm font-semibold group-hover:text-gold-300 transition-colors">
                   Mở Bản Đồ

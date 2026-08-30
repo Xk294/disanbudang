@@ -157,6 +157,7 @@
 
 <script setup lang="ts">
 definePageMeta({ layout: 'admin' })
+useHead({ meta: [{ name: 'robots', content: 'noindex,nofollow' }] })
 
 interface Contribution {
   id: string

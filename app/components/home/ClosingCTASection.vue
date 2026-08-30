@@ -96,7 +96,7 @@ const quickLinks = [
     icon: 'mdi:map-search',
     iconBg: 'bg-gold-500/10 border border-gold-500/20 group-hover:bg-gold-500/20',
     iconColor: 'text-gold-400',
-    title: 'Bản Đồ Di Sản GPS',
+    title: 'Bản Đồ Di Sản Tương Tác',
     desc: `Định vị tất cả ${HERITAGES.length} di sản trên bản đồ số tương tác`,
   },
   {

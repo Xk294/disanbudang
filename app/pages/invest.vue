@@ -165,9 +165,12 @@ useMuseumSeo({
   description: 'Thông tin quy hoạch, hạ tầng và các cơ hội đầu tư phát triển kinh tế tại vùng cao nguyên Thành Phố Đồng Nai.'
 })
 
+useHead({
+  meta: [{ name: 'robots', content: 'noindex,nofollow' }],
+})
+
 const keyStats = [
   { icon: 'mdi:pine-tree', value: '68%', label: 'Độ che phủ rừng' },
-  { icon: 'mdi:terrain', value: '1.500 km²', label: 'Diện tích tự nhiên' },
   { icon: 'mdi:account-group', value: '130.000+', label: 'Dân số' },
   { icon: 'mdi:leaf', value: '500 ha', label: 'Quỹ đất sạch' },
 ]
