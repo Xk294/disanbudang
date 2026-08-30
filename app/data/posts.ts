@@ -358,3 +358,6 @@ export const EVENTS: Event[] = [
     isOnline: false,
   },
 ]
+
+export const FIELD_LOGS: Array<{ id: string; title: string; date?: string; summary?: string }> = []
+

@@ -53,5 +53,13 @@ const store = useHeritageStore()
 const { getCategoryLabel } = useHeritage()
 const heritage = computed(() => store.getBySlug(route.params.slug as string) ?? null)
 
+if (!heritage.value) {
+  throw createError({
+    statusCode: 404,
+    statusMessage: 'Di sản không tồn tại trong hệ thống',
+    fatal: true,
+  })
+}
+
 useHeritageSeo(heritage)
 </script>

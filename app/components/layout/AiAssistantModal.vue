@@ -32,14 +32,14 @@
               <div class="min-w-0">
                 <div class="flex items-center gap-2 flex-wrap">
                   <h3 id="ai-modal-title" class="font-heading font-bold text-ivory text-base sm:text-lg leading-tight truncate">
-                    Trợ Lý AI Di Sản
+                    Tra Cứu Di Sản
                   </h3>
                   <span class="px-2 py-0.5 rounded-full text-[9px] font-bold uppercase tracking-wider bg-gold-500/15 text-gold-300 border border-gold-500/30">
                     Bảo Tàng Số
                   </span>
                 </div>
                 <p class="text-[11px] text-charcoal-400 mt-0.5 truncate">
-                  Di tích, Văn hóa S'tiêng, Ẩm thực & Đầu tư Bù Đăng
+                  Tìm kiếm di tích, văn hóa S'tiêng, ẩm thực vùng Bù Đăng
                 </p>
               </div>
             </div>

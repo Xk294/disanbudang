@@ -15,6 +15,8 @@
         :alt="heritage.title"
         class="card-image img-cinematic w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
         loading="lazy"
+        format="webp"
+        sizes="xs:100vw sm:50vw md:33vw lg:25vw"
       />
       <div class="absolute inset-0 bg-gradient-to-t from-charcoal-950/90 via-charcoal-950/20 to-transparent opacity-80 group-hover:opacity-90 transition-opacity" />
     </div>
@@ -40,6 +42,7 @@
           : 'bg-charcoal-950/80 text-gold-400 border-gold-500/30 hover:bg-gold-500 hover:text-charcoal-950'"
         :title="isThisPlaying ? 'Đang phát thuyết minh' : 'Nghe thuyết minh audio'"
         @click.stop="toggleCardAudio"
+        @keydown.stop
       >
         <Icon :name="isThisPlaying ? 'mdi:pause' : 'mdi:headphones'" class="w-3.5 h-3.5" />
         <span class="text-[10px] font-bold uppercase">{{ isThisPlaying ? 'Đang phát' : 'Audio' }}</span>
@@ -115,6 +118,8 @@ function toggleCardAudio() {
   if (!props.heritage.audio) return
   if (isThisPlaying.value) {
     audioStore.pause()
+  } else if (audioStore.heritageId === props.heritage.id && audioStore.currentTrack) {
+    audioStore.play()
   } else {
     audioStore.loadTrack(props.heritage.audio, props.heritage.id)
     audioStore.play()

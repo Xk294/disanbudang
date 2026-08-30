@@ -20,7 +20,7 @@
       <div class="container-heritage relative z-10 py-24 lg:py-32">
         <div class="max-w-3xl">
           <span class="eyebrow text-gold-400 mb-4 block">CƠ HỘI PHÁT TRIỂN</span>
-          <h1 class="font-heading font-bold text-ivory text-5xl lg:text-6xl leading-[1.35] md:leading-[1.3] lg:leading-[1.25] mb-6 md:mb-8 text-shadow-hero text-balance tracking-[-0.03em]">
+          <h1 class="font-heading font-bold text-ivory text-5xl lg:text-6xl leading-[1.35] md:leading-[1.3] lg:leading-[1.25] mb-6 md:mb-8 text-shadow-hero text-balance tracking-normal">
             Đầu Tư Vùng<br/>
             <span class="text-gradient-gold">Cao Nguyên Đồng Nai</span>
           </h1>
@@ -51,6 +51,9 @@
             <p class="text-charcoal-400 text-xs uppercase tracking-wide mt-0.5">{{ stat.label }}</p>
           </div>
         </div>
+        <p class="text-charcoal-600 text-[10px] text-center mt-4 italic">
+          * Số liệu tham chiếu từ tài liệu địa chí — cần xác minh từ cơ quan chức năng trước khi sử dụng cho mục đích đầu tư.
+        </p>
       </div>
     </div>
 

@@ -177,7 +177,7 @@ export const KNOWLEDGE_ENTRIES: KnowledgeEntry[] = [
 • **Phần hội rực rỡ:** Uống rượu cần Đ'rắp S'lung bằng cần trúc, múa xoang quanh cây nêu thần linh, thi giã gạo đôi và diễn tấu cồng chiêng thâu đêm.`,
     followUps: ['Nghề dệt thổ cẩm truyền thống', 'Ẩm thực độc đáo của người S\'tiêng', 'Gợi ý thời điểm đi lễ hội'],
     links: [
-      { title: 'Xem các bài viết Văn hóa', url: '/news', icon: 'mdi:newspaper-variant-outline' }
+      { title: 'Xem các bài viết Chuyện Di Sản', url: '/stories', icon: 'mdi:book-open-page-variant-outline' }
     ]
   },
   {

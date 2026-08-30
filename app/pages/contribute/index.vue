@@ -10,7 +10,7 @@
       <div class="absolute inset-0 bg-gradient-to-r from-charcoal-950 via-charcoal-900/60 to-transparent" />
       <div class="container-heritage relative z-10">
         <span class="section-label text-gold-400">Kiến Tạo Di Sản Số · Thành Phố Đồng Nai</span>
-        <h1 class="font-heading font-bold text-ivory text-5xl lg:text-6xl leading-[1.35] md:leading-[1.3] lg:leading-[1.25] mb-6 md:mb-8 text-balance tracking-[-0.03em]">
+        <h1 class="font-heading font-bold text-ivory text-5xl lg:text-6xl leading-[1.35] md:leading-[1.3] lg:leading-[1.25] mb-6 md:mb-8 text-balance tracking-normal">
           Chung Tay Kiến Tạo<br/> <span class="text-gradient-gold">Bản Đồ Di Sản</span>
         </h1>
         <p class="text-charcoal-300 text-base lg:text-lg max-w-3xl leading-relaxed">
@@ -164,6 +164,19 @@
                     <option value="">-- Không liên kết / Di sản mới --</option>
                     <option v-for="h in heritages" :key="h.id" :value="h.id">{{ h.title }}</option>
                   </select>
+                </div>
+
+                <!-- Invisible Bot Honeypot Field -->
+                <div class="hidden" style="display:none !important;" aria-hidden="true">
+                  <label for="contribute_hp_check">Bỏ trống trường này</label>
+                  <input
+                    id="contribute_hp_check"
+                    v-model="form._hp"
+                    type="text"
+                    name="_hp"
+                    tabindex="-1"
+                    autocomplete="off"
+                  />
                 </div>
 
 
@@ -467,7 +480,7 @@ const steps = [
 ]
 
 const form = reactive({
-  name: '', role: 'resident', title: '', content: '', heritageId: '',
+  name: '', role: 'resident', title: '', content: '', heritageId: '', _hp: '',
 })
 
 const contributionTypes = [
@@ -536,6 +549,7 @@ async function handleSubmit() {
         title: form.title,
         content: form.content,
         heritageId: form.heritageId || null,
+        _hp: form._hp || undefined,
         turnstileToken: turnstileToken.value || undefined,
       }
     })

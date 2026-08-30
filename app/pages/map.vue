@@ -411,7 +411,7 @@
                     </BaseBadge>
                     <HeritageSourceBadge :sources="selectedHeritage.sources" @open="isSourceModalOpen = true" />
                   </div>
-                  <h3 class="font-heading font-bold text-white text-base leading-snug tracking-tight drop-shadow-lg line-clamp-2">{{ selectedHeritage.title }}</h3>
+                  <h3 class="font-heading font-bold text-white text-base leading-snug tracking-normal drop-shadow-lg line-clamp-2">{{ selectedHeritage.title }}</h3>
                   <p v-if="selectedHeritage.subtitle" class="text-gold-300 text-3xs font-accent italic mt-0.5 drop-shadow line-clamp-1">{{ selectedHeritage.subtitle }}</p>
                 </div>
 

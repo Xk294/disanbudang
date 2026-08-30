@@ -59,7 +59,7 @@
 
           <!-- H1 — left-aligned editorial -->
           <h1
-            class="font-heading font-bold text-ivory leading-[1.35] md:leading-[1.3] lg:leading-[1.25] mb-6 md:mb-8 about-reveal text-shadow-hero text-balance tracking-[-0.03em]"
+            class="font-heading font-bold text-ivory leading-[1.35] md:leading-[1.3] lg:leading-[1.25] mb-6 md:mb-8 about-reveal text-shadow-hero text-balance tracking-normal"
             style="--delay: 0.12s; font-size: clamp(2.6rem, 7vw, 6rem)"
           >
             Giới Thiệu<br/>

@@ -4,11 +4,11 @@
       <!-- Header -->
       <div class="flex flex-col md:flex-row md:items-end md:justify-between gap-4 mb-12">
         <div>
-          <span class="section-label text-gold-700">Bài Viết & Sự Kiện</span>
-          <h2 class="text-display-sm text-charcoal-900">Bài Viết & Di Sản Mới Nhất</h2>
+          <span class="section-label text-gold-700">Chuyện Di Sản & Sự Kiện</span>
+          <h2 class="text-display-sm text-charcoal-900">Chuyện Di Sản Mới Nhất</h2>
         </div>
-        <NuxtLink to="/news" class="btn-outline-gold !border-gold-700 !text-gold-700 hover:!bg-gold-700 hover:!text-ivory flex-shrink-0">
-          Xem Tất Cả
+        <NuxtLink to="/stories" class="btn-outline-gold !border-gold-700 !text-gold-700 hover:!bg-gold-700 hover:!text-ivory flex-shrink-0">
+          Xem Tất Cả Chuyện
           <Icon name="mdi:arrow-right" class="w-4 h-4" />
         </NuxtLink>
       </div>
@@ -16,7 +16,7 @@
       <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
         <!-- Featured news -->
         <div v-if="news[0]" class="lg:col-span-7 reveal">
-          <NuxtLink :to="'/news/' + news[0].slug" class="group block">
+          <NuxtLink :to="'/stories/' + news[0].slug" class="group block">
             <div class="relative overflow-hidden rounded-3xl aspect-[16/9]">
               <NuxtImg
                 :src="news[0].coverImage"
@@ -44,7 +44,7 @@
           <NuxtLink
             v-for="item in news.slice(1, 4)"
             :key="item.id"
-            :to="'/news/' + item.slug"
+            :to="'/stories/' + item.slug"
             class="group flex gap-4 p-4 rounded-2xl border border-charcoal-200/70 hover:border-gold-500/35 hover:bg-charcoal-50 transition-all duration-300 reveal"
           >
             <NuxtImg :src="item.coverImage" :alt="item.title" class="w-20 h-16 rounded-xl object-cover flex-shrink-0 transition-transform duration-500 group-hover:scale-105" />
@@ -58,15 +58,22 @@
           </NuxtLink>
 
           <!-- Upcoming event -->
-          <div v-if="nextEvent" class="p-4 rounded-2xl bg-gold-500/10 border border-gold-500/25 reveal">
-            <div class="flex items-center gap-2 mb-3">
-              <Icon name="mdi:calendar-star" class="w-4 h-4 text-gold-700" />
-              <span class="eyebrow text-gold-700 text-2xs">Sự kiện sắp tới</span>
+          <NuxtLink
+            v-if="nextEvent"
+            :to="'/journal/' + nextEvent.id"
+            class="p-4 rounded-2xl bg-gold-500/10 border border-gold-500/25 hover:border-gold-500/45 transition-all duration-300 reveal block group"
+          >
+            <div class="flex items-center justify-between gap-2 mb-2">
+              <div class="flex items-center gap-1.5">
+                <Icon name="mdi:calendar-star" class="w-4 h-4 text-gold-700" />
+                <span class="eyebrow text-gold-700 text-2xs">Sự kiện sắp tới</span>
+              </div>
+              <span class="text-gold-700 text-2xs font-semibold group-hover:underline">Chi tiết ➔</span>
             </div>
-            <h4 class="font-heading font-bold text-charcoal-900 text-sm mb-1 leading-snug">{{ nextEvent.title }}</h4>
+            <h4 class="font-heading font-bold text-charcoal-900 text-sm mb-1 leading-snug group-hover:text-gold-800 transition-colors">{{ nextEvent.title }}</h4>
             <p class="text-charcoal-600 text-xs">{{ nextEvent.location }}</p>
             <p class="text-gold-700 text-xs font-medium mt-1">{{ formatDate(nextEvent.startDate) }}</p>
-          </div>
+          </NuxtLink>
         </div>
       </div>
     </div>

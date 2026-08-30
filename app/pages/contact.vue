@@ -5,7 +5,7 @@
       <div class="absolute top-0 right-0 w-96 h-96 bg-gold-500/6 rounded-full blur-3xl" />
       <div class="container-heritage relative z-10">
         <span class="section-label text-gold-400">Liên Hệ</span>
-        <h1 class="font-heading font-bold text-ivory text-5xl lg:text-6xl leading-[1.35] md:leading-[1.3] lg:leading-[1.25] mb-6 md:mb-8 text-balance tracking-[-0.03em]">
+        <h1 class="font-heading font-bold text-ivory text-5xl lg:text-6xl leading-[1.35] md:leading-[1.3] lg:leading-[1.25] mb-6 md:mb-8 text-balance tracking-normal">
           Kết Nối<br/> <span class="text-gradient-gold">Với Chúng Tôi</span>
         </h1>
         <p class="text-charcoal-300 text-lg max-w-xl">
@@ -89,6 +89,12 @@
                 class="w-full px-4 py-3 bg-[#1A140F] border border-charcoal-800 rounded-xl text-ivory placeholder-charcoal-400 focus:outline-none focus:border-gold-500 focus:ring-1 focus:ring-gold-500/20 transition-all duration-300 resize-none" />
             </div>
 
+            <!-- Invisible Bot Honeypot Field -->
+            <div class="hidden" style="display:none !important;" aria-hidden="true">
+              <label for="contact_hp_check">Bỏ trống trường này</label>
+              <input id="contact_hp_check" v-model="form._hp" type="text" name="_hp" tabindex="-1" autocomplete="off" />
+            </div>
+
             <button type="submit" class="btn-primary w-full justify-center py-4 text-base">
               <Icon name="mdi:email-edit-outline" class="w-5 h-5 animate-pulse-gold" />
               Soạn Email Gửi Chúng Tôi
@@ -134,7 +140,7 @@ useHead({
 const { observeAll } = useScrollReveal()
 onMounted(() => nextTick(() => observeAll()))
 
-const form = reactive({ name: '', email: '', subject: 'general', message: '' })
+const form = reactive({ name: '', email: '', subject: 'general', message: '', _hp: '' })
 const submitted = ref(false)
 
 const CONTACT_EMAIL = 'nguyenxuankiet294@gmail.com'
@@ -153,6 +159,10 @@ const contactInfo = [
 ]
 
 function handleSubmit() {
+  if (form._hp) {
+    submitted.value = true
+    return
+  }
   const subject = `[Di Sản Bù Đăng] ${subjectLabels[form.subject] ?? form.subject}`
   const body = `Họ tên: ${form.name}\nEmail: ${form.email}\n\n${form.message}`
   window.location.href = `mailto:${CONTACT_EMAIL}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`

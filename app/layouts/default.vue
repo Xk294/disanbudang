@@ -1,10 +1,11 @@
 <template>
   <div class="min-h-screen flex flex-col bg-charcoal-900 transition-colors duration-500">
-    <a href="#main-content" class="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-[9999] focus:px-4 focus:py-2 focus:bg-gold-500 focus:text-charcoal-950 focus:font-bold focus:rounded-lg">Bỏ qua điều hướng</a>
+    <a href="#main-content" class="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-[9999] focus:px-4 focus:py-2.5 focus:bg-gold-500 focus:text-charcoal-950 focus:font-bold focus:rounded-lg focus:shadow-2xl focus:outline-none focus:ring-2 focus:ring-gold-300">Bỏ qua điều hướng đến nội dung chính</a>
     <AppTopNav />
     <main
       id="main-content"
-      class="flex-1"
+      tabindex="-1"
+      class="flex-1 focus:outline-none"
       :class="isHeroPage ? '' : 'pt-[72px]'"
     >
       <Breadcrumb />

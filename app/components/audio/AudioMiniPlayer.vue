@@ -5,6 +5,31 @@
       v-if="audio.isMiniPlayerVisible && audio.currentTrack"
       class="fixed bottom-6 left-1/2 -translate-x-1/2 z-[90] w-full max-w-lg px-4"
     >
+      <!-- Transcript Drawer / Popup -->
+      <Transition name="fade">
+        <div
+          v-if="showTranscript && audio.currentTrack.transcript"
+          class="mb-3 glass-dark border border-gold-500/30 rounded-2xl p-4 shadow-2xl max-h-60 overflow-y-auto space-y-2 text-xs"
+          role="region"
+          aria-label="Văn bản thuyết minh âm thanh"
+        >
+          <div class="flex items-center justify-between pb-1.5 border-b border-charcoal-800">
+            <span class="font-bold text-gold-400 flex items-center gap-1.5">
+              <Icon name="mdi:text-box-check-outline" class="w-4 h-4" aria-hidden="true" />
+              Văn bản thuyết minh
+            </span>
+            <button
+              class="text-charcoal-400 hover:text-ivory text-xs flex items-center gap-1"
+              @click="showTranscript = false"
+              aria-label="Đóng bản ghi thuyết minh"
+            >
+              <Icon name="mdi:close" class="w-3.5 h-3.5" aria-hidden="true" />
+            </button>
+          </div>
+          <p class="text-ivory/90 leading-relaxed font-sans">{{ audio.currentTrack.transcript }}</p>
+        </div>
+      </Transition>
+
       <div class="glass-dark rounded-2xl p-4 shadow-warm-xl border border-earth-700/30">
         <div class="flex items-center gap-4">
           <!-- Cover -->
@@ -18,13 +43,14 @@
               :class="{ 'opacity-70 scale-95': audio.isPlaying }"
             />
             <div v-else class="w-full h-full bg-gradient-earth flex items-center justify-center">
-              <Icon name="mdi:headphones" class="w-6 h-6 text-ivory" />
+              <Icon name="mdi:headphones" class="w-6 h-6 text-ivory" aria-hidden="true" />
             </div>
 
             <!-- Waveform overlay when playing -->
             <div
               v-if="audio.isPlaying"
               class="absolute inset-0 flex items-end justify-center gap-0.75 pb-2.5 bg-black/40 audio-wave-active"
+              aria-hidden="true"
             >
               <div class="w-0.75 h-4 rounded-full bg-gold-400 waveform-bar"></div>
               <div class="w-0.75 h-4 rounded-full bg-gold-400 waveform-bar"></div>
@@ -70,10 +96,22 @@
           </div>
 
           <!-- Controls -->
-          <div class="flex items-center gap-2 flex-shrink-0">
+          <div class="flex items-center gap-1.5 sm:gap-2 flex-shrink-0">
+            <!-- Transcript button -->
+            <button
+              v-if="audio.currentTrack.transcript"
+              class="w-8 h-8 rounded-full flex items-center justify-center transition-colors"
+              :class="showTranscript ? 'text-gold-400 bg-gold-500/20' : 'text-charcoal-400 hover:text-gold-400 hover:bg-gold-500/10'"
+              aria-label="Xem văn bản thuyết minh (Transcript)"
+              title="Văn bản thuyết minh"
+              @click="showTranscript = !showTranscript"
+            >
+              <Icon name="mdi:text-box-outline" class="w-4 h-4" aria-hidden="true" />
+            </button>
+
             <!-- Speed Selector -->
             <button
-              class="px-2 py-1 text-2xs font-bold text-gold-400 border border-gold-500/20 hover:border-gold-500/50 hover:bg-gold-500/10 rounded-lg transition-colors min-w-[36px]"
+              class="px-2 py-1 text-2xs font-bold text-gold-400 border border-gold-500/20 hover:border-gold-500/50 hover:bg-gold-500/10 rounded-lg transition-colors min-w-[34px]"
               aria-label="Tốc độ phát"
               @click="cycleSpeed"
             >
@@ -84,7 +122,7 @@
               aria-label="Tua lại 15 giây"
               @click="audio.skip(-15)"
             >
-              <Icon name="mdi:rewind-15" class="w-5 h-5" />
+              <Icon name="mdi:rewind-15" class="w-5 h-5" aria-hidden="true" />
             </button>
             <div class="relative">
               <!-- Pulsing ring when playing -->
@@ -101,6 +139,7 @@
                 <Icon
                   :name="audio.isPlaying ? 'mdi:pause' : 'mdi:play'"
                   class="w-5 h-5 text-charcoal-900"
+                  aria-hidden="true"
                 />
               </button>
             </div>
@@ -109,14 +148,14 @@
               aria-label="Tua tới 15 giây"
               @click="audio.skip(15)"
             >
-              <Icon name="mdi:fast-forward-15" class="w-5 h-5" />
+              <Icon name="mdi:fast-forward-15" class="w-5 h-5" aria-hidden="true" />
             </button>
             <button
               class="w-8 h-8 rounded-full flex items-center justify-center text-charcoal-400 hover:text-ivory transition-colors"
               aria-label="Đóng trình phát audio"
               @click="audio.closeMiniPlayer()"
             >
-              <Icon name="mdi:close" class="w-4 h-4" />
+              <Icon name="mdi:close" class="w-4 h-4" aria-hidden="true" />
             </button>
           </div>
         </div>
@@ -128,6 +167,7 @@
 <script setup lang="ts">
 const audio = useAudioStore()
 const heritageStore = useHeritageStore()
+const showTranscript = ref(false)
 
 const heritageSlug = computed(() => {
   if (!audio.heritageId) return null

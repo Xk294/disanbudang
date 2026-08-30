@@ -20,15 +20,20 @@
               class="w-full h-full object-cover"
               :class="currentSlide === i ? 'ken-burns-active' : ''"
               :style="slide.position ? `object-position: ${slide.position}` : ''"
+              :loading="i === 0 ? 'eager' : 'lazy'"
+              :fetchpriority="i === 0 ? 'high' : 'auto'"
+              :preload="i === 0"
+              format="webp"
+              sizes="100vw"
             />
           </div>
         </TransitionGroup>
       </div>
 
-      <!-- Layered overlays — left-burn to support left-aligned text -->
-      <div class="absolute inset-0 z-10 bg-gradient-to-t from-charcoal-950 via-charcoal-950/60 to-charcoal-900/30" />
-      <div class="absolute inset-0 z-10 bg-gradient-to-r from-charcoal-950/92 via-charcoal-950/40 to-transparent" />
-      <div class="absolute top-0 inset-x-0 h-28 z-10 bg-gradient-to-b from-charcoal-950/70 to-transparent" />
+      <!-- Layered overlays — lightened so photo breathes through -->
+      <div class="absolute inset-0 z-10 bg-gradient-to-t from-charcoal-950/95 via-charcoal-950/30 to-transparent" />
+      <div class="absolute inset-0 z-10 bg-gradient-to-r from-charcoal-950/80 via-charcoal-950/20 to-transparent" />
+      <div class="absolute top-0 inset-x-0 h-28 z-10 bg-gradient-to-b from-charcoal-950/50 to-transparent" />
 
       <!-- Slide indicators -->
       <div class="absolute bottom-14 right-8 z-20 flex flex-col gap-2">
@@ -49,10 +54,14 @@
         <span class="text-charcoal-500 text-xs tabular-nums">{{ String(slides.length).padStart(2, '0') }}</span>
       </div>
 
-      <!-- MAIN CONTENT — vertically centered -->
+      <!-- MAIN CONTENT — glassmorphism card for legibility on vivid photo -->
       <div class="relative z-20 flex-1 flex flex-col justify-center py-20 lg:py-24">
         <div class="container-heritage">
           <div class="max-w-3xl xl:max-w-4xl">
+            <div
+              class="inline-block about-reveal"
+              style="--delay:0s;background:rgba(8,7,6,0.52);backdrop-filter:blur(18px) saturate(160%);-webkit-backdrop-filter:blur(18px) saturate(160%);border:1px solid rgba(212,175,55,0.18);border-radius:20px;padding:2.5rem 2.75rem 2.75rem;box-shadow:0 8px 40px rgba(0,0,0,0.45),inset 0 1px 0 rgba(212,175,55,0.1)"
+            >
 
             <!-- Eyebrow -->
             <div class="flex items-center gap-3 mb-5 about-reveal" style="--delay: 0s">
@@ -64,11 +73,11 @@
 
             <!-- H1 — left-aligned editorial -->
             <h1
-              class="font-heading font-bold text-ivory leading-[1.35] md:leading-[1.3] lg:leading-[1.25] mb-6 md:mb-8 about-reveal text-shadow-hero text-balance tracking-[-0.03em]"
+              class="font-heading font-bold text-ivory leading-[1.35] md:leading-[1.3] lg:leading-[1.25] mb-6 md:mb-8 about-reveal text-shadow-hero text-balance tracking-normal"
               style="--delay: 0.12s; font-size: clamp(2.6rem, 7vw, 6rem)"
             >
               Giới Thiệu<br/>
-              <span class="text-gradient-gold">Di Sản Bù Đăng</span>
+              <span class="text-gradient-gold"> Di Sản Bù Đăng</span>
             </h1>
 
             <!-- Tagline -->
@@ -90,6 +99,7 @@
               </NuxtLink>
             </div>
 
+            </div>
           </div>
         </div>
       </div>

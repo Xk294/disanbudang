@@ -228,26 +228,46 @@ onMounted(async () => {
     return
   }
 
-  // Init map centered on Thành Phố Đồng Nai
+  // Init map centered on Thành Phố Đồng Nai với giới hạn vùng & zoom tối ưu
   map = L.map(mapEl.value, {
     center: [11.82, 107.15],
     zoom: 11,
+    minZoom: 7,
+    maxZoom: 18,
+    maxBounds: [
+      [9.0, 104.0],
+      [14.5, 110.0],
+    ],
+    maxBoundsViscosity: 0.85,
     zoomControl: true,
     attributionControl: false,
     preferCanvas: true,
+    zoomAnimation: true,
+    fadeAnimation: true,
+    markerZoomAnimation: true,
+    wheelDebounceTime: 60,
+    wheelPxPerZoomLevel: 120,
   })
 
-  // OpenStreetMap — miễn phí vĩnh viễn, không cần API key
-  // Dark warm theme áp vào leaflet-tile-pane (1 lần composite, không dùng className)
-  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright" style="color:#C7A664" target="_blank" rel="noopener">OpenStreetMap</a> contributors',
+  // OpenStreetMap với Dark Theme Filter — 100% miễn phí, ổn định, không watermark
+  const baseTileLayer = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright" style="color:#C7A664" target="_blank" rel="noopener">OpenStreetMap</a>',
     subdomains: ['a', 'b', 'c'],
-    maxZoom: 19,
-    keepBuffer: 8,
-    updateWhenIdle: false,
+    maxZoom: 18,
+    minZoom: 7,
+    keepBuffer: 3,
     updateWhenZooming: false,
-    updateInterval: 150,
-  }).addTo(map)
+    updateWhenIdle: true,
+    updateInterval: 120,
+    className: 'dark-map-tiles',
+    crossOrigin: true,
+  })
+
+  baseTileLayer.on('tileerror', (error: any) => {
+    console.warn('[MapContainer] Tile load notice...', error)
+  })
+
+  baseTileLayer.addTo(map)
 
   // Listen to zoom changes to update clusters dynamically
   map.on('zoomend', () => {
@@ -299,8 +319,14 @@ function addMarkers(L: any) {
   const zoom = map.getZoom()
   const clusters: HeritageCluster[] = []
 
-  // Basic distance threshold in degrees depending on zoom
-  const threshold = zoom < 10 ? 0.08 : zoom === 10 ? 0.05 : zoom === 11 ? 0.025 : zoom === 12 ? 0.012 : 0.0
+  // Dynamic distance threshold in degrees depending on zoom
+  const threshold =
+    zoom <= 7 ? 0.5 :
+    zoom === 8 ? 0.3 :
+    zoom === 9 ? 0.15 :
+    zoom === 10 ? 0.08 :
+    zoom === 11 ? 0.035 :
+    zoom === 12 ? 0.015 : 0.0
 
   if (threshold > 0) {
     props.heritages.forEach((h) => {
@@ -655,25 +681,14 @@ onUnmounted(() => {
   height: 34px !important;
   line-height: 34px !important;
 }
-:deep(.leaflet-control-zoom a:hover) {
-  background: rgba(30, 28, 26, 0.95) !important;
-  color: #C7A664 !important;
-}
-
-/* Heritage Dark Map — filter áp vào tile-pane (1 lần composite thay vì từng tile)
-   Cách này tránh black gap khi zoom vì GPU chỉ xử lý filter 1 lần cho toàn bộ pane
-   Marker pane nằm tách biệt nên không bị ảnh hưởng */
-:deep(.leaflet-tile-pane) {
-  filter: invert(100%) hue-rotate(200deg) sepia(20%) brightness(85%) contrast(90%) saturate(0.7);
-  will-change: transform;
-  transform: translateZ(0);
-}
-
-:deep(.leaflet-tile-pane) {
-  transform: translateZ(0);
+/* Dark mode filter CHỈ áp dụng lên ảnh tile - tránh double invert và không can thiệp transform của Leaflet */
+:deep(.dark-map-tiles .leaflet-tile) {
+  filter: invert(100%) hue-rotate(180deg) brightness(85%) contrast(90%);
+  transition: opacity 0.15s ease-out;
 }
 
 :deep(.leaflet-container) {
-  background: #12100E !important;
+  background: #14120f !important;
+  font-family: inherit;
 }
 </style>

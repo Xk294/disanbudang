@@ -13,13 +13,16 @@
       <!-- Modal Content -->
       <div
         class="relative w-full max-w-2xl bg-charcoal-900 border border-charcoal-800 rounded-3xl overflow-hidden shadow-2xl z-10 flex flex-col max-h-[90vh]"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="quiz-modal-title"
       >
         <!-- Confetti Canvas -->
-        <canvas ref="confettiCanvas" class="absolute inset-0 pointer-events-none z-50 w-full h-full"></canvas>
+        <canvas ref="confettiCanvas" class="absolute inset-0 pointer-events-none z-50 w-full h-full" aria-hidden="true"></canvas>
 
         <!-- Background accents -->
-        <div class="absolute -top-40 -right-40 w-80 h-80 bg-gold-500/5 rounded-full blur-3xl pointer-events-none" />
-        <div class="absolute -bottom-40 -left-40 w-80 h-80 bg-earth-500/5 rounded-full blur-3xl pointer-events-none" />
+        <div class="absolute -top-40 -right-40 w-80 h-80 bg-gold-500/5 rounded-full blur-3xl pointer-events-none" aria-hidden="true" />
+        <div class="absolute -bottom-40 -left-40 w-80 h-80 bg-earth-500/5 rounded-full blur-3xl pointer-events-none" aria-hidden="true" />
 
         <!-- Header -->
         <div class="flex items-center justify-between px-6 py-4 border-b border-charcoal-800/80 relative z-10 bg-charcoal-900/60 backdrop-blur-sm">
@@ -28,10 +31,11 @@
               :name="quizStore.isQuizCompleted ? 'mdi:trophy' : 'mdi:help-circle-outline'"
               class="w-5 h-5"
               :class="quizStore.isQuizCompleted ? 'text-gold-400' : 'text-gold-500'"
+              aria-hidden="true"
             />
-            <span class="font-heading font-semibold text-ivory text-base md:text-lg">
+            <h2 id="quiz-modal-title" class="font-heading font-semibold text-ivory text-base md:text-lg">
               {{ quizStore.currentQuiz?.title ?? 'Thử Thách Di Sản' }}
-            </span>
+            </h2>
           </div>
           <button
             class="w-8 h-8 rounded-full flex items-center justify-center text-charcoal-400 hover:text-ivory hover:bg-charcoal-800 transition-colors"
@@ -256,6 +260,20 @@ function restartQuiz() {
 function closeQuiz() {
   quizStore.resetQuiz()
 }
+
+function handleKeydown(e: KeyboardEvent) {
+  if (e.key === 'Escape' && (quizStore.isQuizActive || quizStore.isQuizCompleted)) {
+    closeQuiz()
+  }
+}
+
+onMounted(() => {
+  window.addEventListener('keydown', handleKeydown)
+})
+
+onUnmounted(() => {
+  window.removeEventListener('keydown', handleKeydown)
+})
 
 const confettiCanvas = ref<HTMLCanvasElement | null>(null)
 const badgeCardRef = ref<HTMLElement | null>(null)

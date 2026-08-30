@@ -92,6 +92,24 @@ export interface HeritageSource {
   notes?: string
 }
 
+export interface HeritageEducationalConnection {
+  lessonUrl?: string
+  curriculumTopic?: string
+  targetAudience?: string
+  reflectionQuestion?: string
+  activitySuggestions?: string[]
+}
+
+export interface HeritageLocationGuide {
+  accessNote?: string
+  bestTimeToVisit?: string
+  admissionFee?: string
+  facilities?: string[]
+  openHours?: string
+}
+
+export type HeritageArchetype = 'historical' | 'artifact' | 'cultural' | 'natural'
+
 export interface Heritage {
   id: string
   slug: string
@@ -100,12 +118,14 @@ export interface Heritage {
   category: HeritageCategory
   period: HeritagePeriod
   cluster: HeritageCluster
+  archetype?: HeritageArchetype
   year?: string
   coverImage: string
   gallery: HeritageGalleryImage[]
   coordinates: HeritageCoordinates
   shortDescription: string
   longStory: string
+  contextStory?: string
   quickFacts: HeritageQuickFact[]
   timeline: HeritageTimelineItem[]
   audio?: HeritageAudio
@@ -115,6 +135,10 @@ export interface Heritage {
     coverImage?: string
   }
   quiz?: HeritageQuiz
+  educationalConnection?: HeritageEducationalConnection
+  locationGuide?: HeritageLocationGuide
+  conservationStatus?: string
+  verificationNote?: string
   sources?: HeritageSource[]
   relatedIds: string[]
   tags: string[]
@@ -322,7 +346,8 @@ export interface InvestmentOpportunity {
 }
 
 // =========================================================
-// 360° VIRTUAL TOUR EXPORTS
+// 360° VIRTUAL TOUR & CONTENT GRAPH EXPORTS
 // =========================================================
 export * from './virtualTour'
+export * from './contentGraph'
 

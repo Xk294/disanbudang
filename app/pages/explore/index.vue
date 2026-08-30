@@ -14,7 +14,7 @@
               <span class="w-1.5 h-1.5 rounded-full bg-gold-400 animate-ping inline-block" />
               Bảo Tàng Số Di Sản Bù Đăng · TP. Đồng Nai
             </div>
-            <h1 class="font-heading font-bold text-ivory text-4xl md:text-5xl lg:text-6xl leading-[1.3] mb-5 text-balance tracking-tight">
+            <h1 class="font-heading font-bold text-ivory text-4xl md:text-5xl lg:text-6xl leading-[1.35] mb-5 text-balance tracking-normal">
               Thư Viện Di Sản &<br/>
               <span class="text-transparent bg-clip-text bg-gradient-to-r from-gold-400 via-gold-300 to-earth-400">Ký Ức Sống Bản Địa</span>
             </h1>
@@ -60,8 +60,8 @@
               <Icon name="mdi:headphones" class="w-5 h-5" />
             </div>
             <div>
-              <span class="block text-base font-bold text-ivory font-heading leading-none">100% Audio</span>
-              <span class="text-3xs text-charcoal-400 uppercase tracking-wider">Thuyết minh song ngữ</span>
+              <span class="block text-base font-bold text-ivory font-heading leading-none">Audio Thuyết minh</span>
+              <span class="text-3xs text-charcoal-400 uppercase tracking-wider">2 di sản có giọng dẫn</span>
             </div>
           </div>
 
@@ -96,7 +96,7 @@
             <input
               v-model="searchQuery"
               type="text"
-              placeholder="Tìm theo tên di sản, danh thắng, buôn sóc, hiện vật (ví dụ: Bom Bo, Bù Lạch, Cồng chiêng, Tà Thiết)..."
+              placeholder="Tìm di sản, địa danh, hiện vật (ví dụ: Sóc Bom Bo, Cồng Chiêng, Bù Lạch)..."
               class="w-full bg-charcoal-950 border border-charcoal-800 rounded-2xl text-ivory text-sm pl-12 pr-12 py-3.5 placeholder-charcoal-500 focus:outline-none focus:border-gold-500 focus:ring-1 focus:ring-gold-500/20 transition-all duration-300"
             />
             <button
@@ -126,7 +126,7 @@
     </div>
 
     <!-- ===== 3 CUNG ĐƯỜNG DI SẢN TRỌNG ĐIỂM (CURATED TRAILS) ===== -->
-    <div v-if="activeMainTab === 'heritage' && !searchQuery && !activeCategory && !activeCluster" class="border-b border-charcoal-850 bg-charcoal-950/80 py-8">
+    <div v-if="activeMainTab === 'heritage' && !searchQuery && !activeCluster" class="border-b border-charcoal-850 bg-charcoal-950/80 py-8">
       <div class="container-heritage">
         <div class="flex items-end justify-between mb-5">
           <div>
@@ -139,8 +139,11 @@
         <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
           <!-- Trail 1 -->
           <div
-            class="p-5 rounded-2xl bg-gradient-to-br from-red-950/40 via-charcoal-900 to-charcoal-950 border border-red-900/40 hover:border-red-500/50 transition-all duration-300 group cursor-pointer hover:-translate-y-0.5 shadow-lg"
-            @click="activeCategory = 'lich-su-cach-mang'"
+            class="p-5 rounded-2xl bg-gradient-to-br from-red-950/40 via-charcoal-900 to-charcoal-950 border transition-all duration-300 group cursor-pointer hover:-translate-y-0.5 shadow-lg"
+            :class="activeCategory === 'lich-su'
+              ? 'border-red-500 ring-2 ring-red-500/40 bg-red-950/60 shadow-red-950/50'
+              : 'border-red-900/40 hover:border-red-500/50 opacity-90 hover:opacity-100'"
+            @click="selectCuratedTrail('lich-su')"
           >
             <div class="flex items-center justify-between mb-3">
               <span class="px-2.5 py-0.5 rounded-full bg-red-500/15 border border-red-500/30 text-red-400 text-3xs font-bold uppercase tracking-wider">Cung Đường Đỏ</span>
@@ -153,15 +156,18 @@
               Chiến Khu Đ ➔ Sóc Bom Bo ➔ Căn Cứ Nửa Lon ➔ Căn Cứ Tà Thiết. Ký ức kiên trung thâu đêm giã gạo nuôi quân.
             </p>
             <div class="mt-4 pt-3 border-t border-charcoal-800/80 flex items-center justify-between text-3xs text-red-400 font-bold">
-              <span>Xem 6 di tích cách mạng</span>
-              <Icon name="mdi:arrow-right" class="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+              <span>{{ activeCategory === 'lich-su' ? 'Đang lọc 6 di tích (Chạm để hủy)' : 'Xem 6 di tích cách mạng' }}</span>
+              <Icon :name="activeCategory === 'lich-su' ? 'mdi:check-circle' : 'mdi:arrow-right'" class="w-4 h-4 group-hover:translate-x-1 transition-transform" />
             </div>
           </div>
 
           <!-- Trail 2 -->
           <div
-            class="p-5 rounded-2xl bg-gradient-to-br from-green-950/40 via-charcoal-900 to-charcoal-950 border border-green-900/40 hover:border-green-500/50 transition-all duration-300 group cursor-pointer hover:-translate-y-0.5 shadow-lg"
-            @click="activeCategory = 'danh-lam-thang-canh'"
+            class="p-5 rounded-2xl bg-gradient-to-br from-green-950/40 via-charcoal-900 to-charcoal-950 border transition-all duration-300 group cursor-pointer hover:-translate-y-0.5 shadow-lg"
+            :class="activeCategory === 'danh-thang'
+              ? 'border-green-500 ring-2 ring-green-500/40 bg-green-950/60 shadow-green-950/50'
+              : 'border-green-900/40 hover:border-green-500/50 opacity-90 hover:opacity-100'"
+            @click="selectCuratedTrail('danh-thang')"
           >
             <div class="flex items-center justify-between mb-3">
               <span class="px-2.5 py-0.5 rounded-full bg-green-500/15 border border-green-500/30 text-green-400 text-3xs font-bold uppercase tracking-wider">Cung Đường Xanh</span>
@@ -174,15 +180,18 @@
               Trảng Cỏ Bù Lạch ➔ Hồ Thác Mơ ➔ Thác Đứng Đăk Wuar ➔ Núi Bà Rá. Thung lũng cỏ tự nhiên 140 ha giữa rừng già.
             </p>
             <div class="mt-4 pt-3 border-t border-charcoal-800/80 flex items-center justify-between text-3xs text-green-400 font-bold">
-              <span>Xem 5 danh lam thắng cảnh</span>
-              <Icon name="mdi:arrow-right" class="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+              <span>{{ activeCategory === 'danh-thang' ? 'Đang lọc 5 danh thắng (Chạm để hủy)' : 'Xem 5 danh lam thắng cảnh' }}</span>
+              <Icon :name="activeCategory === 'danh-thang' ? 'mdi:check-circle' : 'mdi:arrow-right'" class="w-4 h-4 group-hover:translate-x-1 transition-transform" />
             </div>
           </div>
 
           <!-- Trail 3 -->
           <div
-            class="p-5 rounded-2xl bg-gradient-to-br from-gold-950/40 via-charcoal-900 to-charcoal-950 border border-gold-900/40 hover:border-gold-500/50 transition-all duration-300 group cursor-pointer hover:-translate-y-0.5 shadow-lg"
-            @click="activeCategory = 'van-hoa-phi-vat-the'"
+            class="p-5 rounded-2xl bg-gradient-to-br from-gold-950/40 via-charcoal-900 to-charcoal-950 border transition-all duration-300 group cursor-pointer hover:-translate-y-0.5 shadow-lg"
+            :class="activeCategory === 'van-hoa-phi-vat-the'
+              ? 'border-gold-500 ring-2 ring-gold-500/40 bg-gold-950/60 shadow-gold-950/50'
+              : 'border-gold-900/40 hover:border-gold-500/50 opacity-90 hover:opacity-100'"
+            @click="selectCuratedTrail('van-hoa-phi-vat-the')"
           >
             <div class="flex items-center justify-between mb-3">
               <span class="px-2.5 py-0.5 rounded-full bg-gold-500/15 border border-gold-500/30 text-gold-400 text-3xs font-bold uppercase tracking-wider">Cung Đường Văn Hóa</span>
@@ -195,8 +204,8 @@
               Không gian cồng chiêng Yang Ching ➔ Dệt thổ cẩm Sơk Pơng ➔ Nghệ thuật Đàn đá cổ ➔ Lễ hội Mừng lúa mới Yang Sri.
             </p>
             <div class="mt-4 pt-3 border-t border-charcoal-800/80 flex items-center justify-between text-3xs text-gold-400 font-bold">
-              <span>Xem 5 di sản phi vật thể</span>
-              <Icon name="mdi:arrow-right" class="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+              <span>{{ activeCategory === 'van-hoa-phi-vat-the' ? 'Đang lọc 2 di sản (Chạm để hủy)' : 'Xem di sản phi vật thể' }}</span>
+              <Icon :name="activeCategory === 'van-hoa-phi-vat-the' ? 'mdi:check-circle' : 'mdi:arrow-right'" class="w-4 h-4 group-hover:translate-x-1 transition-transform" />
             </div>
           </div>
         </div>
@@ -460,11 +469,21 @@
       </div>
 
       <!-- Empty state -->
-      <div v-else class="py-24 text-center border border-dashed border-charcoal-800 rounded-3xl bg-charcoal-950/20 max-w-xl mx-auto">
-        <Icon name="mdi:archive-search-outline" class="w-16 h-16 text-charcoal-400 mx-auto mb-4" />
-        <h2 class="font-heading font-bold text-ivory text-xl mb-2">Không Tìm Thấy Kết Quả</h2>
-        <p class="text-charcoal-400 text-sm mb-6 max-w-sm mx-auto">Thử từ khóa khác hoặc xóa bộ lọc đang chọn.</p>
-        <button class="btn-primary" @click="clearFilters">Xóa Bộ Lọc</button>
+      <div v-else class="py-20 px-6 text-center border border-dashed border-charcoal-800/80 rounded-3xl bg-charcoal-950/40 max-w-xl mx-auto">
+        <div class="w-16 h-16 rounded-2xl bg-gold-500/10 border border-gold-500/20 flex items-center justify-center mx-auto mb-4 text-gold-400">
+          <Icon name="mdi:archive-search-outline" class="w-8 h-8" />
+        </div>
+        <h2 class="font-heading font-bold text-ivory text-xl mb-2">Không Tìm Thấy Di Sản Phù Hợp</h2>
+        <p class="text-charcoal-400 text-sm mb-6 max-w-md mx-auto">
+          Không có kết quả nào khớp với điều kiện tìm kiếm hoặc bộ lọc hiện tại.
+        </p>
+        <button
+          class="px-6 py-3 rounded-2xl bg-gold-500 hover:bg-gold-400 text-charcoal-950 font-bold text-xs uppercase tracking-wider transition-all duration-300 inline-flex items-center gap-2 shadow-lg shadow-gold-500/20 hover:-translate-y-0.5"
+          @click="clearFilters"
+        >
+          <Icon name="mdi:refresh" class="w-4 h-4" />
+          <span>Xem Toàn Bộ {{ store.totalCount }} Di Sản</span>
+        </button>
       </div>
     </div>
 
@@ -763,14 +782,15 @@ function onParallaxScroll() {
 onMounted(() => {
   nextTick(() => observeAll())
 
-  // Store là app-wide singleton (dùng chung với /map) — luôn đồng bộ lại theo
-  // query string hiện tại, tránh dính filter còn sót từ trang khác.
+  // Store là app-wide singleton (dùng chung với /map) — luôn reset và đồng bộ lại
+  // theo query string hiện tại để tránh dính period/cluster còn sót từ trang khác.
+  store.clearFilters()
   activeCategory.value = (route.query.category as string) || ''
   searchQuery.value = (route.query.search as string) || ''
-  activeCluster.value = ''
+  activeCluster.value = (route.query.cluster as string) || ''
   store.setCategory(activeCategory.value)
   store.setSearch(searchQuery.value)
-  store.setCluster('')
+  store.setCluster(activeCluster.value)
 
   if (route.query.tab === 'community') activeMainTab.value = 'community'
   if (route.query.tag) { activeTag.value = route.query.tag as string; activeMainTab.value = 'community' }
@@ -788,11 +808,23 @@ watch(() => route.query.search, (value) => {
   searchQuery.value = typeof value === 'string' ? value : ''
 })
 
+watch(() => route.query.category, (value) => {
+  activeCategory.value = typeof value === 'string' ? value : ''
+})
+
 function clearFilters() {
   searchQuery.value = ''
   activeCategory.value = ''
   activeCluster.value = ''
   store.clearFilters()
+}
+
+function selectCuratedTrail(catId: string) {
+  if (activeCategory.value === catId) {
+    activeCategory.value = ''
+  } else {
+    activeCategory.value = catId
+  }
 }
 
 function discoverRandomHeritage() {

@@ -17,7 +17,15 @@ function decodeHtmlEntities(str) {
 
 function isArticlePage(relPath) {
   const normalized = relPath.replace(/\\/g, '/').toLowerCase();
-  return normalized.includes('heritage/') || normalized.includes('news/') || normalized.includes('study/lesson/');
+  return (
+    normalized.includes('heritage/') ||
+    normalized.includes('stories/') ||
+    normalized.includes('journal/') ||
+    normalized.includes('news/') ||
+    normalized.includes('study/lesson/') ||
+    normalized.includes('explore/post/') ||
+    normalized.includes('explore/post-')
+  );
 }
 
 function validateFile(filePath) {

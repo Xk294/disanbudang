@@ -23,7 +23,17 @@ export default defineEventHandler(async (event) => {
     heritageId,
     filesData,
     turnstileToken,
+    _hp,
   } = body ?? {}
+
+  // Honeypot check: If bot filled the invisible field, return fake success without storing
+  if (_hp) {
+    return {
+      ok: true,
+      id: randomUUID(),
+      message: 'Đóng góp của bạn đã được ghi nhận và đang chờ duyệt.',
+    }
+  }
 
   // 1. Client guard: Origin check + Turnstile verification
   const { ip } = await requireClient(event, turnstileToken)

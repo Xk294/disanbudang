@@ -3,8 +3,8 @@ import type { Heritage, MapFilter } from '~/types'
 import { HERITAGES } from '~/data/heritages'
 
 export const useHeritageStore = defineStore('heritage', () => {
-  // State
-  const heritages = ref<Heritage[]>(HERITAGES)
+  // Static data as computed getter (not serialized into Pinia state / SSR payload)
+  const heritages = computed<Heritage[]>(() => HERITAGES)
   const selectedHeritage = ref<Heritage | null>(null)
   const isLoading = ref(false)
   const searchQuery = ref('')
@@ -13,19 +13,31 @@ export const useHeritageStore = defineStore('heritage', () => {
   const activeCluster = ref<string>('')
   const mapGesturesEnabled = ref(true)
 
+  // Helper for accent-insensitive search
+  function stripDiacritics(str: string): string {
+    return str
+      .normalize('NFD')
+      .replace(/[\u0300-\u036f]/g, '')
+      .replace(/[đĐ]/g, 'd')
+      .toLowerCase()
+      .trim()
+  }
+
   // Getters
   const filteredHeritages = computed(() => {
     let result = heritages.value
 
     if (searchQuery.value) {
-      const q = searchQuery.value.toLowerCase()
-      result = result.filter(
-        (h) =>
-          h.title.toLowerCase().includes(q) ||
-          h.subtitle.toLowerCase().includes(q) ||
-          h.shortDescription.toLowerCase().includes(q) ||
-          h.tags.some((t) => t.toLowerCase().includes(q)),
-      )
+      const rawQ = searchQuery.value.toLowerCase().trim()
+      const normalizedQ = stripDiacritics(searchQuery.value)
+      result = result.filter((h) => {
+        const titleMatch = h.title.toLowerCase().includes(rawQ) || stripDiacritics(h.title).includes(normalizedQ)
+        const subMatch = Boolean(h.subtitle && (h.subtitle.toLowerCase().includes(rawQ) || stripDiacritics(h.subtitle).includes(normalizedQ)))
+        const descMatch = Boolean(h.shortDescription && (h.shortDescription.toLowerCase().includes(rawQ) || stripDiacritics(h.shortDescription).includes(normalizedQ)))
+        const tagMatch = h.tags.some((t) => t.toLowerCase().includes(rawQ) || stripDiacritics(t).includes(normalizedQ))
+        const quickFactMatch = Boolean(h.quickFacts?.some((f) => f.value.toLowerCase().includes(rawQ) || stripDiacritics(f.value).includes(normalizedQ)))
+        return titleMatch || subMatch || descMatch || tagMatch || quickFactMatch
+      })
     }
 
     if (activeCategory.value) {

@@ -13,7 +13,7 @@
             <BaseBadge :variant="(getCategoryVariant(article.category) as any)" class="mb-4">
               {{ getCategoryLabel(article.category) }}
             </BaseBadge>
-            <h1 class="font-heading font-bold text-ivory text-3xl md:text-4xl lg:text-5xl leading-[1.35] md:leading-[1.3] lg:leading-[1.25] mb-6 md:mb-8 text-balance tracking-[-0.03em]">
+            <h1 class="font-heading font-bold text-ivory text-3xl md:text-4xl lg:text-5xl leading-[1.35] md:leading-[1.3] lg:leading-[1.25] mb-6 md:mb-8 text-balance tracking-normal">
               {{ article.title }}
             </h1>
             <p v-if="article.subtitle" class="font-accent italic text-gold-300 text-lg md:text-xl mb-6">
@@ -46,7 +46,15 @@
           <div class="lg:col-span-8 bg-charcoal-950 border border-charcoal-850 rounded-3xl p-6 md:p-10 shadow-xl">
             <!-- Featured Image -->
             <div class="rounded-2xl overflow-hidden aspect-[21/9] mb-8 border border-charcoal-800">
-              <NuxtImg :src="article.coverImage" :alt="article.title" class="w-full h-full object-cover" />
+              <NuxtImg
+                :src="article.coverImage"
+                :alt="article.title"
+                class="w-full h-full object-cover"
+                loading="eager"
+                fetchpriority="high"
+                format="webp"
+                sizes="xs:100vw lg:800px"
+              />
             </div>
 
             <!-- Body -->
@@ -114,15 +122,6 @@
         </div>
       </div>
     </div>
-
-    <!-- 404 -->
-    <div v-else class="min-h-screen flex items-center justify-center bg-charcoal-900 text-ivory">
-      <div class="text-center">
-        <Icon name="mdi:alert-circle-outline" class="w-20 h-20 text-charcoal-400 mx-auto mb-6" />
-        <h1 class="font-heading font-bold text-ivory text-3xl mb-3">Tin bài không tồn tại</h1>
-        <NuxtLink to="/news" class="btn-primary">Về trang tin tức</NuxtLink>
-      </div>
-    </div>
   </div>
 </template>
 
@@ -134,6 +133,14 @@ const route = useRoute()
 const slug = computed(() => route.params.slug as string)
 
 const article = computed(() => NEWS_ARTICLES.find((n) => n.slug === slug.value) ?? null)
+
+if (!article.value) {
+  throw createError({
+    statusCode: 404,
+    statusMessage: 'Bài viết không tồn tại trong hệ thống',
+    fatal: true,
+  })
+}
 
 useBreadcrumb(() => article.value?.title || '')
 
@@ -169,7 +176,7 @@ function getCategoryVariant(category: NewsCategory): string {
   return categoryVariant[category] || 'gold'
 }
 
-useNewsSeo(article)
+useStorySeo(article)
 
 const copied = ref(false)
 

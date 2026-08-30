@@ -35,12 +35,15 @@
 
         <!-- MAIN STORY -->
         <div v-if="posts[0]" class="lg:col-span-7 reveal">
-          <NuxtLink to="/explore" class="group block h-full">
+          <NuxtLink :to="'/explore/post/' + posts[0].id" class="group block h-full">
             <article class="relative overflow-hidden rounded-2xl lg:rounded-3xl h-[360px] lg:h-[460px] border border-charcoal-800/60 hover:border-gold-500/25 transition-all duration-500 hover:shadow-2xl hover:shadow-gold-500/10">
               <NuxtImg
                 :src="posts[0].coverImage"
                 :alt="posts[0].title"
                 class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-[1.04]"
+                loading="lazy"
+                format="webp"
+                sizes="xs:100vw lg:60vw"
               />
               <div class="absolute inset-0 bg-gradient-to-t from-charcoal-950 via-charcoal-950/40 to-transparent" />
               <div class="absolute inset-0 bg-gradient-to-r from-charcoal-950/50 via-transparent to-transparent" />
@@ -85,7 +88,7 @@
           <NuxtLink
             v-for="post in posts.slice(1, 4)"
             :key="post.id"
-            to="/explore"
+            :to="'/explore/post/' + post.id"
             class="group flex gap-4 p-4 lg:p-5 rounded-2xl border border-charcoal-800/60 hover:border-gold-500/20 hover:bg-charcoal-900/70 transition-all duration-300 reveal"
           >
             <!-- Bigger thumbnail -->
@@ -94,6 +97,10 @@
                 :src="post.coverImage"
                 :alt="post.title"
                 class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+                width="96"
+                height="80"
+                loading="lazy"
+                format="webp"
               />
             </div>
             <div class="flex-1 min-w-0">

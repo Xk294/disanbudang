@@ -5,7 +5,7 @@
       <div class="absolute top-0 left-0 w-64 h-64 bg-forest-500/10 rounded-full blur-3xl" />
       <div class="container-heritage relative z-10">
         <span class="section-label text-gold-400">Góc Chia Sẻ & Nghiên Cứu</span>
-        <h1 class="font-heading font-bold text-ivory text-5xl lg:text-6xl leading-[1.35] md:leading-[1.3] lg:leading-[1.25] mb-6 md:mb-8 text-balance tracking-[-0.03em]">
+        <h1 class="font-heading font-bold text-ivory text-5xl lg:text-6xl leading-[1.35] md:leading-[1.3] lg:leading-[1.25] mb-6 md:mb-8 text-balance tracking-normal">
           Bài Viết &<br/><span class="text-gradient-gold">Di Sản Bù Đăng</span>
         </h1>
         <p class="text-charcoal-300 text-lg max-w-xl">
@@ -40,7 +40,14 @@
         >
           <!-- Article Cover Image -->
           <div class="relative overflow-hidden rounded-xl aspect-[16/10] mb-5 border border-charcoal-800/80">
-            <NuxtImg :src="article.coverImage" :alt="article.title" class="w-full h-full object-cover transition-transform duration-750 ease-out-expo group-hover:scale-105" />
+            <NuxtImg
+              :src="article.coverImage"
+              :alt="article.title"
+              class="w-full h-full object-cover transition-transform duration-750 ease-out-expo group-hover:scale-105"
+              loading="lazy"
+              format="webp"
+              sizes="xs:100vw sm:50vw lg:33vw"
+            />
           </div>
 
           <div class="flex items-center gap-3 mb-4">

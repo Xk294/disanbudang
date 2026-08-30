@@ -1,8 +1,5 @@
 <template>
   <div class="min-h-screen bg-charcoal-900 text-ivory">
-    <!-- Hidden h1 for SEO (heading hierarchy) -->
-    <h1 class="sr-only">Cổng Học Tập Số Di Sản Thành Phố Đồng Nai</h1>
-
     <!-- Cmd+K Search Overlay -->
     <SearchOverlay
       v-model:open="searchOverlayOpen"
@@ -18,25 +15,47 @@
     <!-- ================================================== -->
     <!-- HERO SECTION — Cinematic Full-Screen               -->
     <!-- ================================================== -->
-    <section class="relative min-h-[90vh] flex flex-col items-center justify-center overflow-hidden py-16" aria-label="Trang chủ học tập di sản">
-      <!-- Cinematic background -->
-      <div class="absolute inset-0 z-0">
-        <img
-          src="/images/heritage/danh-thang/bu-lach-lg.webp"
-          alt="Trảng cỏ Bù Lạch, di sản thiên nhiên Thành Phố Đồng Nai"
-          class="w-full h-full object-cover object-center scale-105"
-          style="animation: slowZoom 20s ease-in-out infinite alternate"
-        />
-        <!-- Multi-layer gradient overlay -->
-        <div class="absolute inset-0 bg-gradient-to-b from-charcoal-950/80 via-charcoal-950/60 to-charcoal-950/95" />
-        <div class="absolute inset-0 bg-gradient-to-r from-charcoal-950/60 via-transparent to-charcoal-950/40" />
-        <!-- Noise texture -->
-        <div class="absolute inset-0 opacity-[0.03] bg-[url('data:image/svg+xml,%3Csvg viewBox=%220 0 200 200%22 xmlns=%22http://www.w3.org/2000/svg%22%3E%3Cfilter id=%22noise%22%3E%3CfeTurbulence type=%22fractalNoise%22 baseFrequency=%220.65%22 numOctaves=%223%22 stitchTiles=%22stitch%22/%3E%3C/filter%3E%3Crect width=%22100%25%22 height=%22100%25%22 filter=%22url(%23noise)%22/%3E%3C/svg%3E')]" />
+    <section class="relative min-h-[90vh] flex flex-col items-center justify-center overflow-hidden py-16" aria-label="Trang chủ học tập di sản" style="background:#080706">
+      <!-- Imperial Lacquer Base — sơn mài đen sâu -->
+      <div class="absolute inset-0 z-0" style="background: radial-gradient(ellipse 120% 80% at 50% 0%, #1a0f04 0%, #0d0905 40%, #080706 100%)" />
+
+      <!-- Dong Son Bronze Drum Pattern — hoa văn Trống đồng chìm -->
+      <div class="absolute inset-0 z-0 flex items-center justify-center pointer-events-none overflow-hidden" aria-hidden="true">
+        <svg
+          viewBox="0 0 600 600"
+          class="absolute w-[700px] h-[700px] opacity-[0.055] select-none"
+          style="top:50%;left:50%;transform:translate(-50%,-50%);animation:drumRotate 120s linear infinite"
+        >
+          <!-- Outer ring -->
+          <circle cx="300" cy="300" r="290" fill="none" stroke="#D4AF37" stroke-width="1.2"/>
+          <circle cx="300" cy="300" r="278" fill="none" stroke="#D4AF37" stroke-width="0.6"/>
+          <!-- Ray segments × 14 -->
+          <g transform="translate(300,300)">
+            <line v-for="i in 14" :key="i" x1="0" y1="-270" x2="0" y2="-220" stroke="#D4AF37" stroke-width="1" :transform="`rotate(${i*25.714})`"/>
+            <!-- Concentric rings -->
+            <circle r="210" fill="none" stroke="#D4AF37" stroke-width="0.8"/>
+            <circle r="170" fill="none" stroke="#D4AF37" stroke-width="0.6"/>
+            <circle r="130" fill="none" stroke="#D4AF37" stroke-width="1"/>
+            <circle r="90"  fill="none" stroke="#D4AF37" stroke-width="0.6"/>
+            <circle r="55"  fill="none" stroke="#D4AF37" stroke-width="0.8"/>
+            <!-- Center star -->
+            <circle r="20"  fill="#D4AF37" fill-opacity="0.3"/>
+            <circle r="8"   fill="#D4AF37" fill-opacity="0.6"/>
+            <!-- Tangent dot circles on ring 170 -->
+            <circle v-for="j in 14" :key="j" :cx="Math.cos((j*25.714-90)*Math.PI/180)*170" :cy="Math.sin((j*25.714-90)*Math.PI/180)*170" r="4" fill="none" stroke="#D4AF37" stroke-width="0.7"/>
+          </g>
+        </svg>
       </div>
 
-      <!-- Gold orb decorations -->
-      <div class="absolute top-1/4 -left-32 w-[400px] h-[400px] bg-gold-500/8 rounded-full blur-[80px] pointer-events-none" />
-      <div class="absolute bottom-1/3 -right-32 w-[350px] h-[350px] bg-earth-600/10 rounded-full blur-[100px] pointer-events-none" />
+      <!-- Ambient Gold Glow — quầng vàng nền -->
+      <div class="absolute inset-0 z-0 pointer-events-none" aria-hidden="true">
+        <div style="position:absolute;top:10%;left:50%;transform:translateX(-50%);width:600px;height:300px;background:radial-gradient(ellipse at center,rgba(212,175,55,0.13) 0%,transparent 70%);filter:blur(40px)"/>
+        <div style="position:absolute;bottom:15%;left:20%;width:300px;height:200px;background:radial-gradient(ellipse at center,rgba(160,100,20,0.08) 0%,transparent 70%);filter:blur(60px)"/>
+        <div style="position:absolute;bottom:20%;right:15%;width:250px;height:200px;background:radial-gradient(ellipse at center,rgba(212,175,55,0.07) 0%,transparent 70%);filter:blur(60px)"/>
+      </div>
+
+      <!-- Lacquer grain texture -->
+      <div class="absolute inset-0 z-0 opacity-[0.025] pointer-events-none" aria-hidden="true" style="background-image:url('data:image/svg+xml,%3Csvg viewBox=%220 0 256 256%22 xmlns=%22http://www.w3.org/2000/svg%22%3E%3Cfilter id=%22n%22%3E%3CfeTurbulence type=%22fractalNoise%22 baseFrequency=%220.9%22 numOctaves=%224%22 stitchTiles=%22stitch%22/%3E%3C/filter%3E%3Crect width=%22100%25%22 height=%22100%25%22 filter=%22url(%23n)%22/%3E%3C/svg%3E')"/>
 
       <!-- Hero content -->
       <div class="relative z-10 max-w-5xl mx-auto px-6 text-center space-y-8 reveal-on-scroll">
@@ -53,10 +72,10 @@
 
         <!-- Main headline -->
         <div style="animation: fadeSlideUp 0.9s 0.15s cubic-bezier(0.16,1,0.3,1) both">
-          <h2 class="font-heading font-bold text-4xl sm:text-5xl md:text-6xl lg:text-7xl text-ivory leading-[1.38] tracking-tight">
+          <h1 class="font-heading font-bold text-4xl sm:text-5xl md:text-6xl lg:text-7xl text-ivory leading-[1.38] tracking-tight">
             Học. Khám phá.<br />
             <span class="text-transparent bg-clip-text bg-gradient-to-r from-gold-400 via-gold-300 to-earth-400">Gìn giữ di sản.</span>
-          </h2>
+          </h1>
         </div>
 
         <p class="text-charcoal-200 text-base md:text-lg leading-relaxed max-w-2xl mx-auto font-body" style="animation: fadeSlideUp 0.9s 0.25s cubic-bezier(0.16,1,0.3,1) both">
@@ -124,13 +143,13 @@
     </section>
 
     <!-- ================================================== -->
-    <!-- STICKY TAB NAVIGATION V2 — 3 Primary + Secondary  -->
+    <!-- STICKY TAB NAVIGATION — 7 Tabs Cuộn Ngang         -->
     <!-- ================================================== -->
     <div ref="stickyNavRef" class="sticky top-[72px] z-30 bg-charcoal-950/95 backdrop-blur-2xl border-b border-charcoal-800/50 shadow-2xl shadow-charcoal-950/50">
       <div class="max-w-screen-2xl mx-auto px-4 sm:px-6">
-        <div class="flex items-center gap-1 py-2">
+        <div class="flex items-center gap-0 py-2">
           <!-- User XP mini-badge -->
-          <div class="hidden lg:flex items-center gap-2 mr-4 shrink-0 pl-1 border-r border-charcoal-800 pr-4">
+          <div class="hidden lg:flex items-center gap-2 mr-3 shrink-0 pl-1 border-r border-charcoal-800 pr-4">
             <div class="w-7 h-7 rounded-lg bg-gradient-to-tr from-earth-700 to-gold-500 flex items-center justify-center font-heading font-bold text-charcoal-900 text-xs shadow">
               HS
             </div>
@@ -142,92 +161,167 @@
             </div>
           </div>
 
-          <!-- Primary tabs: 3 cốt lõi -->
-          <button
-            v-for="item in primaryNavItems"
-            :key="item.id"
-            class="flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-semibold whitespace-nowrap transition-all duration-200 shrink-0 group relative"
-            :class="activeTab === item.id
-              ? 'bg-gold-500/12 text-gold-400 border border-gold-500/25 shadow-inner'
-              : 'text-charcoal-350 hover:text-ivory hover:bg-charcoal-900'"
-            @click="activeTab = item.id; scrollToContent(); showSecondaryNav = false"
-            :aria-label="`Chuyển sang ${item.label}`"
-            :aria-current="activeTab === item.id ? 'page' : undefined"
-          >
-            <Icon :name="item.icon" class="w-4 h-4 transition-transform group-hover:scale-110" />
-            {{ item.label }}
-            <span v-if="item.badge" class="px-1.5 py-0.5 rounded-full text-3xs font-bold" :class="activeTab === item.id ? 'bg-gold-500/20 text-gold-300' : 'bg-charcoal-800 text-charcoal-400'">
-              {{ item.badge }}
-            </span>
-            <span v-if="activeTab === item.id" class="absolute bottom-0 left-2 right-2 h-0.5 bg-gold-400 rounded-full" />
-          </button>
+          <!-- Horizontal Scrollable Tabs — 7 phân hệ chính -->
+          <div class="flex-1 overflow-x-auto scrollbar-none">
+            <div class="flex items-center gap-1 min-w-max py-0.5">
+              <button
+                v-for="item in allNavItems"
+                :key="item.id"
+                class="flex items-center gap-1.5 px-3.5 py-2 rounded-xl text-xs font-semibold whitespace-nowrap transition-all duration-200 shrink-0 group relative"
+                :class="activeTab === item.id
+                  ? 'bg-gold-500/12 text-gold-400 border border-gold-500/25 shadow-inner'
+                  : 'text-charcoal-350 hover:text-ivory hover:bg-charcoal-900 border border-transparent'"
+                @click="activeTab = item.id; scrollToContent()"
+                :aria-label="`Chuyển sang ${item.label}`"
+                :aria-current="activeTab === item.id ? 'page' : undefined"
+              >
+                <span class="text-sm leading-none">{{ item.emoji }}</span>
+                <span class="hidden sm:inline">{{ item.label }}</span>
+                <span class="sm:hidden">{{ item.shortLabel }}</span>
+                <span
+                  v-if="item.badge"
+                  class="px-1.5 py-0.5 rounded-full text-3xs font-bold leading-none"
+                  :class="activeTab === item.id ? 'bg-gold-500/20 text-gold-300' : 'bg-charcoal-800 text-charcoal-400'"
+                >{{ item.badge }}</span>
+                <span v-if="activeTab === item.id" class="absolute bottom-0 left-2 right-2 h-0.5 bg-gold-400 rounded-full" />
+              </button>
+            </div>
+          </div>
 
-          <!-- Nếu đang ở secondary tab, hiện tab đó luôn visible -->
-          <button
-            v-if="secondaryNavItems.some(s => s.id === activeTab)"
-            :key="activeTab"
-            class="flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-semibold whitespace-nowrap bg-gold-500/12 text-gold-400 border border-gold-500/25 shadow-inner shrink-0 group relative"
-            :aria-current="'page'"
-          >
-            <Icon :name="secondaryNavItems.find(s => s.id === activeTab)!.icon" class="w-4 h-4" />
-            {{ secondaryNavItems.find(s => s.id === activeTab)!.label }}
-            <span class="absolute bottom-0 left-2 right-2 h-0.5 bg-gold-400 rounded-full" />
-          </button>
-
-          <!-- Divider -->
-          <div class="w-px h-4 bg-charcoal-800 mx-1.5 shrink-0" />
-
-          <!-- "Thêm" dropdown toggle -->
-          <button
-            class="flex items-center gap-1.5 px-3 py-2 rounded-xl text-xs font-semibold whitespace-nowrap transition-all duration-200 shrink-0 relative"
-            :class="showSecondaryNav
-              ? 'text-gold-400 bg-gold-500/10 border border-gold-500/25'
-              : 'text-charcoal-400 hover:text-ivory hover:bg-charcoal-900'"
-            :aria-expanded="showSecondaryNav"
-            @click="showSecondaryNav = !showSecondaryNav"
-          >
-            <Icon name="mdi:view-grid-outline" class="w-4 h-4" />
-            <span class="hidden sm:inline">Thêm</span>
-            <Icon :name="showSecondaryNav ? 'mdi:chevron-up' : 'mdi:chevron-down'" class="w-3.5 h-3.5" />
-          </button>
-
-          <!-- Right utility: Search -->
-          <div class="ml-auto shrink-0 flex items-center gap-2 pl-2 border-l border-charcoal-800">
+          <!-- Right: Search shortcut -->
+          <div class="shrink-0 flex items-center pl-3 ml-1 border-l border-charcoal-800">
             <button
               class="flex items-center gap-1.5 px-3 py-2 rounded-xl border border-charcoal-800 bg-charcoal-900/60 hover:border-gold-500/40 text-charcoal-400 hover:text-gold-400 text-xs font-semibold transition-all duration-300"
               @click="searchOverlayOpen = true"
               aria-label="Mở tìm kiếm (Cmd+K)"
             >
               <Icon name="mdi:magnify" class="w-4 h-4" />
-              <span class="hidden sm:inline">Cmd+K</span>
+              <span class="hidden sm:inline">{{ studyShortcutKey }}</span>
             </button>
           </div>
         </div>
-
-        <!-- Secondary tabs dropdown panel -->
-        <Transition name="slide-down">
-          <div v-if="showSecondaryNav" class="flex flex-wrap items-center gap-1 pb-2.5 pt-0.5 border-t border-charcoal-800/60">
-            <button
-              v-for="item in secondaryNavItems"
-              :key="item.id"
-              class="flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-medium whitespace-nowrap transition-all duration-200 shrink-0 relative"
-              :class="activeTab === item.id
-                ? 'text-gold-400 bg-gold-500/12 border border-gold-500/25'
-                : 'text-charcoal-400 hover:text-ivory hover:bg-charcoal-900'"
-              @click="activeTab = item.id; scrollToContent(); showSecondaryNav = false"
-              :aria-current="activeTab === item.id ? 'page' : undefined"
-            >
-              <Icon :name="item.icon" class="w-3.5 h-3.5" />
-              {{ item.label }}
-              <span v-if="'badge' in item && item.badge" class="px-1 py-0.5 rounded-full text-[9px] font-bold bg-charcoal-800 text-charcoal-400">
-                {{ item.badge }}
-              </span>
-            </button>
-          </div>
-        </Transition>
       </div>
     </div>
 
+
+    <!-- ================================================== -->
+    <!-- INTERACTIVE BENTO SHOWCASE — 4 Tính Năng Đặc Sắc  -->
+    <!-- ================================================== -->
+    <section aria-labelledby="bento-showcase-title" class="max-w-screen-2xl mx-auto px-4 sm:px-6 pt-10 pb-4">
+      <div class="mb-5 text-center">
+        <span id="bento-showcase-title" class="section-label">✨ Tính năng tương tác độc đáo</span>
+        <h2 class="font-heading font-bold text-2xl sm:text-3xl text-ivory mt-3">Khám Phá Di Sản Theo Cách Mới</h2>
+        <p class="text-charcoal-400 text-sm mt-2 max-w-xl mx-auto">Chạm vào bất kỳ ô nào để bước vào trải nghiệm học tập tương tác đặc sắc.</p>
+      </div>
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+
+        <!-- Ô 1: Heritage Lab -->
+        <div
+          class="bento-card group relative overflow-hidden rounded-3xl border border-earth-700/25 bg-gradient-to-br from-earth-950/80 via-charcoal-900 to-charcoal-950 cursor-pointer"
+          @click="activeTab = 'lab'; scrollToContent()"
+          role="button"
+          aria-label="Mở Trải Nghiệm Số — Heritage Lab"
+        >
+          <div class="absolute -top-16 -right-16 w-48 h-48 bg-earth-600/10 rounded-full blur-3xl group-hover:bg-earth-500/18 transition-all duration-500" />
+          <div class="relative z-10 p-6 flex flex-col h-full min-h-[220px] justify-between">
+            <div class="space-y-3">
+              <div class="w-14 h-14 rounded-2xl bg-earth-700/20 border border-earth-600/20 flex items-center justify-center text-3xl group-hover:scale-110 transition-transform duration-300">🔬</div>
+              <div>
+                <span class="text-earth-300 text-3xs font-bold uppercase tracking-widest block mb-1">Heritage Lab</span>
+                <h3 class="font-heading font-bold text-ivory text-base leading-snug group-hover:text-earth-200 transition-colors">Trải Nghiệm Số</h3>
+                <p class="text-charcoal-400 text-xs mt-1.5 leading-relaxed line-clamp-2">So sánh Xưa &amp; Nay + Xem hiện vật tương tác 3D Hotspot từ tư liệu thực địa.</p>
+              </div>
+            </div>
+            <div class="flex items-center gap-1.5 text-earth-300 text-xs font-bold mt-4 group-hover:gap-2.5 transition-all">
+              Khám phá ngay <Icon name="mdi:arrow-right" class="w-4 h-4" />
+            </div>
+          </div>
+          <div class="bento-gold-shimmer" />
+        </div>
+
+        <!-- Ô 2: Digital Passport -->
+        <div
+          class="bento-card group relative overflow-hidden rounded-3xl border border-gold-700/20 bg-gradient-to-br from-gold-950/30 via-charcoal-900 to-charcoal-950 cursor-pointer"
+          @click="activeTab = 'passport'; scrollToContent()"
+          role="button"
+          aria-label="Mở Hộ Chiếu Số Di Sản"
+        >
+          <div class="absolute -top-16 -right-16 w-48 h-48 bg-gold-600/8 rounded-full blur-3xl group-hover:bg-gold-500/15 transition-all duration-500" />
+          <div class="relative z-10 p-6 flex flex-col h-full min-h-[220px] justify-between">
+            <div class="space-y-3">
+              <div class="w-14 h-14 rounded-2xl bg-gold-500/10 border border-gold-500/20 flex items-center justify-center text-3xl group-hover:scale-110 transition-transform duration-300">📜</div>
+              <div>
+                <span class="text-gold-400 text-3xs font-bold uppercase tracking-widest block mb-1">Digital Passport</span>
+                <h3 class="font-heading font-bold text-ivory text-base leading-snug group-hover:text-gold-300 transition-colors">Hộ Chiếu Di Sản</h3>
+                <p class="text-charcoal-400 text-xs mt-1.5 leading-relaxed line-clamp-2">Sổ tay hành trình số — dập mộc son từng địa danh, tích lũy dấu ấn di sản đã khám phá.</p>
+              </div>
+            </div>
+            <div class="flex items-center justify-between mt-4">
+              <div class="flex items-center gap-1.5 text-gold-400 text-xs font-bold group-hover:gap-2.5 transition-all">
+                Mở sổ tay <Icon name="mdi:arrow-right" class="w-4 h-4" />
+              </div>
+              <span class="text-3xs text-gold-500/60 font-bold">{{ quizStore.userProgress.visitedHeritages.length }} mộc son</span>
+            </div>
+          </div>
+          <div class="bento-gold-shimmer" />
+        </div>
+
+        <!-- Ô 3: Flashcard 3D S'tiêng -->
+        <div
+          class="bento-card group relative overflow-hidden rounded-3xl border border-blue-800/20 bg-gradient-to-br from-blue-950/40 via-charcoal-900 to-charcoal-950 cursor-pointer"
+          @click="activeTab = 'glossary'; scrollToContent()"
+          role="button"
+          aria-label="Mở Flashcard 3D Từ Điển S'tiêng"
+        >
+          <div class="absolute -top-16 -right-16 w-48 h-48 bg-blue-700/8 rounded-full blur-3xl group-hover:bg-blue-600/14 transition-all duration-500" />
+          <div class="relative z-10 p-6 flex flex-col h-full min-h-[220px] justify-between">
+            <div class="space-y-3">
+              <div class="w-14 h-14 rounded-2xl bg-blue-600/10 border border-blue-600/20 flex items-center justify-center text-3xl group-hover:scale-110 transition-transform duration-300">🎴</div>
+              <div>
+                <span class="text-blue-300 text-3xs font-bold uppercase tracking-widest block mb-1">Flashcard 3D</span>
+                <h3 class="font-heading font-bold text-ivory text-base leading-snug group-hover:text-blue-200 transition-colors">Từ Điển S'tiêng</h3>
+                <p class="text-charcoal-400 text-xs mt-1.5 leading-relaxed line-clamp-2">Thẻ bài 3D lật mặt tương tác + nghe phát âm giọng đọc bản địa TTS ngay trên trình duyệt.</p>
+              </div>
+            </div>
+            <div class="flex items-center justify-between mt-4">
+              <div class="flex items-center gap-1.5 text-blue-300 text-xs font-bold group-hover:gap-2.5 transition-all">
+                Học ngay <Icon name="mdi:arrow-right" class="w-4 h-4" />
+              </div>
+              <span class="text-3xs text-blue-400/60 font-bold">{{ glossary.length }} từ</span>
+            </div>
+          </div>
+          <div class="bento-gold-shimmer" />
+        </div>
+
+        <!-- Ô 4: Đấu Trí Di Sản & Thăng Cấp -->
+        <div
+          class="bento-card group relative overflow-hidden rounded-3xl border border-orange-800/20 bg-gradient-to-br from-orange-950/40 via-charcoal-900 to-charcoal-950 cursor-pointer"
+          @click="activeTab = 'achievements'; scrollToContent()"
+          role="button"
+          aria-label="Mở Thành Tích và Hệ Thống Thăng Cấp"
+        >
+          <div class="absolute -top-16 -right-16 w-48 h-48 bg-orange-700/8 rounded-full blur-3xl group-hover:bg-orange-600/14 transition-all duration-500" />
+          <div class="relative z-10 p-6 flex flex-col h-full min-h-[220px] justify-between">
+            <div class="space-y-3">
+              <div class="w-14 h-14 rounded-2xl bg-orange-500/10 border border-orange-500/20 flex items-center justify-center text-3xl group-hover:scale-110 transition-transform duration-300">🏆</div>
+              <div>
+                <span class="text-orange-300 text-3xs font-bold uppercase tracking-widest block mb-1">Đấu Trí Di Sản</span>
+                <h3 class="font-heading font-bold text-ivory text-base leading-snug group-hover:text-orange-200 transition-colors">Thăng Cấp &amp; Huy Hiệu</h3>
+                <p class="text-charcoal-400 text-xs mt-1.5 leading-relaxed line-clamp-2">{{ quizStore.quizzes.length }} bộ trắc nghiệm di sản — nhận XP, mở khóa huy hiệu và leo bảng xếp hạng.</p>
+              </div>
+            </div>
+            <div class="flex items-center justify-between mt-4">
+              <div class="flex items-center gap-1.5 text-orange-300 text-xs font-bold group-hover:gap-2.5 transition-all">
+                Chinh phục ngay <Icon name="mdi:arrow-right" class="w-4 h-4" />
+              </div>
+              <span class="text-3xs text-orange-400/60 font-bold">{{ userXP }} XP</span>
+            </div>
+          </div>
+          <div class="bento-gold-shimmer" />
+        </div>
+
+      </div>
+    </section>
 
     <!-- ================================================== -->
     <!-- MAIN CONTENT AREA                                  -->
@@ -270,58 +364,162 @@
           </div>
         </section>
 
-        <!-- LEARNING PATH -->
-        <section aria-labelledby="learning-path-title">
-          <div class="flex items-end justify-between mb-4 gap-4 flex-wrap">
+        <!-- BẢN ĐỒ HÀNH TRÌNH 4 CHƯƠNG THÁM HIỂM (RPG Expedition Map) -->
+        <section aria-labelledby="expedition-map-title">
+          <div class="flex items-end justify-between mb-6 gap-4 flex-wrap">
             <div>
-              <span class="section-label">Hành trình học tập</span>
-              <h3 id="learning-path-title" class="font-heading text-2xl font-bold text-ivory mt-1">Learning Path Di Sản</h3>
+              <span class="section-label">🗺️ Hành Trình Thám Hiểm</span>
+              <h3 id="expedition-map-title" class="font-heading text-2xl font-bold text-ivory mt-1">Bản Đồ 4 Chương Thám Hiểm</h3>
             </div>
             <div class="flex items-center gap-3 shrink-0">
-              <span class="text-xs font-bold text-gold-400">{{ completedStepsCount }}/{{ learningPath.length }} hoàn thành</span>
-              <div class="w-28 h-1.5 bg-charcoal-850 rounded-full overflow-hidden">
-                <div class="h-full bg-gradient-to-r from-earth-600 to-gold-500 rounded-full transition-all duration-500" :style="{ width: (completedStepsCount / learningPath.length * 100) + '%' }" />
+              <span class="text-xs font-bold text-gold-400">{{ completedChaptersCount }}/4 chương</span>
+              <div class="w-32 h-1.5 bg-charcoal-850 rounded-full overflow-hidden">
+                <div class="h-full bg-gradient-to-r from-earth-600 to-gold-500 rounded-full transition-all duration-700" :style="{ width: (completedChaptersCount / 4 * 100) + '%' }" />
               </div>
             </div>
           </div>
+
           <div class="relative">
-            <!-- Connector line -->
-            <div class="hidden lg:block absolute top-10 left-[calc(12.5%)] right-[calc(12.5%)] h-0.5 bg-gradient-to-r from-gold-500/30 via-gold-500/60 to-earth-500/30 z-0" />
-            <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4 relative z-10">
+            <!-- Connector path (desktop) -->
+            <div class="hidden lg:block absolute top-[52px] left-[calc(12.5%+36px)] right-[calc(12.5%+36px)] h-px z-0">
+              <div class="w-full h-full bg-gradient-to-r from-gold-500/40 via-gold-400/70 to-earth-500/30 rounded-full" />
+              <div class="absolute top-1/2 -translate-y-1/2 w-2.5 h-2.5 rounded-full bg-gold-400/80 shadow-gold/60 shadow-md animate-expedition-pulse" style="left: 20%" />
+            </div>
+
+            <div class="grid grid-cols-2 lg:grid-cols-4 gap-5 relative z-10">
+
+              <!-- Chương I: Sóc Bom Bo -->
               <div
-                v-for="(step, idx) in learningPath"
-                :key="step.title"
                 class="group flex flex-col items-center text-center gap-3 cursor-pointer"
-                @click="goToLearningStep(step)"
-                :aria-label="`Bước ${idx + 1}: ${step.title}`"
+                @click="goToExpeditionChapter('soc-bom-bo')"
+                aria-label="Chương I: Sóc Bom Bo — Kháng chiến S'tiêng"
               >
                 <div
-                  class="w-20 h-20 rounded-2xl flex items-center justify-center border-2 transition-all duration-500 relative"
-                  :class="step.done
-                    ? 'bg-gold-500 border-gold-300 shadow-gold/25 shadow-lg'
-                    : idx === currentStepIndex
-                      ? 'bg-charcoal-900 border-gold-500/70 shadow-lg shadow-gold-500/10 animate-pulse-slow'
-                      : 'bg-charcoal-950 border-charcoal-800 group-hover:border-gold-500/50 group-hover:bg-charcoal-900'"
+                  class="w-[104px] h-[104px] rounded-3xl flex items-center justify-center border-2 transition-all duration-500 relative shadow-lg"
+                  :class="expeditionChapters[0].done
+                    ? 'bg-gold-500 border-gold-300 shadow-gold/25'
+                    : expeditionChapters[0].current
+                      ? 'bg-charcoal-900 border-gold-500/70 shadow-gold-500/10 animate-pulse-slow'
+                      : 'bg-charcoal-950 border-charcoal-700 group-hover:border-gold-500/50 group-hover:bg-charcoal-900'"
                 >
-                  <span v-if="step.done" class="absolute -top-2 -right-2 w-6 h-6 rounded-full bg-green-500 border-2 border-charcoal-900 flex items-center justify-center">
-                    <Icon name="mdi:check" class="w-3 h-3 text-white" />
+                  <span v-if="expeditionChapters[0].done" class="absolute -top-2.5 -right-2.5 w-7 h-7 rounded-full bg-green-500 border-2 border-charcoal-900 flex items-center justify-center shadow">
+                    <Icon name="mdi:check" class="w-3.5 h-3.5 text-white" />
                   </span>
-                  <span v-else-if="idx === currentStepIndex" class="absolute -top-2 -right-2 w-6 h-6 rounded-full bg-gold-500 border-2 border-charcoal-900 flex items-center justify-center">
-                    <Icon name="mdi:arrow-right" class="w-3 h-3 text-charcoal-950" />
+                  <span v-else-if="expeditionChapters[0].current" class="absolute -top-2.5 -right-2.5 w-7 h-7 rounded-full bg-gold-500 border-2 border-charcoal-900 flex items-center justify-center shadow">
+                    <Icon name="mdi:sword" class="w-3.5 h-3.5 text-charcoal-900" />
                   </span>
-                  <Icon :name="step.icon" class="w-9 h-9 transition-transform group-hover:scale-110" :class="step.done ? 'text-charcoal-950' : idx === currentStepIndex ? 'text-gold-400' : 'text-gold-400/60 group-hover:text-gold-400'" />
+                  <span class="text-4xl" :class="expeditionChapters[0].done ? 'grayscale-0' : 'grayscale-[30%]'">🔥</span>
                 </div>
-                <div>
-                  <span class="block text-xs font-bold text-ivory leading-snug group-hover:text-gold-400 transition-colors">{{ step.title }}</span>
-                  <span class="block text-xs text-charcoal-400 mt-0.5">{{ step.desc }}</span>
-                  <span
-                    class="inline-block mt-1 text-3xs font-bold px-2 py-0.5 rounded-full"
-                    :class="step.done ? 'bg-green-500/10 text-green-400' : idx === currentStepIndex ? 'bg-gold-500/15 text-gold-400' : 'bg-charcoal-900 text-charcoal-500'"
-                  >
-                    {{ step.done ? 'Hoàn thành' : idx === currentStepIndex ? 'Tiếp theo' : `+${step.xp} XP` }}
+                <div class="space-y-0.5">
+                  <span class="block text-3xs font-bold text-gold-400/70 uppercase tracking-widest">Chương I</span>
+                  <h4 class="font-heading font-bold text-sm text-ivory leading-snug group-hover:text-gold-300 transition-colors">Sóc Bom Bo</h4>
+                  <p class="text-3xs text-charcoal-400 leading-snug max-w-[120px] mx-auto">Tiếng chày giã gạo kháng chiến S'tiêng</p>
+                  <span class="inline-block mt-1 text-3xs font-bold px-2.5 py-0.5 rounded-full"
+                    :class="expeditionChapters[0].done ? 'bg-green-500/10 text-green-400' : expeditionChapters[0].current ? 'bg-gold-500/15 text-gold-400' : 'bg-charcoal-900 text-charcoal-500'">
+                    {{ expeditionChapters[0].done ? '✓ Hoàn thành' : expeditionChapters[0].current ? '▶ Đang học' : '+80 XP' }}
                   </span>
                 </div>
               </div>
+
+              <!-- Chương II: Chiến Khu Đ & Rừng Già -->
+              <div
+                class="group flex flex-col items-center text-center gap-3 cursor-pointer"
+                @click="goToExpeditionChapter('chien-khu-d')"
+                aria-label="Chương II: Chiến Khu Đ & Rừng Già"
+              >
+                <div
+                  class="w-[104px] h-[104px] rounded-3xl flex items-center justify-center border-2 transition-all duration-500 relative shadow-lg"
+                  :class="expeditionChapters[1].done
+                    ? 'bg-gold-500 border-gold-300 shadow-gold/25'
+                    : expeditionChapters[1].current
+                      ? 'bg-charcoal-900 border-gold-500/70 shadow-gold-500/10 animate-pulse-slow'
+                      : 'bg-charcoal-950 border-charcoal-700 group-hover:border-gold-500/50 group-hover:bg-charcoal-900'"
+                >
+                  <span v-if="expeditionChapters[1].done" class="absolute -top-2.5 -right-2.5 w-7 h-7 rounded-full bg-green-500 border-2 border-charcoal-900 flex items-center justify-center shadow">
+                    <Icon name="mdi:check" class="w-3.5 h-3.5 text-white" />
+                  </span>
+                  <span v-else-if="expeditionChapters[1].current" class="absolute -top-2.5 -right-2.5 w-7 h-7 rounded-full bg-gold-500 border-2 border-charcoal-900 flex items-center justify-center shadow">
+                    <Icon name="mdi:sword" class="w-3.5 h-3.5 text-charcoal-900" />
+                  </span>
+                  <span class="text-4xl">🌿</span>
+                </div>
+                <div class="space-y-0.5">
+                  <span class="block text-3xs font-bold text-gold-400/70 uppercase tracking-widest">Chương II</span>
+                  <h4 class="font-heading font-bold text-sm text-ivory leading-snug group-hover:text-gold-300 transition-colors">Chiến Khu Đ &amp; Rừng Già</h4>
+                  <p class="text-3xs text-charcoal-400 leading-snug max-w-[120px] mx-auto">Di tích cách mạng giữa đại ngàn</p>
+                  <span class="inline-block mt-1 text-3xs font-bold px-2.5 py-0.5 rounded-full"
+                    :class="expeditionChapters[1].done ? 'bg-green-500/10 text-green-400' : expeditionChapters[1].current ? 'bg-gold-500/15 text-gold-400' : 'bg-charcoal-900 text-charcoal-500'">
+                    {{ expeditionChapters[1].done ? '✓ Hoàn thành' : expeditionChapters[1].current ? '▶ Đang học' : '+80 XP' }}
+                  </span>
+                </div>
+              </div>
+
+              <!-- Chương III: Thanh Âm Cồng Chiêng -->
+              <div
+                class="group flex flex-col items-center text-center gap-3 cursor-pointer"
+                @click="goToExpeditionChapter('cong-chieng-stieng')"
+                aria-label="Chương III: Thanh Âm Cồng Chiêng S'tiêng"
+              >
+                <div
+                  class="w-[104px] h-[104px] rounded-3xl flex items-center justify-center border-2 transition-all duration-500 relative shadow-lg"
+                  :class="expeditionChapters[2].done
+                    ? 'bg-gold-500 border-gold-300 shadow-gold/25'
+                    : expeditionChapters[2].current
+                      ? 'bg-charcoal-900 border-gold-500/70 shadow-gold-500/10 animate-pulse-slow'
+                      : 'bg-charcoal-950 border-charcoal-700 group-hover:border-gold-500/50 group-hover:bg-charcoal-900'"
+                >
+                  <span v-if="expeditionChapters[2].done" class="absolute -top-2.5 -right-2.5 w-7 h-7 rounded-full bg-green-500 border-2 border-charcoal-900 flex items-center justify-center shadow">
+                    <Icon name="mdi:check" class="w-3.5 h-3.5 text-white" />
+                  </span>
+                  <span v-else-if="expeditionChapters[2].current" class="absolute -top-2.5 -right-2.5 w-7 h-7 rounded-full bg-gold-500 border-2 border-charcoal-900 flex items-center justify-center shadow">
+                    <Icon name="mdi:sword" class="w-3.5 h-3.5 text-charcoal-900" />
+                  </span>
+                  <span class="text-4xl">🎵</span>
+                </div>
+                <div class="space-y-0.5">
+                  <span class="block text-3xs font-bold text-gold-400/70 uppercase tracking-widest">Chương III</span>
+                  <h4 class="font-heading font-bold text-sm text-ivory leading-snug group-hover:text-gold-300 transition-colors">Thanh Âm Cồng Chiêng</h4>
+                  <p class="text-3xs text-charcoal-400 leading-snug max-w-[120px] mx-auto">Di sản UNESCO tiếng nói đại ngàn</p>
+                  <span class="inline-block mt-1 text-3xs font-bold px-2.5 py-0.5 rounded-full"
+                    :class="expeditionChapters[2].done ? 'bg-green-500/10 text-green-400' : expeditionChapters[2].current ? 'bg-gold-500/15 text-gold-400' : 'bg-charcoal-900 text-charcoal-500'">
+                    {{ expeditionChapters[2].done ? '✓ Hoàn thành' : expeditionChapters[2].current ? '▶ Đang học' : '+75 XP' }}
+                  </span>
+                </div>
+              </div>
+
+              <!-- Chương IV: Kỳ Quan Bù Lạch -->
+              <div
+                class="group flex flex-col items-center text-center gap-3 cursor-pointer"
+                @click="goToExpeditionChapter('trang-co-bu-lach')"
+                aria-label="Chương IV: Kỳ Quan Thiên Nhiên Trảng Cỏ Bù Lạch"
+              >
+                <div
+                  class="w-[104px] h-[104px] rounded-3xl flex items-center justify-center border-2 transition-all duration-500 relative shadow-lg"
+                  :class="expeditionChapters[3].done
+                    ? 'bg-gold-500 border-gold-300 shadow-gold/25'
+                    : expeditionChapters[3].current
+                      ? 'bg-charcoal-900 border-gold-500/70 shadow-gold-500/10 animate-pulse-slow'
+                      : 'bg-charcoal-950 border-charcoal-700 group-hover:border-gold-500/50 group-hover:bg-charcoal-900'"
+                >
+                  <span v-if="expeditionChapters[3].done" class="absolute -top-2.5 -right-2.5 w-7 h-7 rounded-full bg-green-500 border-2 border-charcoal-900 flex items-center justify-center shadow">
+                    <Icon name="mdi:check" class="w-3.5 h-3.5 text-white" />
+                  </span>
+                  <span v-else-if="expeditionChapters[3].current" class="absolute -top-2.5 -right-2.5 w-7 h-7 rounded-full bg-gold-500 border-2 border-charcoal-900 flex items-center justify-center shadow">
+                    <Icon name="mdi:sword" class="w-3.5 h-3.5 text-charcoal-900" />
+                  </span>
+                  <span class="text-4xl">🏞️</span>
+                </div>
+                <div class="space-y-0.5">
+                  <span class="block text-3xs font-bold text-gold-400/70 uppercase tracking-widest">Chương IV</span>
+                  <h4 class="font-heading font-bold text-sm text-ivory leading-snug group-hover:text-gold-300 transition-colors">Kỳ Quan Bù Lạch</h4>
+                  <p class="text-3xs text-charcoal-400 leading-snug max-w-[120px] mx-auto">Thiên nhiên hoang sơ 140 ha giữa rừng già</p>
+                  <span class="inline-block mt-1 text-3xs font-bold px-2.5 py-0.5 rounded-full"
+                    :class="expeditionChapters[3].done ? 'bg-green-500/10 text-green-400' : expeditionChapters[3].current ? 'bg-gold-500/15 text-gold-400' : 'bg-charcoal-900 text-charcoal-500'">
+                    {{ expeditionChapters[3].done ? '✓ Hoàn thành' : expeditionChapters[3].current ? '▶ Đang học' : '+70 XP' }}
+                  </span>
+                </div>
+              </div>
+
             </div>
           </div>
         </section>
@@ -1515,7 +1713,14 @@
 
     <!-- CINEMA VIDEO PLAYER MODAL -->
     <Transition name="fade">
-      <div v-if="selectedVideoItem" class="fixed inset-0 z-80 flex items-center justify-center p-3 sm:p-6" role="dialog" :aria-label="`Xem phim tư liệu: ${selectedVideoItem.title}`" aria-modal="true">
+      <div
+        v-if="selectedVideoItem"
+        class="fixed inset-0 z-80 flex items-center justify-center p-3 sm:p-6"
+        role="dialog"
+        :aria-label="`Xem phim tư liệu: ${selectedVideoItem.title}`"
+        aria-modal="true"
+        @keydown.window.esc="selectedVideoItem = null"
+      >
         <div class="absolute inset-0 bg-charcoal-950/92 backdrop-blur-md" @click="selectedVideoItem = null" />
         <div class="relative w-full max-w-5xl bg-charcoal-950 border border-charcoal-800 rounded-3xl overflow-hidden shadow-2xl z-10 flex flex-col max-h-[92vh]">
           <!-- Header -->
@@ -1580,7 +1785,7 @@
                 @click="selectedVideoItem = featuredVideoData"
               >
                 <div class="w-20 h-14 rounded-lg bg-charcoal-900 overflow-hidden relative shrink-0">
-                  <img :src="featuredVideoData.thumb" :alt="featuredVideoData.title" class="w-full h-full object-cover" />
+                  <NuxtImg :src="featuredVideoData.thumb" :alt="featuredVideoData.title" class="w-full h-full object-cover" width="80" height="56" loading="lazy" format="webp" />
                   <div class="absolute inset-0 flex items-center justify-center bg-black/40">
                     <Icon name="mdi:play" class="w-4 h-4 text-gold-400" />
                   </div>
@@ -1601,7 +1806,7 @@
                 @click="selectedVideoItem = v"
               >
                 <div class="w-20 h-14 rounded-lg bg-charcoal-900 overflow-hidden relative shrink-0">
-                  <img :src="v.thumb" :alt="v.title" class="w-full h-full object-cover" />
+                  <NuxtImg :src="v.thumb" :alt="v.title" class="w-full h-full object-cover" width="80" height="56" loading="lazy" format="webp" />
                   <div class="absolute inset-0 flex items-center justify-center bg-black/40">
                     <Icon name="mdi:play" class="w-4 h-4 text-gold-400" />
                   </div>
@@ -1625,6 +1830,7 @@ import { useStudySeo } from '~/composables/useMuseumSeo'
 import { useSwal } from '~/composables/useSwal'
 import { useQuizStore } from '~/stores/quiz'
 import { useCollectionsStore } from '~/stores/collections'
+import { useAudioStore } from '~/stores/audio'
 import { NuxtLink } from '#components'
 import type { SchoolResourceExtended, TextAnnotation, GlossaryTerm, MapLandmark, ImageStory } from '~/types/study'
 import {
@@ -1659,6 +1865,7 @@ const { observeAll } = useScrollReveal()
 const swal = useSwal()
 const quizStore = useQuizStore()
 const collectionsStore = useCollectionsStore()
+const audioStore = useAudioStore()
 
 // Refs for scroll navigation
 const stickyNavRef = ref<HTMLElement | null>(null)
@@ -1769,16 +1976,20 @@ const activeCollectionName = computed(() =>
   activeCollectionFilter.value ? (collectionsStore.getById(activeCollectionFilter.value)?.name ?? '') : '',
 )
 
-// 9 tabs — 'passport' tab for Digital Heritage Passport
-// 3 primary core tabs — mọi người dùng đều cần; secondary tabs còn lại vẫn accessible
-const primaryNavItems = computed(() => [
-  { id: 'lessons', label: 'Bài Học', icon: 'mdi:book-open-variant', badge: 'Mới' },
-  { id: 'research', label: 'Thư Viện', icon: 'mdi:library-outline', badge: String(allResources.value.length) },
+// 7 Phân Hệ Chính theo thiết kế Gamified RPG Heritage Expedition
+const allNavItems = computed(() => [
+  { id: 'lessons', label: 'Bài Học Số', shortLabel: 'Bài Học', icon: 'mdi:book-open-variant', emoji: '📖', badge: String(lessonCatalog.value.length) },
+  { id: 'lab', label: 'Trải Nghiệm Số', shortLabel: 'Lab Số', icon: 'mdi:flask-outline', emoji: '🔬', badge: 'Lab ✨' },
+  { id: 'glossary', label: 'Flashcard 3D & Từ Điển', shortLabel: 'Từ Điển', icon: 'mdi:cards-outline', emoji: '🎴' },
+  { id: 'passport', label: 'Hộ Chiếu Di Sản', shortLabel: 'Hộ Chiếu', icon: 'mdi:book-account-outline', emoji: '📜' },
+  { id: 'research', label: 'Thư Viện Nghiên Cứu', shortLabel: 'Thư Viện', icon: 'mdi:library-outline', emoji: '📚', badge: String(allResources.value.length) },
+  { id: 'media', label: 'Đa Phương Tiện', shortLabel: 'Media', icon: 'mdi:image-multiple-outline', emoji: '🎬' },
+  { id: 'achievements', label: 'Thành Tích & Cấp Bậc', shortLabel: 'Thành Tích', icon: 'mdi:trophy-outline', emoji: '🏆' },
 ])
 
-// Unified navItems for template (all tabs, primary first)
+// Unified navItems for query sync and compatibility
 const navItems = computed(() => [
-  ...primaryNavItems.value,
+  ...allNavItems.value,
   ...secondaryNavItems,
 ])
 
@@ -1812,42 +2023,71 @@ function goToDashboardStat(stat: { tab?: string; href?: string }) {
   }
 }
 
-function goToLearningStep(step: { tab: string; action?: string }) {
-  if (step.action === 'quiz') {
-    const nextQuiz = quizStore.quizzes.find(q => !quizStore.userProgress.completedQuizzes.includes(q.id)) ?? quizStore.quizzes[0]
-    if (nextQuiz) {
-      quizStore.startQuiz(nextQuiz)
-      return
-    }
+// ──────────────────────────────────────────────
+// RPG EXPEDITION MAP (4 CHƯƠNG THÁM HIỂM)
+// ──────────────────────────────────────────────
+const expeditionChapters = computed(() => [
+  {
+    id: 'soc-bom-bo',
+    chapter: 'Chương I',
+    title: 'Sóc Bom Bo',
+    desc: "Tiếng chày giã gạo kháng chiến S'tiêng",
+    icon: 'mdi:fire',
+    emoji: '🔥',
+    xp: 80,
+    done: quizStore.userProgress.visitedHeritages.includes('soc-bom-bo') || quizStore.userProgress.completedQuizzes.some(q => q.includes('bom-bo') || q.includes('soc-bom-bo')),
+    current: !quizStore.userProgress.visitedHeritages.includes('soc-bom-bo') && !quizStore.userProgress.completedQuizzes.some(q => q.includes('bom-bo') || q.includes('soc-bom-bo'))
+  },
+  {
+    id: 'chien-khu-d',
+    chapter: 'Chương II',
+    title: 'Chiến Khu Đ & Rừng Già',
+    desc: 'Di tích cách mạng giữa đại ngàn',
+    icon: 'mdi:shield-outline',
+    emoji: '🌿',
+    xp: 80,
+    done: quizStore.userProgress.visitedHeritages.includes('chien-khu-d') || quizStore.userProgress.completedQuizzes.some(q => q.includes('chien-khu-d')),
+    current: (quizStore.userProgress.visitedHeritages.includes('soc-bom-bo') || quizStore.userProgress.completedQuizzes.some(q => q.includes('bom-bo') || q.includes('soc-bom-bo'))) && !quizStore.userProgress.visitedHeritages.includes('chien-khu-d') && !quizStore.userProgress.completedQuizzes.some(q => q.includes('chien-khu-d'))
+  },
+  {
+    id: 'cong-chieng-stieng',
+    chapter: 'Chương III',
+    title: 'Thanh Âm Cồng Chiêng',
+    desc: 'Di sản UNESCO tiếng nói đại ngàn',
+    icon: 'mdi:music',
+    emoji: '🎵',
+    xp: 75,
+    done: quizStore.userProgress.visitedHeritages.includes('cong-chieng-stieng') || quizStore.userProgress.completedQuizzes.some(q => q.includes('cong-chieng')),
+    current: (quizStore.userProgress.visitedHeritages.includes('chien-khu-d') || quizStore.userProgress.completedQuizzes.some(q => q.includes('chien-khu-d'))) && !quizStore.userProgress.visitedHeritages.includes('cong-chieng-stieng') && !quizStore.userProgress.completedQuizzes.some(q => q.includes('cong-chieng'))
+  },
+  {
+    id: 'trang-co-bu-lach',
+    chapter: 'Chương IV',
+    title: 'Kỳ Quan Bù Lạch',
+    desc: 'Thiên nhiên hoang sơ 140 ha giữa rừng già',
+    icon: 'mdi:nature',
+    emoji: '🏞️',
+    xp: 70,
+    done: quizStore.userProgress.visitedHeritages.includes('trang-co-bu-lach') || quizStore.userProgress.completedQuizzes.some(q => q.includes('bu-lach')),
+    current: (quizStore.userProgress.visitedHeritages.includes('cong-chieng-stieng') || quizStore.userProgress.completedQuizzes.some(q => q.includes('cong-chieng'))) && !quizStore.userProgress.visitedHeritages.includes('trang-co-bu-lach') && !quizStore.userProgress.completedQuizzes.some(q => q.includes('bu-lach'))
   }
-  if (step.action === 'read') {
-    activeTab.value = step.tab
-    const unread = resources.value.find(r => !quizStore.userProgress.visitedHeritages.includes(r.id))
-    const target = unread ?? featuredResource.value ?? resources.value[0]
-    if (target) {
-      nextTick(() => openResource(target))
-      return
-    }
-  }
-  activeTab.value = step.tab
-  scrollToContent()
-}
-
-// "done" states derive from real persisted progress in quizStore
-const learningPath = computed(() => [
-  { title: 'Khám phá', desc: 'Tìm hiểu tổng quan', icon: 'mdi:compass-outline', tab: 'explore', xp: 20, done: quizStore.userProgress.visitedHeritages.length > 0 },
-  { title: 'Hiểu sâu', desc: 'Đọc toàn văn tài liệu', icon: 'mdi:book-open-variant', tab: 'research', action: 'read', xp: 40, done: quizStore.userProgress.visitedHeritages.length >= 3 },
-  { title: 'Nghiên cứu', desc: 'Đọc tài liệu gốc PDF', icon: 'mdi:magnify', tab: 'research', xp: 60, done: false },
-  { title: 'Từ điển S\'tiêng', desc: 'Học thuật ngữ bản địa', icon: 'mdi:translate', tab: 'glossary', xp: 80, done: false },
-  { title: 'Làm Quiz', desc: 'Kiểm tra hiểu biết', icon: 'mdi:help-circle-outline', tab: 'lessons', action: 'quiz', xp: 100, done: quizStore.userProgress.completedQuizzes.length > 0 },
-  { title: 'Nhận huy hiệu', desc: 'Chứng chỉ di sản', icon: 'mdi:trophy', tab: 'achievements', xp: 150, done: quizStore.userProgress.earnedBadges.length > 0 },
 ])
 
-const completedStepsCount = computed(() => learningPath.value.filter(s => s.done).length)
-const currentStepIndex = computed(() => {
-  const idx = learningPath.value.findIndex(s => !s.done)
-  return idx
-})
+const completedChaptersCount = computed(() => expeditionChapters.value.filter(c => c.done).length)
+
+function goToExpeditionChapter(chapterId: string) {
+  if (chapterId === 'cong-chieng-stieng') {
+    activeTab.value = 'glossary'
+    scrollToContent()
+    return
+  }
+  activeTab.value = 'lessons'
+  scrollToContent()
+  const foundLesson = lessonCatalog.value.find(l => l.id === chapterId)
+  if (foundLesson && foundLesson.hasContent) {
+    navigateTo(`/study/lesson/${foundLesson.id}`)
+  }
+}
 
 const activeLabItems = heritageLabItems.filter(i => i.active)
 const comingSoonLabItems = heritageLabItems.filter(i => !i.active)
@@ -1951,7 +2191,7 @@ function downloadNotes() {
   document.body.appendChild(a)
   a.click()
   document.body.removeChild(a)
-  URL.revokeObjectURL(url)
+  setTimeout(() => URL.revokeObjectURL(url), 1000)
 }
 
 // ──────────────────────────────────────────────
@@ -2117,10 +2357,10 @@ function createCollectionAndAdd(resourceId: string) {
 // ──────────────────────────────────────────────
 // MEDIA PLAYER
 // ──────────────────────────────────────────────
-// ──────────────────────────────────────────────
-// MEDIA PLAYER
-// ──────────────────────────────────────────────
 function startVideoPlayback(video?: StudyVideo) {
+  if (audioStore.isPlaying) {
+    audioStore.pause()
+  }
   selectedVideoItem.value = video || featuredVideoData
 }
 
@@ -2153,7 +2393,8 @@ function openResource(res: SchoolResourceExtended) {
   quizStore.markHeritageVisited(res.id)
 }
 
-function downloadFile(resource: SchoolResourceExtended) {
+function downloadFile(resource: SchoolResourceExtended | null) {
+  if (!resource) return
   resource.downloadCount++
 
   if (resource.fileUrl) {
@@ -2204,10 +2445,10 @@ function downloadFile(resource: SchoolResourceExtended) {
   </div>
   <h1>${resource.title}</h1>
   <div class="meta">
-    Tác giả: <strong>${resource.author}</strong> (${resource.school} - Lớp ${resource.grade}) | Môn học: ${resource.subject} | Xuất bản: ${resource.publishedAt}
+    Tác giả: <strong>${resource.author || 'Nhóm tác giả'}</strong> (${resource.school || 'THPT Bù Đăng'} - Lớp ${resource.grade || '12'}) | Môn học: ${resource.subject || 'Lịch sử - Địa lý'} | Xuất bản: ${resource.publishedAt || ''}
   </div>
   <div class="summary">
-    <strong>Tóm tắt nghiên cứu:</strong> ${resource.motivation || resource.description}
+    <strong>Tóm tắt nghiên cứu:</strong> ${resource.motivation || resource.description || 'Tài liệu nghiên cứu điền dã di sản Bù Đăng.'}
   </div>
   <div class="findings">
     <strong>Kết quả điền dã nổi bật:</strong>
@@ -2230,7 +2471,7 @@ function downloadFile(resource: SchoolResourceExtended) {
     document.body.appendChild(a)
     a.click()
     document.body.removeChild(a)
-    URL.revokeObjectURL(url)
+    setTimeout(() => URL.revokeObjectURL(url), 1000)
 
     swal.fire({
       title: 'Tải tài liệu thành công!',
@@ -2259,7 +2500,7 @@ function openImageModal(item: ImageStory) { selectedImageItem.value = item }
 
 function handleEmptyStateAction(actionType: string, payload?: string) {
   if (actionType === 'explore-heritage') searchOverlayOpen.value = true
-  else if (['ask-ai', 'ask-ai-topic', 'send-prompt'].includes(actionType)) { navigateTo('/?ai=true') }
+  else if (['ask-ai', 'ask-ai-topic', 'send-prompt'].includes(actionType)) { searchOverlayOpen.value = true }
   else if (['open-map', 'explore-map', 'explore-roadmap'].includes(actionType)) { navigateTo('/map') }
   else if (actionType === 'start-learning') { activeTab.value = 'lessons'; scrollToContent() }
   else if (actionType === 'pronounce-word') { if (payload) pronounceTerm(payload, '') }
@@ -2274,6 +2515,11 @@ function handleEmptyStateAction(actionType: string, payload?: string) {
 @keyframes slowZoom {
   from { transform: scale(1.05); }
   to { transform: scale(1.12); }
+}
+
+@keyframes drumRotate {
+  from { transform: translate(-50%, -50%) rotate(0deg); }
+  to   { transform: translate(-50%, -50%) rotate(360deg); }
 }
 
 @keyframes fadeSlideDown {
@@ -2456,5 +2702,49 @@ function handleEmptyStateAction(actionType: string, payload?: string) {
 .slide-down-leave-to {
   opacity: 0;
   transform: translateY(-6px);
+}
+
+/* ────────────────────────────────── */
+/* BENTO CARDS & ROYAL GOLD SHIMMER   */
+/* ────────────────────────────────── */
+.bento-card {
+  position: relative;
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.35s ease, box-shadow 0.4s ease;
+  box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.6);
+}
+
+.bento-card:hover {
+  transform: translateY(-4px);
+  border-color: rgba(212, 175, 55, 0.45);
+  box-shadow: 0 20px 40px -15px rgba(212, 175, 55, 0.15), 0 0 24px rgba(212, 175, 55, 0.08);
+}
+
+.bento-gold-shimmer {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(135deg, transparent 35%, rgba(212, 175, 55, 0.09) 50%, transparent 65%);
+  background-size: 250% 250%;
+  opacity: 0;
+  transition: opacity 0.4s ease;
+}
+
+.bento-card:hover .bento-gold-shimmer {
+  opacity: 1;
+  animation: goldShimmer 2.2s infinite linear;
+}
+
+@keyframes goldShimmer {
+  0% { background-position: 100% 100%; }
+  100% { background-position: 0% 0%; }
+}
+
+@keyframes expeditionPulse {
+  0%, 100% { transform: translate(-50%, -50%) scale(1); opacity: 0.8; }
+  50% { transform: translate(-50%, -50%) scale(1.4); opacity: 1; box-shadow: 0 0 12px rgba(212, 175, 55, 0.8); }
+}
+
+.animate-expedition-pulse {
+  animation: expeditionPulse 2.5s infinite ease-in-out;
 }
 </style>

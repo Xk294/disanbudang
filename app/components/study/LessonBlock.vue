@@ -10,6 +10,26 @@
       <p class="text-sm text-charcoal-200 leading-relaxed">{{ lesson.tldr }}</p>
     </div>
 
+    <!-- ①.5 OBJECTIVES — YÊU CẦU CẦN ĐẠT -->
+    <section v-if="lesson.objectives?.length" id="objectives" aria-labelledby="objectives-heading">
+      <div class="bg-charcoal-950 border border-gold-500/30 rounded-2xl p-5 shadow-lg">
+        <div class="flex items-center gap-2 mb-3">
+          <div class="w-7 h-7 rounded-lg bg-gold-500/10 border border-gold-500/25 flex items-center justify-center">
+            <Icon name="mdi:bullseye-arrow" class="w-4 h-4 text-gold-400" />
+          </div>
+          <h2 id="objectives-heading" class="text-xs font-bold uppercase tracking-widest text-gold-400">
+            Mục tiêu bài học (Yêu cầu cần đạt)
+          </h2>
+        </div>
+        <ul class="space-y-2">
+          <li v-for="(obj, i) in lesson.objectives" :key="i" class="flex items-start gap-2.5 text-xs md:text-sm text-charcoal-200">
+            <Icon name="mdi:check-circle" class="w-4 h-4 text-forest-400 shrink-0 mt-0.5" />
+            <span>{{ obj }}</span>
+          </li>
+        </ul>
+      </div>
+    </section>
+
     <!-- ② CORE KNOWLEDGE — ALWAYS SHOWN -->
     <section aria-labelledby="core-heading">
       <h2 id="core-heading" class="text-base font-heading font-bold text-ivory mb-4 flex items-center gap-2">
@@ -300,6 +320,26 @@
       </div>
     </section>
 
+    <!-- ⑬.5 RELATED HERITAGE DIRECT LINK -->
+    <section v-if="lesson.relatedHeritage" aria-label="Di sản liên quan trong bảo tàng">
+      <div class="bg-charcoal-950 border border-charcoal-800 hover:border-gold-500/40 transition-all rounded-2xl p-5 shadow-lg flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+        <div class="flex items-center gap-3.5">
+          <div class="w-12 h-12 rounded-xl bg-gold-500/10 border border-gold-500/20 flex items-center justify-center shrink-0">
+            <Icon name="mdi:bank-outline" class="w-6 h-6 text-gold-400" />
+          </div>
+          <div>
+            <span class="text-3xs font-bold uppercase tracking-wider text-gold-400">Hồ Sơ Di Sản Liên Quan</span>
+            <h4 class="font-heading font-bold text-ivory text-base">{{ lesson.relatedHeritage.name }}</h4>
+            <p v-if="lesson.relatedHeritage.desc" class="text-charcoal-400 text-xs mt-0.5 line-clamp-1">{{ lesson.relatedHeritage.desc }}</p>
+          </div>
+        </div>
+        <NuxtLink :to="'/heritage/' + lesson.relatedHeritage.slug" class="btn-primary text-xs py-2.5 px-5 shrink-0">
+          <span>Xem Hồ Sơ Di Sản</span>
+          <Icon name="mdi:arrow-right" class="w-4 h-4" />
+        </NuxtLink>
+      </div>
+    </section>
+
     <!-- ⑭ REFERENCES -->
     <section v-if="lesson.references?.length" aria-label="Tài liệu tham khảo">
       <details class="group">
@@ -361,6 +401,8 @@ export interface LessonData {
   xpReward: number
   estimatedMinutes: number
   tldr: string
+  objectives?: string[]
+  relatedHeritage?: { slug: string; name: string; desc?: string }
   coreKnowledge: {
     text: string
     images?: { url: string; caption: string }[]

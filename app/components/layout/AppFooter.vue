@@ -14,7 +14,7 @@
         <!-- Brand Column -->
         <div class="lg:col-span-1 space-y-6">
           <div class="flex items-center gap-3">
-            <NuxtImg src="/favicon/icon-192.png" alt="Logo Di Sản Thành Phố Đồng Nai" class="h-14 lg:h-16 w-auto object-contain shrink-0" />
+            <NuxtImg src="/favicon/icon-192.png" alt="Logo Di Sản Thành Phố Đồng Nai" class="h-14 lg:h-16 w-14 lg:w-16 object-contain shrink-0" width="64" height="64" loading="lazy" />
             <div class="flex flex-col justify-center text-left shrink-0 select-none">
               <div class="font-heading font-bold text-base lg:text-lg leading-tight tracking-wide whitespace-nowrap">
                 <span class="text-white">Di Sản</span>
@@ -102,22 +102,24 @@ const formattedVisitCount = computed(() => {
 
 const footerLinks = [
   {
-    title: 'Khám Phá',
+    title: 'Khám Phá & Học Tập',
     links: [
-      { to: '/map', label: 'Bản Đồ Tương Tác' },
       { to: '/explore', label: 'Thư Viện Di Sản' },
-      { to: '/explore?tab=community', label: 'Trải Nghiệm & Cộng Đồng' },
-      { to: '/#quiz', label: 'Trắc Nghiệm Di Sản' },
-      { to: '/study', label: 'Góc Học Tập Học Sinh' },
+      { to: '/map', label: 'Bản Đồ Không Gian' },
+      { to: '/study', label: 'Cổng Học Tập Số' },
+      { to: '/explore/virtual-tour', label: 'Tour Ảo 360°' },
+      { to: '/study', label: 'Trắc Nghiệm & Khảo Cứu' },
     ],
   },
   {
-    title: 'Thông Tin & Đối Tác',
+    title: 'Nội Dung & Hoạt Động',
     links: [
-      { to: '/about', label: 'Về Dự Án' },
-      { to: '/news', label: 'Bài Viết & Sự Kiện' },
-      { to: '/contact', label: 'Hợp Tác & Đồng Hành' },
-      { to: '/contribute', label: 'Đóng Góp Di Sản' },
+      { to: '/stories', label: 'Chuyện Di Sản' },
+      { to: '/journal', label: 'Nhật Ký Điền Dã' },
+      { to: '/explore?tab=community', label: 'Ký Ức Cộng Đồng' },
+      { to: '/about', label: 'Giới Thiệu Dự Án' },
+      { to: '/contribute', label: 'Đóng Góp Tư Liệu' },
+      { to: '/contact', label: 'Liên Hệ & Hợp Tác' },
     ],
   },
 ]

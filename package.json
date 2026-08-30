@@ -8,6 +8,7 @@
     "dev": "npm run killport && NODE_OPTIONS='--max-old-space-size=4096' nuxt dev",
     "killport": "lsof -t -i:3000 | xargs kill -9 2>/dev/null || true",
     "generate": "nuxt generate && npm run validate:seo",
+    "lint": "vue-tsc --noEmit",
     "preview": "nuxt preview",
     "postinstall": "nuxt prepare",
     "typecheck": "vue-tsc --noEmit",

@@ -10,6 +10,7 @@ export default defineNuxtConfig({
   },
 
   nitro: {
+    compressPublicAssets: true,
     prerender: {
       crawlLinks: true,
       routes: [
@@ -19,10 +20,73 @@ export default defineNuxtConfig({
         '/explore/virtual-tour',
         '/study',
         '/map',
-        '/invest',
         '/contact',
         '/contribute',
-        '/news',
+        '/stories',
+        '/journal',
+        // Stories / Deep editorial articles
+        '/stories/canh-thut-doc-ban-stieng-bu-dang',
+        '/stories/ruou-can-stieng-bu-dang-men-la-rung',
+        '/stories/tieng-chay-gia-gao-soc-bom-bo-bu-dang',
+        '/stories/com-lam-nep-nuong-stieng-bu-dang',
+        '/stories/det-tho-cam-stieng-net-hoa-van-dai-ngan',
+        '/stories/dan-da-stieng-bu-dang-am-thanh-co-dai',
+        // Journal / Project field activities & events
+        '/journal/event-001',
+        '/journal/event-002',
+        '/journal/event-003',
+        // All 16 Heritage Detail routes
+        '/heritage/can-cu-nua-lon-bu-dang',
+        '/heritage/thac-mo-phuoc-long',
+        '/heritage/le-hoi-cong-chieng-stieng',
+        '/heritage/nha-dai-truyen-thong-stieng',
+        '/heritage/di-tich-nha-giao-truyen-thong-bu-dang',
+        '/heritage/rung-nguyen-sinh-bu-dang',
+        '/heritage/lang-nghe-det-tho-cam-stieng',
+        '/heritage/le-hoi-mung-lua-moi-mnong',
+        '/heritage/trang-co-bu-lach',
+        '/heritage/thac-dung-bu-dang',
+        '/heritage/khu-bao-ton-soc-bom-bo',
+        '/heritage/nui-ba-ra-phuoc-long',
+        '/heritage/chien-thang-phuoc-long-1975',
+        '/heritage/can-cu-ta-thiet-loc-ninh',
+        '/heritage/nha-giao-te-loc-ninh',
+        '/heritage/bao-tang-chien-dich-duong-14-phuoc-long',
+        // Heritage QR routes
+        '/heritage/qr/can-cu-nua-lon-bu-dang',
+        '/heritage/qr/thac-mo-phuoc-long',
+        '/heritage/qr/le-hoi-cong-chieng-stieng',
+        '/heritage/qr/nha-dai-truyen-thong-stieng',
+        '/heritage/qr/di-tich-nha-giao-truyen-thong-bu-dang',
+        '/heritage/qr/rung-nguyen-sinh-bu-dang',
+        '/heritage/qr/lang-nghe-det-tho-cam-stieng',
+        '/heritage/qr/le-hoi-mung-lua-moi-mnong',
+        '/heritage/qr/trang-co-bu-lach',
+        '/heritage/qr/thac-dung-bu-dang',
+        '/heritage/qr/khu-bao-ton-soc-bom-bo',
+        '/heritage/qr/nui-ba-ra-phuoc-long',
+        '/heritage/qr/chien-thang-phuoc-long-1975',
+        '/heritage/qr/can-cu-ta-thiet-loc-ninh',
+        '/heritage/qr/nha-giao-te-loc-ninh',
+        '/heritage/qr/bao-tang-chien-dich-duong-14-phuoc-long',
+        // Study Lessons (10 full interactive lessons)
+        '/study/lesson/chien-khu-d',
+        '/study/lesson/cong-chieng-stieng',
+        '/study/lesson/soc-bom-bo',
+        '/study/lesson/trang-co-bu-lach',
+        '/study/lesson/nui-ba-ra',
+        '/study/lesson/can-cu-nua-lon',
+        '/study/lesson/chien-thang-phuoc-long',
+        '/study/lesson/can-cu-ta-thiet',
+        '/study/lesson/tho-cam-stieng',
+        '/study/lesson/thac-dung-dak-wuar',
+        // Explore Posts (Community Memories)
+        '/explore/post/post-001',
+        '/explore/post/post-002',
+        '/explore/post/post-003',
+        '/explore/post/post-004',
+        '/explore/post/post-005',
+        '/explore/post/post-006',
       ],
       ignore: ['/admin', '/me'],
     },
@@ -35,10 +99,20 @@ export default defineNuxtConfig({
   },
 
   routeRules: {
+    '/heritage': { redirect: { to: '/explore/', statusCode: 301 } },
+    '/heritage/': { redirect: { to: '/explore/', statusCode: 301 } },
     '/community': { redirect: { to: '/explore/', statusCode: 301 } },
-    '/quiz': { redirect: { to: '/#quiz', statusCode: 301 } },
+    '/quiz': { redirect: { to: '/study/', statusCode: 301 } },
     '/school': { redirect: { to: '/study/', statusCode: 301 } },
     '/library': { redirect: { to: '/explore/', statusCode: 301 } },
+    '/news': { redirect: { to: '/stories/', statusCode: 301 } },
+    '/news/': { redirect: { to: '/stories/', statusCode: 301 } },
+    '/news/canh-thut-doc-ban-stieng-bu-dang/': { redirect: { to: '/stories/canh-thut-doc-ban-stieng-bu-dang/', statusCode: 301 } },
+    '/news/ruou-can-stieng-bu-dang-men-la-rung/': { redirect: { to: '/stories/ruou-can-stieng-bu-dang-men-la-rung/', statusCode: 301 } },
+    '/news/tieng-chay-gia-gao-soc-bom-bo-bu-dang/': { redirect: { to: '/stories/tieng-chay-gia-gao-soc-bom-bo-bu-dang/', statusCode: 301 } },
+    '/news/com-lam-nep-nuong-stieng-bu-dang/': { redirect: { to: '/stories/com-lam-nep-nuong-stieng-bu-dang/', statusCode: 301 } },
+    '/news/det-tho-cam-stieng-net-hoa-van-dai-ngan/': { redirect: { to: '/stories/det-tho-cam-stieng-net-hoa-van-dai-ngan/', statusCode: 301 } },
+    '/news/dan-da-stieng-bu-dang-am-thanh-co-dai/': { redirect: { to: '/stories/dan-da-stieng-bu-dang-am-thanh-co-dai/', statusCode: 301 } },
     '/admin/**': { ssr: false },
     '/me/**': { ssr: false },
   },
@@ -78,9 +152,94 @@ export default defineNuxtConfig({
 
   sitemap: {
     strictNuxtContentPaths: false,
-    exclude: ['/404', '/admin', '/admin/**', '/me', '/me/**'],
-    sources: [],
-    zeroRuntime: true,
+    urls: [
+      '/',
+      '/about/',
+      '/explore/',
+      '/explore/virtual-tour/',
+      '/study/',
+      '/map/',
+      '/contact/',
+      '/contribute/',
+      '/stories/',
+      '/journal/',
+      // Journal entries
+      '/journal/event-001/',
+      '/journal/event-002/',
+      '/journal/event-003/',
+      // 16 Heritage routes
+      '/heritage/can-cu-nua-lon-bu-dang/',
+      '/heritage/thac-mo-phuoc-long/',
+      '/heritage/le-hoi-cong-chieng-stieng/',
+      '/heritage/nha-dai-truyen-thong-stieng/',
+      '/heritage/di-tich-nha-giao-truyen-thong-bu-dang/',
+      '/heritage/rung-nguyen-sinh-bu-dang/',
+      '/heritage/lang-nghe-det-tho-cam-stieng/',
+      '/heritage/le-hoi-mung-lua-moi-mnong/',
+      '/heritage/trang-co-bu-lach/',
+      '/heritage/thac-dung-bu-dang/',
+      '/heritage/khu-bao-ton-soc-bom-bo/',
+      '/heritage/nui-ba-ra-phuoc-long/',
+      '/heritage/chien-thang-phuoc-long-1975/',
+      '/heritage/can-cu-ta-thiet-loc-ninh/',
+      '/heritage/nha-giao-te-loc-ninh/',
+      '/heritage/bao-tang-chien-dich-duong-14-phuoc-long/',
+      // 16 Heritage QR routes
+      '/heritage/qr/can-cu-nua-lon-bu-dang/',
+      '/heritage/qr/thac-mo-phuoc-long/',
+      '/heritage/qr/le-hoi-cong-chieng-stieng/',
+      '/heritage/qr/nha-dai-truyen-thong-stieng/',
+      '/heritage/qr/di-tich-nha-giao-truyen-thong-bu-dang/',
+      '/heritage/qr/rung-nguyen-sinh-bu-dang/',
+      '/heritage/qr/lang-nghe-det-tho-cam-stieng/',
+      '/heritage/qr/le-hoi-mung-lua-moi-mnong/',
+      '/heritage/qr/trang-co-bu-lach/',
+      '/heritage/qr/thac-dung-bu-dang/',
+      '/heritage/qr/khu-bao-ton-soc-bom-bo/',
+      '/heritage/qr/nui-ba-ra-phuoc-long/',
+      '/heritage/qr/chien-thang-phuoc-long-1975/',
+      '/heritage/qr/can-cu-ta-thiet-loc-ninh/',
+      '/heritage/qr/nha-giao-te-loc-ninh/',
+      '/heritage/qr/bao-tang-chien-dich-duong-14-phuoc-long/',
+      // Story Editorial Articles
+      '/stories/canh-thut-doc-ban-stieng-bu-dang/',
+      '/stories/ruou-can-stieng-bu-dang-men-la-rung/',
+      '/stories/tieng-chay-gia-gao-soc-bom-bo-bu-dang/',
+      '/stories/com-lam-nep-nuong-stieng-bu-dang/',
+      '/stories/det-tho-cam-stieng-net-hoa-van-dai-ngan/',
+      '/stories/dan-da-stieng-bu-dang-am-thanh-co-dai/',
+      // Study Lessons
+      '/study/lesson/chien-khu-d/',
+      '/study/lesson/cong-chieng-stieng/',
+      '/study/lesson/soc-bom-bo/',
+      '/study/lesson/trang-co-bu-lach/',
+      '/study/lesson/nui-ba-ra/',
+      '/study/lesson/can-cu-nua-lon/',
+      '/study/lesson/chien-thang-phuoc-long/',
+      '/study/lesson/can-cu-ta-thiet/',
+      '/study/lesson/tho-cam-stieng/',
+      '/study/lesson/thac-dung-dak-wuar/',
+      // Explore Posts (Community Memories)
+      '/explore/post/post-001/',
+      '/explore/post/post-002/',
+      '/explore/post/post-003/',
+      '/explore/post/post-004/',
+      '/explore/post/post-005/',
+      '/explore/post/post-006/',
+    ],
+    exclude: [
+      '/admin',
+      '/admin/**',
+      '/admin/*',
+      '/me',
+      '/me/**',
+      '/me/*',
+      '/invest',
+      '/invest/**',
+      '/invest/*',
+      '/404',
+      '/404.html',
+    ],
   },
 
   security: {
@@ -139,9 +298,9 @@ export default defineNuxtConfig({
   },
 
   image: {
-    quality: 85,
-    format: ['webp', 'jpg'],
-    domains: ['images.unsplash.com'],
+    quality: 80,
+    format: ['avif', 'webp', 'jpg'],
+    domains: ['images.unsplash.com', 'lh3.googleusercontent.com'],
     screens: {
       xs: 320,
       sm: 640,
@@ -173,12 +332,12 @@ export default defineNuxtConfig({
         },
       ],
       link: [
-        { rel: 'icon', href: '/favicon/favicon.ico', sizes: '32x32' },
+        { rel: 'icon', href: '/favicon.ico', sizes: 'any' },
         { rel: 'icon', type: 'image/png', sizes: '48x48', href: '/favicon/icon-48.png' },
         { rel: 'icon', type: 'image/png', sizes: '96x96', href: '/favicon/icon-96.png' },
         { rel: 'icon', type: 'image/png', sizes: '192x192', href: '/favicon/icon-192.png' },
-        { rel: 'apple-touch-icon', sizes: '180x180', href: '/favicon/apple-touch-icon.png' },
-        { rel: 'manifest', href: '/favicon/manifest.json' },
+        { rel: 'apple-touch-icon', sizes: '180x180', href: '/apple-touch-icon.png' },
+        { rel: 'manifest', href: '/manifest.json' },
         { rel: 'preconnect', href: 'https://fonts.googleapis.com' },
         {
           rel: 'preconnect',
@@ -187,7 +346,7 @@ export default defineNuxtConfig({
         },
         {
           rel: 'stylesheet',
-          href: 'https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500;1,600&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;0,800;0,900;1,400;1,600;1,700&family=Inter:wght@300;400;500;600;700&display=swap',
+          href: 'https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@1,400;1,600&family=Playfair+Display:ital,wght@0,600;0,700;0,800;1,400&family=Inter:wght@400;500;600;700&display=swap',
         },
       ],
     },
@@ -201,6 +360,11 @@ export default defineNuxtConfig({
 
   typescript: {
     strict: true,
+    tsConfig: {
+      compilerOptions: {
+        skipLibCheck: true,
+      },
+    },
   },
 
   vite: {
@@ -213,6 +377,27 @@ export default defineNuxtConfig({
         'firebase/auth',
         'sweetalert2',
       ],
+    },
+    build: {
+      chunkSizeWarningLimit: 600,
+      rollupOptions: {
+        output: {
+          manualChunks(id: string) {
+            if (id.includes('node_modules/three') || id.includes('components/tour360') || id.includes('types/virtualTour')) {
+              return 'vendor-three'
+            }
+            if (id.includes('node_modules/leaflet')) {
+              return 'vendor-leaflet'
+            }
+            if (id.includes('node_modules/firebase')) {
+              return 'vendor-firebase'
+            }
+            if (id.includes('node_modules/sweetalert2')) {
+              return 'vendor-sweetalert'
+            }
+          },
+        },
+      },
     },
   },
 })

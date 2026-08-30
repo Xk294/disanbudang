@@ -78,9 +78,11 @@
     @apply font-heading;
     color: #221D17;
     /* Vietnamese diacritics (breves, circumflexes, horns, tone marks) need
-       horizontal room — negative tracking pushes marks into neighboring
-       glyphs and reads as "dính chữ" (letters sticking together). */
-    letter-spacing: 0em;
+       horizontal room — keep letter-spacing clean and enable standard kerning
+       to avoid glyph collision in high-contrast serif letters. */
+    letter-spacing: 0.005em;
+    font-feature-settings: "kern" 1, "liga" 1, "calt" 1;
+    font-kerning: normal;
   }
 
   h1 {
@@ -1060,7 +1062,13 @@ textarea:disabled {
 
   .animate-ping,
   .animate-pulse,
-  .animate-spin {
+  .animate-pulse-gold,
+  .animate-bounce,
+  .animate-spin,
+  .waveform-bar,
+  .ken-burns,
+  .audio-wave-active,
+  .float {
     animation: none !important;
   }
 }

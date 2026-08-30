@@ -36,6 +36,7 @@
 
       <!-- Logged in -->
       <div v-else>
+        <h1 class="font-heading text-2xl font-bold text-ivory mb-6">Hồ Sơ Cá Nhân</h1>
         <!-- Profile card -->
         <div class="bg-charcoal-950/60 border border-charcoal-850 rounded-3xl p-8 mb-6 flex items-center gap-6">
           <img
@@ -48,7 +49,7 @@
             <Icon name="mdi:account" class="w-10 h-10 text-charcoal-400" />
           </div>
           <div class="min-w-0">
-            <h1 class="font-heading text-xl font-bold text-ivory truncate">{{ user.displayName ?? 'Người dùng' }}</h1>
+            <h2 class="font-heading text-xl font-bold text-ivory truncate">{{ user.displayName ?? 'Người dùng' }}</h2>
             <p class="text-charcoal-400 text-sm truncate mt-0.5">{{ user.email }}</p>
             <p v-if="user.emailVerified" class="inline-flex items-center gap-1 text-green-400 text-xs mt-2">
               <Icon name="mdi:check-circle" class="w-3.5 h-3.5" />

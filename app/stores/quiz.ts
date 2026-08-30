@@ -5,8 +5,9 @@ import { QUIZZES, BADGES } from '~/data/quizzes'
 export const useQuizStore = defineStore(
   'quiz',
   () => {
-    const quizzes = ref<HeritageQuiz[]>(QUIZZES)
-    const badges = ref<Badge[]>(BADGES)
+    // Static data as computed getters (not serialized into Pinia state / SSR payload / localStorage)
+    const quizzes = computed<HeritageQuiz[]>(() => QUIZZES)
+    const badges = computed<Badge[]>(() => BADGES)
     const currentQuiz = ref<HeritageQuiz | null>(null)
     const currentQuestionIndex = ref(0)
     const selectedAnswers = ref<Record<string, number>>({})

@@ -35,7 +35,10 @@
             <NuxtImg
               src="/favicon/icon-192.png"
               alt="Logo Di Sản Bù Đăng"
-              class="h-9 sm:h-10 w-auto object-contain relative z-10 transition-transform duration-300 group-hover:scale-105"
+              class="h-9 sm:h-10 w-9 sm:w-10 object-contain relative z-10 transition-transform duration-300 group-hover:scale-105"
+              width="40"
+              height="40"
+              loading="eager"
             />
           </div>
           <div class="flex flex-col justify-center text-left shrink-0 select-none">
@@ -49,16 +52,15 @@
           </div>
         </NuxtLink>
 
-        <!-- Center: Desktop Navigation — 3-tier (Primary | divider | Secondary) -->
+        <!-- Center: Desktop Navigation — 6 Primary Canonical Items -->
         <ul
           class="hidden lg:flex items-center gap-0.5 xl:gap-1 mx-auto"
           aria-label="Menu điều hướng chính"
         >
-          <!-- Primary nav items: core discovery experience -->
           <li v-for="item in primaryNavItems" :key="item.to">
             <NuxtLink
               :to="item.to"
-              class="px-3 xl:px-3.5 py-1.5 rounded-full text-xs xl:text-sm font-semibold tracking-wide whitespace-nowrap transition-all duration-200 focus-visible:outline focus-visible:outline-2 focus-visible:outline-gold-500"
+              class="px-2 xl:px-2.5 2xl:px-3 py-1.5 rounded-full text-xs xl:text-[13px] 2xl:text-sm font-semibold tracking-wide whitespace-nowrap transition-all duration-200 focus-visible:outline focus-visible:outline-2 focus-visible:outline-gold-500"
               :class="[
                 isActive(item.to)
                   ? 'text-gold-300 font-semibold bg-gold-500/15 border border-gold-500/30 shadow-[0_0_12px_rgba(199,166,100,0.1)]'
@@ -68,73 +70,51 @@
               {{ item.label }}
             </NuxtLink>
           </li>
-
-          <!-- Visual divider between primary and secondary tiers -->
-          <li class="w-px h-4 bg-charcoal-700/60 mx-1 shrink-0" aria-hidden="true" />
-
-          <!-- Secondary nav items: learning & content -->
-          <li v-for="item in secondaryNavItems" :key="item.to">
-            <NuxtLink
-              :to="item.to"
-              class="px-2.5 xl:px-3 py-1.5 rounded-full text-xs xl:text-[13px] font-medium tracking-wide whitespace-nowrap transition-all duration-200 focus-visible:outline focus-visible:outline-2 focus-visible:outline-gold-500"
-              :class="[
-                isActive(item.to)
-                  ? 'text-gold-300 bg-gold-500/10 border border-gold-500/20'
-                  : 'text-charcoal-400 hover:text-ivory hover:bg-white/[0.04] border border-transparent',
-              ]"
-            >
-              {{ item.label }}
-            </NuxtLink>
-          </li>
         </ul>
 
-        <!-- Right: Utility actions (Search + AI Assistant + CTA + Mobile trigger) -->
-        <div class="flex items-center gap-2 sm:gap-2.5 xl:gap-3 shrink-0">
-          <!-- Desktop Search Trigger Button -->
+        <!-- Right: Utility actions (Search + AI Assistant + Contribute + Map + Mobile trigger) -->
+        <div class="flex items-center gap-1.5 sm:gap-2 xl:gap-2.5 shrink-0">
+          <!-- Desktop Search Trigger Button (Fluid icon/pill) -->
           <button
-            class="hidden md:flex items-center gap-2 h-9 px-3 xl:px-3.5 rounded-full bg-charcoal-950/60 hover:bg-charcoal-900 border border-charcoal-700/60 hover:border-gold-500/40 text-charcoal-400 hover:text-ivory transition-all duration-200 shrink-0 focus-visible:outline focus-visible:outline-2 focus-visible:outline-gold-500"
+            class="hidden md:flex items-center gap-2 h-9 px-2.5 xl:px-3 2xl:px-3.5 rounded-full bg-charcoal-950/60 hover:bg-charcoal-900 border border-charcoal-700/60 hover:border-gold-500/40 text-charcoal-400 hover:text-ivory transition-all duration-200 shrink-0 focus-visible:outline focus-visible:outline-2 focus-visible:outline-gold-500"
             aria-label="Tìm kiếm di sản"
             @click="isSearchOpen = true"
           >
             <Icon name="mdi:magnify" class="w-4 h-4 text-gold-400/80 shrink-0" />
             <span class="hidden xl:inline text-xs font-normal text-charcoal-300">Tìm kiếm...</span>
-            <span class="inline xl:hidden text-xs font-normal text-charcoal-300">Tìm</span>
-            <kbd class="hidden xl:inline-flex items-center px-1.5 py-0.5 text-[9px] font-mono bg-charcoal-800/80 border border-charcoal-700/60 rounded text-charcoal-400">{{ shortcutKey }}</kbd>
+            <kbd class="hidden 2xl:inline-flex items-center px-1.5 py-0.5 text-[9px] font-mono bg-charcoal-800/80 border border-charcoal-700/60 rounded text-charcoal-400">{{ shortcutKey }}</kbd>
           </button>
 
-          <!-- AI Assistant Trigger Button (Refined Obsidian Glass & Pulsing Sparkle Aura) -->
+          <!-- AI Assistant Trigger Button -->
           <button
             type="button"
-            class="group/aibtn relative overflow-hidden inline-flex items-center gap-1.5 h-9 px-3 xl:px-3.5 rounded-full border border-gold-500/40 hover:border-gold-400 bg-charcoal-900/80 hover:bg-gold-500/15 text-ivory hover:text-gold-200 text-xs xl:text-sm font-medium tracking-wide transition-all duration-300 shadow-[0_0_12px_rgba(199,166,100,0.15)] hover:shadow-[0_0_20px_rgba(199,166,100,0.35)] hover:scale-[1.03] active:scale-[0.97] shrink-0 focus-visible:outline focus-visible:outline-2 focus-visible:outline-gold-500 cursor-pointer"
-            aria-label="Mở Trợ lý AI Di sản"
+            class="group/aibtn relative overflow-hidden hidden sm:inline-flex items-center gap-1.5 h-9 px-2 xl:px-2.5 2xl:px-3.5 rounded-full border border-gold-500/40 hover:border-gold-400 bg-charcoal-900/80 hover:bg-gold-500/15 text-ivory hover:text-gold-200 text-xs xl:text-sm font-medium tracking-wide transition-all duration-300 shadow-[0_0_12px_rgba(199,166,100,0.15)] hover:shadow-[0_0_20px_rgba(199,166,100,0.35)] hover:scale-[1.02] active:scale-[0.98] shrink-0 focus-visible:outline focus-visible:outline-2 focus-visible:outline-gold-500 cursor-pointer"
+            aria-label="Mở AI Trợ Lý"
             @click="isAiAssistantOpen = true"
           >
-            <span class="relative flex h-2 w-2">
-              <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-gold-400 opacity-75"></span>
-              <span class="relative inline-flex rounded-full h-2 w-2 bg-gold-500"></span>
-            </span>
+            <span class="w-2 h-2 rounded-full bg-gold-400 shrink-0" />
             <Icon name="mdi:sparkles" class="w-4 h-4 text-gold-400 group-hover/aibtn:rotate-12 group-hover/aibtn:scale-110 transition-transform duration-300 shrink-0" />
             <span class="font-medium whitespace-nowrap">AI Trợ Lý</span>
           </button>
 
-          <!-- Secondary Utility CTA: Đóng Góp (Luxury Obsidian Glass & Gold Accent) -->
+          <!-- Contribute Button (Shown on xl+) -->
           <NuxtLink
             to="/contribute"
-            class="group/contrib relative overflow-hidden hidden sm:inline-flex items-center gap-1.5 h-9 px-3.5 xl:px-4 rounded-full border border-gold-500/40 hover:border-gold-400 bg-charcoal-900/60 hover:bg-gold-500/15 text-ivory/90 hover:text-gold-200 text-xs xl:text-sm font-medium tracking-wide transition-all duration-300 shadow-[0_2px_8px_rgba(0,0,0,0.5)] hover:shadow-[0_0_16px_rgba(199,166,100,0.25)] hover:scale-[1.02] active:scale-[0.98] shrink-0 focus-visible:outline focus-visible:outline-2 focus-visible:outline-gold-500"
+            class="hidden xl:inline-flex items-center gap-1.5 h-9 px-2.5 2xl:px-3.5 rounded-full border border-gold-500/30 hover:border-gold-400 bg-charcoal-900/80 hover:bg-gold-500/15 text-ivory hover:text-gold-200 text-xs xl:text-sm font-medium tracking-wide transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] shrink-0 focus-visible:outline focus-visible:outline-2 focus-visible:outline-gold-500"
+            aria-label="Đóng góp di sản"
           >
-            <Icon name="mdi:hand-heart-outline" class="w-4 h-4 text-gold-400 group-hover/contrib:scale-110 transition-transform duration-200 shrink-0" />
-            <span class="font-medium">Đóng Góp</span>
+            <Icon name="mdi:hand-heart-outline" class="w-4 h-4 text-gold-400 shrink-0" />
+            <span class="font-medium whitespace-nowrap">Đóng Góp</span>
           </NuxtLink>
 
-          <!-- Primary Explore CTA: Bản Đồ (Ultra-Luxury Metallic Gold Foil) -->
+          <!-- Map CTA Button (Gold highlighted pill, always prioritized) -->
           <NuxtLink
             to="/map"
-            class="group/mapbtn relative overflow-hidden hidden sm:inline-flex items-center gap-1.5 h-9 px-4 rounded-full bg-gradient-to-r from-[#D4AF37] via-[#F3E5AB] to-[#B8860B] text-charcoal-950 text-xs xl:text-sm font-bold tracking-wider uppercase transition-all duration-300 shadow-[0_0_18px_rgba(212,175,55,0.3)] hover:shadow-[0_0_26px_rgba(212,175,55,0.5)] hover:scale-[1.03] active:scale-[0.97] shrink-0 border border-[#FFF0C2]/60 focus-visible:outline focus-visible:outline-2 focus-visible:outline-gold-500"
+            class="inline-flex items-center gap-1.5 h-9 px-3 sm:px-3.5 2xl:px-4 rounded-full bg-gradient-to-r from-[#e5be65] via-[#d4a843] to-[#c2932b] hover:from-[#ebd07e] hover:to-[#cca038] text-charcoal-950 font-bold text-xs xl:text-sm tracking-wider transition-all duration-300 shadow-[0_0_14px_rgba(212,168,67,0.35)] hover:shadow-[0_0_22px_rgba(212,168,67,0.55)] hover:scale-[1.03] active:scale-[0.97] shrink-0 focus-visible:outline focus-visible:outline-2 focus-visible:outline-gold-500"
+            aria-label="Mở Bản đồ di sản"
           >
-            <!-- Light sweep sheen animation on hover -->
-            <span class="absolute inset-0 w-full h-full bg-gradient-to-r from-transparent via-white/50 to-transparent -translate-x-full group-hover/mapbtn:translate-x-full transition-transform duration-700 ease-out pointer-events-none" />
-            <Icon name="mdi:map-legend" class="w-4 h-4 text-charcoal-950 shrink-0 relative z-10" />
-            <span class="relative z-10 font-bold tracking-wider">BẢN ĐỒ</span>
+            <Icon name="mdi:map-outline" class="w-4 h-4 text-charcoal-950 shrink-0" />
+            <span class="font-bold whitespace-nowrap">BẢN ĐỒ</span>
           </NuxtLink>
 
           <!-- Mobile Search Trigger -->
@@ -165,14 +145,14 @@
         v-if="isMobileOpen"
         class="lg:hidden max-w-[1400px] mx-auto mt-2 heritage-navbar-box rounded-2xl p-4 shadow-2xl"
       >
-        <!-- Primary: Discovery section -->
-        <p class="text-[9px] uppercase tracking-[0.18em] font-bold text-charcoal-500 mb-2 px-2">Khám Phá Di Sản</p>
-        <div class="space-y-0.5 mb-3" aria-label="Menu khám phá chính">
+        <!-- Primary: Discovery & Learning section -->
+        <p class="text-[9px] uppercase tracking-[0.18em] font-bold text-charcoal-500 mb-2 px-2">Khám Phá & Học Tập</p>
+        <div class="space-y-0.5 mb-3" aria-label="Menu khám phá và học tập">
           <NuxtLink
             v-for="item in mobilePrimaryNavItems"
             :key="item.to"
             :to="item.to"
-            class="flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-200 focus-visible:outline focus-visible:outline-2 focus-visible:outline-gold-500"
+            class="flex items-center gap-3 px-4 py-2.5 rounded-xl transition-all duration-200 focus-visible:outline focus-visible:outline-2 focus-visible:outline-gold-500"
             :class="[
               isActive(item.to)
                 ? 'text-gold-300 bg-gold-500/10 font-semibold border border-gold-500/20'
@@ -185,47 +165,39 @@
           </NuxtLink>
         </div>
 
-        <!-- Secondary: Learning & Content -->
+        <!-- Secondary: Content, Journal & Community -->
         <div class="border-t border-charcoal-800/60 pt-3 mb-3">
-          <p class="text-[9px] uppercase tracking-[0.18em] font-bold text-charcoal-500 mb-2 px-2">Học & Tin Tức</p>
+          <p class="text-[9px] uppercase tracking-[0.18em] font-bold text-charcoal-500 mb-2 px-2">Nội Dung & Hoạt Động</p>
           <div class="space-y-0.5">
             <NuxtLink
-              v-for="item in secondaryNavItems"
+              v-for="item in mobileSecondaryNavItems"
               :key="item.to"
               :to="item.to"
               class="flex items-center gap-3 px-4 py-2.5 rounded-xl transition-all duration-200 focus-visible:outline focus-visible:outline-2 focus-visible:outline-gold-500"
               :class="[
                 isActive(item.to)
                   ? 'text-gold-300 bg-gold-500/10 font-semibold border border-gold-500/20'
-                  : 'text-charcoal-400 hover:text-ivory hover:bg-charcoal-900/50',
+                  : 'text-charcoal-300 hover:text-ivory hover:bg-charcoal-900/50',
               ]"
               @click="isMobileOpen = false"
             >
-              <Icon :name="item.icon" class="w-4 h-4 text-gold-400/60" />
+              <Icon :name="item.icon" class="w-4 h-4 text-gold-400/70" />
               <span class="text-sm">{{ item.label }}</span>
             </NuxtLink>
           </div>
         </div>
 
-        <!-- Utility CTAs (AI Assistant + Contribute) -->
+        <!-- Utility CTAs (AI Assistant + Search shortcut) -->
         <div class="pt-3 border-t border-charcoal-800/80 space-y-2">
           <button
             type="button"
             class="flex items-center justify-center gap-2 w-full text-xs sm:text-sm py-2.5 rounded-xl bg-charcoal-900/90 border border-gold-500/40 text-gold-300 font-semibold tracking-wide transition-all shadow-[0_0_12px_rgba(199,166,100,0.15)]"
             @click="isMobileOpen = false; isAiAssistantOpen = true"
           >
+            <span class="w-2 h-2 rounded-full bg-gold-400 shrink-0" />
             <Icon name="mdi:sparkles" class="w-4 h-4 text-gold-400" />
-            <span>Trợ Lý AI Di Sản</span>
+            <span>AI Trợ Lý</span>
           </button>
-
-          <NuxtLink
-            to="/contribute"
-            class="flex items-center justify-center gap-2 w-full text-xs sm:text-sm py-2.5 rounded-xl bg-gradient-to-r from-gold-500 to-gold-400 text-charcoal-950 font-semibold tracking-wide transition-all shadow-[0_0_16px_rgba(199,166,100,0.2)]"
-            @click="isMobileOpen = false"
-          >
-            <Icon name="mdi:hand-heart-outline" class="w-4 h-4" />
-            <span>Đóng Góp Ký Ức Di Sản</span>
-          </NuxtLink>
         </div>
       </div>
     </Transition>
@@ -310,7 +282,7 @@
                   <NuxtLink
                     v-for="post in communityResults"
                     :key="post.id"
-                    :to="`/explore/${post.id}`"
+                    :to="`/explore/post/${post.id}`"
                     class="flex items-center gap-3 rounded-xl px-3 py-2.5 hover:bg-charcoal-900/60 transition-colors duration-200 focus-visible:outline focus-visible:outline-2 focus-visible:outline-gold-500 focus-visible:outline-offset-2"
                     @click="closeSearch"
                   >
@@ -365,45 +337,67 @@ const heritageStore = useHeritageStore()
 const route = useRoute()
 const isJourneyStarted = useState<boolean>('isJourneyStarted', () => false)
 
-const isNavVisible = computed(() => {
-  if (route.path !== '/') return true
-  return isJourneyStarted.value || isScrolled.value
-})
+const isNavVisible = computed(() => true)
 
 const isActive = (path: string) => {
   if (path === '/') return route.path === '/'
-  // Strip query string for path matching
   const pathBase = path.split('?')[0]!
+  if (pathBase === '/about') {
+    return route.path.startsWith('/about')
+  }
+  if (pathBase === '/explore') {
+    return route.path.startsWith('/explore') || route.path.startsWith('/heritage')
+  }
+  if (pathBase === '/study') {
+    return route.path.startsWith('/study')
+  }
+  if (pathBase === '/stories') {
+    return route.path.startsWith('/stories') || route.path.startsWith('/news')
+  }
+  if (pathBase === '/journal') {
+    return route.path.startsWith('/journal')
+  }
+  if (pathBase === '/contribute') {
+    return route.path.startsWith('/contribute')
+  }
+  if (pathBase === '/map') {
+    return route.path.startsWith('/map')
+  }
   return route.path.startsWith(pathBase)
 }
 
-// Primary navigation: core discovery experience (desktop center)
+// 6 Canonical Primary Navigation items in exact requested order
 const primaryNavItems = [
   { to: '/', label: 'Trang Chủ', icon: 'mdi:home-outline' },
   { to: '/about', label: 'Giới Thiệu', icon: 'mdi:information-outline' },
-  { to: '/explore', label: 'Khám Phá', icon: 'mdi:compass-outline' },
+  { to: '/explore', label: 'Thư Viện', icon: 'mdi:compass-outline' },
+  { to: '/study', label: 'Học Tập', icon: 'mdi:school-outline' },
+  { to: '/stories', label: 'Chuyện', icon: 'mdi:book-open-page-variant-outline' },
+  { to: '/journal', label: 'Nhật Ký', icon: 'mdi:notebook-outline' },
 ]
 
-// Mobile drawer primary items (includes Bản Đồ for mobile drawer navigation)
+// Mobile drawer primary items (Ordered navigation)
 const mobilePrimaryNavItems = [
   { to: '/', label: 'Trang Chủ', icon: 'mdi:home-outline' },
   { to: '/about', label: 'Giới Thiệu', icon: 'mdi:information-outline' },
-  { to: '/explore', label: 'Khám Phá', icon: 'mdi:compass-outline' },
-  { to: '/map', label: 'Bản Đồ', icon: 'mdi:map-outline' },
+  { to: '/explore', label: 'Thư Viện', icon: 'mdi:compass-outline' },
+  { to: '/study', label: 'Học Tập', icon: 'mdi:school-outline' },
+  { to: '/stories', label: 'Chuyện Di Sản', icon: 'mdi:book-open-page-variant-outline' },
+  { to: '/journal', label: 'Nhật Ký Điền Dã', icon: 'mdi:notebook-outline' },
 ]
 
-// Secondary navigation: learning & informational content
-const secondaryNavItems = [
-  { to: '/study', label: 'Học Tập', icon: 'mdi:school-outline' },
-  { to: '/news', label: 'Bài Viết', icon: 'mdi:newspaper-variant-outline' },
+// Mobile drawer secondary items (Map & Contribute)
+const mobileSecondaryNavItems = [
+  { to: '/map', label: 'Bản Đồ Di Sản', icon: 'mdi:map-outline' },
+  { to: '/contribute', label: 'Đóng Góp Di Sản', icon: 'mdi:hand-heart-outline' },
 ]
 
 // Quick links shown in empty search state
 const quickLinks = [
   { to: '/explore', label: 'Di Sản', icon: 'mdi:compass-outline' },
   { to: '/map', label: 'Bản Đồ', icon: 'mdi:map-outline' },
-  { to: '/explore?tab=community', label: 'Ký Ức', icon: 'mdi:book-heart-outline' },
-  { to: '/study', label: 'Học Tập', icon: 'mdi:school-outline' },
+  { to: '/stories', label: 'Chuyện', icon: 'mdi:book-open-page-variant-outline' },
+  { to: '/journal', label: 'Nhật Ký', icon: 'mdi:notebook-outline' },
 ]
 
 // Heritage search results
