@@ -915,31 +915,34 @@
 
           <!-- Videos -->
           <div v-else-if="activeMediaSubtab === 'videos'" class="space-y-6">
-            <div class="relative w-full aspect-video bg-charcoal-950 border border-charcoal-850 rounded-3xl overflow-hidden group cursor-pointer" @click="startVideoPlayback">
-              <NuxtImg src="/images/heritage/danh-thang/thac-dung-lg.webp" alt="Video: Thác Dung Bù Đăng" class="w-full h-full object-cover opacity-60 group-hover:opacity-80 transition-opacity duration-500" loading="lazy" @error="hideOnImageError" />
+            <div class="relative w-full aspect-video bg-charcoal-950 border border-charcoal-850 rounded-3xl overflow-hidden group cursor-pointer" @click="startVideoPlayback(featuredVideoData)">
+              <NuxtImg :src="featuredVideoData.thumb" :alt="featuredVideoData.title" class="w-full h-full object-cover opacity-60 group-hover:opacity-80 transition-opacity duration-500" loading="lazy" @error="hideOnImageError" />
               <div class="absolute inset-0 flex items-center justify-center">
                 <div class="w-20 h-20 rounded-full bg-charcoal-950/70 backdrop-blur-sm border-2 border-gold-500/50 flex items-center justify-center group-hover:scale-110 transition-transform shadow-gold/20 shadow-xl">
                   <Icon name="mdi:play" class="w-9 h-9 text-gold-400 translate-x-0.5" />
                 </div>
               </div>
-              <div class="absolute bottom-5 left-5">
-                <span class="text-gold-400 text-3xs font-bold uppercase tracking-wider block">Phim Tư Liệu</span>
-                <span class="font-heading font-bold text-ivory text-lg">Thác Mơ — Huyền Thoại Dak Mơ</span>
+              <div class="absolute bottom-5 left-5 right-5">
+                <span class="text-gold-400 text-3xs font-bold uppercase tracking-wider block">{{ featuredVideoData.cat }}</span>
+                <span class="font-heading font-bold text-ivory text-lg sm:text-xl">{{ featuredVideoData.title }}</span>
+                <p v-if="featuredVideoData.description" class="text-charcoal-300 text-xs mt-1 line-clamp-1 hidden sm:block">{{ featuredVideoData.description }}</p>
               </div>
-              <span class="absolute top-4 right-4 bg-charcoal-950/80 border border-charcoal-700 text-charcoal-300 text-3xs px-2.5 py-1 rounded-full font-bold">5:30</span>
+              <span class="absolute top-4 right-4 bg-charcoal-950/80 border border-charcoal-700 text-charcoal-300 text-3xs px-2.5 py-1 rounded-full font-bold">{{ featuredVideoData.duration }}</span>
             </div>
 
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div v-for="video in mockVideos" :key="video.title" class="flex gap-4 p-4 bg-charcoal-950 border border-charcoal-850 rounded-2xl hover:border-gold-500/25 transition-colors cursor-pointer group" @click="startVideoPlayback">
-                <div class="w-24 h-16 rounded-xl bg-charcoal-900 overflow-hidden relative shrink-0">
+              <div v-for="video in mockVideos" :key="video.title" class="flex gap-4 p-4 bg-charcoal-950 border border-charcoal-850 rounded-2xl hover:border-gold-500/35 transition-colors cursor-pointer group hover:bg-charcoal-900/50" @click="startVideoPlayback(video)">
+                <div class="w-28 h-20 rounded-xl bg-charcoal-900 overflow-hidden relative shrink-0">
                   <NuxtImg :src="video.thumb" :alt="video.title" class="w-full h-full object-cover group-hover:scale-105 transition-transform" loading="lazy" @error="hideOnImageError" />
-                  <div class="absolute inset-0 flex items-center justify-center bg-charcoal-950/40">
-                    <Icon name="mdi:play-circle" class="w-7 h-7 text-gold-400/80" />
+                  <div class="absolute inset-0 flex items-center justify-center bg-charcoal-950/40 group-hover:bg-charcoal-950/20 transition-colors">
+                    <Icon name="mdi:play-circle" class="w-8 h-8 text-gold-400/90 group-hover:scale-110 transition-transform" />
                   </div>
+                  <span class="absolute bottom-1 right-1 bg-charcoal-950/80 text-ivory text-[9px] px-1 rounded font-mono">{{ video.duration }}</span>
                 </div>
-                <div class="flex-1 min-w-0">
-                  <span class="block text-xs font-bold text-ivory group-hover:text-gold-300 transition-colors truncate">{{ video.title }}</span>
-                  <span class="text-charcoal-450 text-3xs">{{ video.cat }} • {{ video.duration }}</span>
+                <div class="flex-1 min-w-0 flex flex-col justify-center">
+                  <span class="text-gold-400 text-3xs font-bold uppercase">{{ video.cat }}</span>
+                  <span class="block text-xs font-bold text-ivory group-hover:text-gold-300 transition-colors line-clamp-2 mt-0.5">{{ video.title }}</span>
+                  <span v-if="video.description" class="text-charcoal-450 text-3xs line-clamp-1 mt-1">{{ video.description }}</span>
                 </div>
               </div>
             </div>
@@ -1509,6 +1512,111 @@
         </div>
       </div>
     </Transition>
+
+    <!-- CINEMA VIDEO PLAYER MODAL -->
+    <Transition name="fade">
+      <div v-if="selectedVideoItem" class="fixed inset-0 z-80 flex items-center justify-center p-3 sm:p-6" role="dialog" :aria-label="`Xem phim tư liệu: ${selectedVideoItem.title}`" aria-modal="true">
+        <div class="absolute inset-0 bg-charcoal-950/92 backdrop-blur-md" @click="selectedVideoItem = null" />
+        <div class="relative w-full max-w-5xl bg-charcoal-950 border border-charcoal-800 rounded-3xl overflow-hidden shadow-2xl z-10 flex flex-col max-h-[92vh]">
+          <!-- Header -->
+          <div class="flex items-center justify-between px-5 sm:px-6 py-4 border-b border-charcoal-800/80 bg-charcoal-900/80 backdrop-blur-sm shrink-0">
+            <div class="flex items-center gap-2.5 min-w-0 pr-4">
+              <span class="px-2.5 py-0.5 rounded-full bg-gold-500/15 border border-gold-500/30 text-gold-400 text-3xs font-bold uppercase tracking-wider shrink-0">
+                {{ selectedVideoItem.cat }}
+              </span>
+              <span class="font-heading font-bold text-ivory text-sm sm:text-base truncate">
+                {{ selectedVideoItem.title }}
+              </span>
+            </div>
+            <button class="w-8 h-8 rounded-full flex items-center justify-center text-charcoal-400 hover:text-ivory hover:bg-charcoal-800 transition-colors shrink-0" @click="selectedVideoItem = null" aria-label="Đóng video">
+              <Icon name="mdi:close" class="w-5 h-5" />
+            </button>
+          </div>
+
+          <!-- Body: Video Player + Playlist -->
+          <div class="flex-1 overflow-y-auto p-4 sm:p-6 grid grid-cols-1 lg:grid-cols-3 gap-6 items-start">
+            <!-- Main Player Column -->
+            <div class="lg:col-span-2 space-y-4">
+              <div class="aspect-video w-full rounded-2xl overflow-hidden bg-black border border-charcoal-800 shadow-2xl relative">
+                <video
+                  :key="selectedVideoItem.videoUrl"
+                  :src="selectedVideoItem.videoUrl"
+                  :poster="selectedVideoItem.thumb"
+                  controls
+                  autoplay
+                  playsinline
+                  class="w-full h-full object-contain bg-black"
+                >
+                  Trình duyệt của bạn không hỗ trợ phát video HTML5.
+                </video>
+              </div>
+              <div class="space-y-2">
+                <div class="flex items-center justify-between gap-2 flex-wrap">
+                  <h3 class="font-heading font-bold text-ivory text-lg sm:text-xl">{{ selectedVideoItem.title }}</h3>
+                  <span class="text-3xs text-charcoal-400 font-mono bg-charcoal-900 px-2.5 py-1 rounded-full border border-charcoal-800">{{ selectedVideoItem.duration }}</span>
+                </div>
+                <p v-if="selectedVideoItem.description" class="text-charcoal-300 text-xs sm:text-sm leading-relaxed">
+                  {{ selectedVideoItem.description }}
+                </p>
+                <div class="flex items-center gap-3 pt-2 text-3xs text-charcoal-400">
+                  <span class="flex items-center gap-1"><Icon name="mdi:movie-open-outline" class="w-3.5 h-3.5 text-gold-400" />Tư liệu số hóa Di sản Bù Đăng</span>
+                  <span>•</span>
+                  <span class="flex items-center gap-1"><Icon name="mdi:video-vintage" class="w-3.5 h-3.5 text-gold-400" />Chất lượng HD</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Playlist Sidebar Column -->
+            <div class="space-y-3 bg-charcoal-900/70 border border-charcoal-850 rounded-2xl p-4 max-h-[480px] overflow-y-auto">
+              <div class="flex items-center justify-between pb-2 border-b border-charcoal-800">
+                <span class="text-3xs font-bold text-gold-400 uppercase tracking-widest block">Kho Phim Tư Liệu</span>
+                <span class="text-3xs text-charcoal-500 font-semibold">{{ 1 + mockVideos.length }} video</span>
+              </div>
+              
+              <!-- Featured item in playlist -->
+              <div
+                class="flex gap-3 p-2.5 rounded-xl border transition-all cursor-pointer"
+                :class="selectedVideoItem.title === featuredVideoData.title ? 'bg-gold-500/15 border-gold-500/40 text-gold-300 shadow-md' : 'bg-charcoal-950/60 border-charcoal-800 text-charcoal-300 hover:border-charcoal-700'"
+                @click="selectedVideoItem = featuredVideoData"
+              >
+                <div class="w-20 h-14 rounded-lg bg-charcoal-900 overflow-hidden relative shrink-0">
+                  <img :src="featuredVideoData.thumb" :alt="featuredVideoData.title" class="w-full h-full object-cover" />
+                  <div class="absolute inset-0 flex items-center justify-center bg-black/40">
+                    <Icon name="mdi:play" class="w-4 h-4 text-gold-400" />
+                  </div>
+                </div>
+                <div class="min-w-0 flex-1 flex flex-col justify-center">
+                  <span class="text-[9px] text-gold-400 font-bold uppercase">{{ featuredVideoData.cat }}</span>
+                  <p class="text-xs font-bold leading-tight line-clamp-2 mt-0.5">{{ featuredVideoData.title }}</p>
+                  <span class="text-[9px] text-charcoal-500 mt-1 block">{{ featuredVideoData.duration }}</span>
+                </div>
+              </div>
+
+              <!-- Other items in playlist -->
+              <div
+                v-for="v in mockVideos"
+                :key="v.title"
+                class="flex gap-3 p-2.5 rounded-xl border transition-all cursor-pointer"
+                :class="selectedVideoItem.title === v.title ? 'bg-gold-500/15 border-gold-500/40 text-gold-300 shadow-md' : 'bg-charcoal-950/60 border-charcoal-800 text-charcoal-300 hover:border-charcoal-700'"
+                @click="selectedVideoItem = v"
+              >
+                <div class="w-20 h-14 rounded-lg bg-charcoal-900 overflow-hidden relative shrink-0">
+                  <img :src="v.thumb" :alt="v.title" class="w-full h-full object-cover" />
+                  <div class="absolute inset-0 flex items-center justify-center bg-black/40">
+                    <Icon name="mdi:play" class="w-4 h-4 text-gold-400" />
+                  </div>
+                </div>
+                <div class="min-w-0 flex-1 flex flex-col justify-center">
+                  <span class="text-[9px] text-gold-400 font-bold uppercase">{{ v.cat }}</span>
+                  <p class="text-xs font-bold leading-tight line-clamp-2 mt-0.5">{{ v.title }}</p>
+                  <span class="text-[9px] text-charcoal-500 mt-1 block">{{ v.duration }}</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </Transition>
   </div>
 </template>
 
@@ -1537,8 +1645,10 @@ import {
   staticResources,
   glossaryData,
   imageStoriesData,
+  featuredVideoData,
   mockVideos,
   mockAudios,
+  type StudyVideo,
 } from '~/data/studyData'
 
 // Inject EducationalOrganization + LearningResource schema
@@ -1763,6 +1873,7 @@ const communityStats = computed(() => [
 // MODAL STATE
 // ──────────────────────────────────────────────
 const selectedResource = ref<SchoolResourceExtended | null>(null)
+const selectedVideoItem = ref<StudyVideo | null>(null)
 const activeModalTab = ref<'overview' | 'document'>('overview')
 const currentDocPage = ref(0)
 const fontSizeLevel = ref(2)
@@ -2006,7 +2117,12 @@ function createCollectionAndAdd(resourceId: string) {
 // ──────────────────────────────────────────────
 // MEDIA PLAYER
 // ──────────────────────────────────────────────
-function startVideoPlayback() { swal.fire({ title: 'Phát phim tư liệu', text: 'Đang khởi chạy trình phát video tư liệu di tích...', icon: 'info', confirmButtonColor: '#C7A664' }) }
+// ──────────────────────────────────────────────
+// MEDIA PLAYER
+// ──────────────────────────────────────────────
+function startVideoPlayback(video?: StudyVideo) {
+  selectedVideoItem.value = video || featuredVideoData
+}
 
 function playLandmarkAudio(title: string, desc: string) {
   if (import.meta.client && 'speechSynthesis' in window) {
@@ -2039,15 +2155,92 @@ function openResource(res: SchoolResourceExtended) {
 
 function downloadFile(resource: SchoolResourceExtended) {
   resource.downloadCount++
+
   if (resource.fileUrl) {
+    // Direct file download for existing PDFs
     const a = document.createElement('a')
     a.href = resource.fileUrl
-    a.download = resource.fileUrl.split('/').pop() ?? resource.title
+    const filename = resource.fileUrl.split('/').pop() || `${resource.id}.pdf`
+    a.setAttribute('download', filename)
     document.body.appendChild(a)
     a.click()
     document.body.removeChild(a)
+
+    swal.fire({
+      title: 'Tải tài liệu thành công!',
+      html: `Đã khởi chạy tải file PDF <strong>"${resource.title}"</strong> (${resource.fileSize ?? 'PDF'}). Vui lòng kiểm tra thư mục Downloads trên máy tính của bạn.`,
+      icon: 'success',
+      toast: true,
+      position: 'top-end',
+      showConfirmButton: false,
+      timer: 3500,
+      background: '#221D17',
+      color: '#F5F1EA'
+    })
   } else {
-    swal.fire({ title: 'Tải tài liệu thành công!', html: `Hệ thống đang chuẩn bị tải PDF <strong>"${resource.title}"</strong> (${resource.fileSize ?? '2.4 MB'}).`, icon: 'success', background: '#221D17', color: '#F5F1EA', confirmButtonColor: '#C7A664', confirmButtonText: 'Đóng lại' })
+    // Generate clean printable academic HTML/Doc file Blob
+    const pagesHtml = (resource.pages || []).join('<hr style="margin: 24px 0; border: none; border-top: 1px dashed #ccc;" />')
+    const findingsList = (resource.keyFindings || []).map(f => `<li>${f}</li>`).join('')
+    
+    const docHtml = `<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <title>${resource.title} - Bảo Tàng Số Di Sản Bù Đăng</title>
+  <style>
+    body { font-family: 'Times New Roman', Times, serif; line-height: 1.6; color: #1a1a1a; max-width: 800px; margin: 40px auto; padding: 0 20px; }
+    h1 { font-size: 24px; text-align: center; margin-bottom: 8px; color: #8A6421; }
+    .meta { text-align: center; font-size: 13px; color: #666; margin-bottom: 24px; border-bottom: 2px solid #8A6421; padding-bottom: 12px; }
+    .summary { background: #fdfbf7; border-left: 4px solid #8A6421; padding: 14px 18px; margin-bottom: 24px; font-style: italic; }
+    .findings { background: #f9f9f9; padding: 14px 20px; border-radius: 8px; margin-bottom: 24px; }
+    .content { font-size: 15px; text-align: justify; }
+    blockquote { border-left: 3px solid #8A6421; padding-left: 12px; margin: 16px 0; font-style: italic; color: #444; }
+    @media print { body { margin: 20px; } button { display: none; } }
+  </style>
+</head>
+<body>
+  <div style="text-align: right; margin-bottom: 20px;">
+    <button onclick="window.print()" style="padding: 8px 16px; background: #8A6421; color: #fff; border: none; border-radius: 6px; cursor: pointer; font-weight: bold;">🖨️ In / Lưu PDF</button>
+  </div>
+  <h1>${resource.title}</h1>
+  <div class="meta">
+    Tác giả: <strong>${resource.author}</strong> (${resource.school} - Lớp ${resource.grade}) | Môn học: ${resource.subject} | Xuất bản: ${resource.publishedAt}
+  </div>
+  <div class="summary">
+    <strong>Tóm tắt nghiên cứu:</strong> ${resource.motivation || resource.description}
+  </div>
+  <div class="findings">
+    <strong>Kết quả điền dã nổi bật:</strong>
+    <ul>${findingsList}</ul>
+  </div>
+  <div class="content">
+    ${pagesHtml}
+  </div>
+  <footer style="margin-top: 40px; border-top: 1px solid #ddd; padding-top: 12px; font-size: 12px; text-align: center; color: #888;">
+    Tài liệu số hóa bởi Bảo Tàng Số Di Sản Bù Đăng — Thành Phố Đồng Nai (disanbudang.com)
+  </footer>
+</body>
+</html>`
+
+    const blob = new Blob([docHtml], { type: 'text/html;charset=utf-8' })
+    const url = URL.createObjectURL(blob)
+    const a = document.createElement('a')
+    a.href = url
+    a.setAttribute('download', `${resource.id}_heritage_research.html`)
+    document.body.appendChild(a)
+    a.click()
+    document.body.removeChild(a)
+    URL.revokeObjectURL(url)
+
+    swal.fire({
+      title: 'Tải tài liệu thành công!',
+      html: `Đã tải xuống toàn văn tài liệu <strong>"${resource.title}"</strong> về máy của bạn.<br/><small class="text-charcoal-400">Bạn có thể mở trực tiếp trên trình duyệt hoặc nhấn In để lưu thành PDF.</small>`,
+      icon: 'success',
+      background: '#221D17',
+      color: '#F5F1EA',
+      confirmButtonColor: '#C7A664',
+      confirmButtonText: 'Đóng lại'
+    })
   }
 }
 

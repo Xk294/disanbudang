@@ -1,24 +1,93 @@
 <template>
   <div class="bg-charcoal-900 min-h-screen text-ivory">
     <!-- Hero header -->
-    <div class="bg-dark-earth py-10 md:py-14 relative overflow-hidden border-b border-charcoal-850">
+    <div class="bg-dark-earth py-12 md:py-16 relative overflow-hidden border-b border-charcoal-850">
       <div class="absolute inset-0 pointer-events-none">
-        <div class="absolute top-1/2 right-0 w-96 h-96 bg-gold-500/5 rounded-full blur-3xl -translate-y-1/2" />
-        <div class="absolute top-0 left-0 w-72 h-72 bg-forest-500/5 rounded-full blur-3xl" />
+        <div class="absolute top-1/2 right-0 w-96 h-96 bg-gold-500/8 rounded-full blur-3xl -translate-y-1/2" />
+        <div class="absolute top-0 left-0 w-80 h-80 bg-earth-600/10 rounded-full blur-3xl" />
         <div class="noise-overlay" />
       </div>
       <div class="container-heritage relative z-10">
-        <span class="section-label text-gold-400">Di Sản & Ký Ức Cộng Đồng</span>
-        <h1 class="font-heading font-bold text-ivory text-4xl md:text-5xl lg:text-6xl leading-[1.35] md:leading-[1.3] lg:leading-[1.25] mb-6 md:mb-8 text-balance tracking-[-0.03em]">
-          Thư Viện Di Sản<br/>
-          <span class="text-gradient-gold">Thành Phố Đồng Nai</span>
-        </h1>
-        <p class="text-charcoal-300 text-base max-w-2xl leading-relaxed">
-          {{ store.totalCount }} di sản số hóa và hàng chục ký ức do người dân tự tay đóng góp, kho lưu trữ sống của Thành Phố Đồng Nai. Từ những di tích oai hùng đến những câu chuyện được kể lại bên bếp lửa.
-        </p>
+        <div class="flex flex-col lg:flex-row lg:items-end justify-between gap-8">
+          <div class="max-w-3xl">
+            <div class="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-gold-500/10 border border-gold-500/25 text-gold-400 text-3xs uppercase font-bold tracking-widest mb-4">
+              <span class="w-1.5 h-1.5 rounded-full bg-gold-400 animate-ping inline-block" />
+              Bảo Tàng Số Di Sản Bù Đăng · TP. Đồng Nai
+            </div>
+            <h1 class="font-heading font-bold text-ivory text-4xl md:text-5xl lg:text-6xl leading-[1.3] mb-5 text-balance tracking-tight">
+              Thư Viện Di Sản &<br/>
+              <span class="text-transparent bg-clip-text bg-gradient-to-r from-gold-400 via-gold-300 to-earth-400">Ký Ức Sống Bản Địa</span>
+            </h1>
+            <p class="text-charcoal-300 text-sm md:text-base leading-relaxed max-w-2xl font-body">
+              Kho dữ liệu số hóa toàn diện <strong>{{ store.totalCount }} di tích, danh thắng và di sản phi vật thể</strong> vùng đất Bù Đăng — Thành Phố Đồng Nai. Từ những địa chỉ đỏ kháng chiến kiên cường đến thanh âm cồng chiêng ngân vang giữa đại ngàn.
+            </p>
+          </div>
+
+          <!-- Quick Action Buttons -->
+          <div class="flex flex-wrap sm:flex-nowrap items-center gap-3 shrink-0">
+            <button
+              class="px-5 py-3 rounded-2xl bg-gold-500 hover:bg-gold-400 text-charcoal-950 font-bold text-xs uppercase tracking-wider transition-all duration-300 flex items-center gap-2 shadow-lg shadow-gold-500/20 hover:-translate-y-0.5"
+              @click="discoverRandomHeritage"
+              title="Khám phá ngẫu nhiên một di sản"
+            >
+              <Icon name="mdi:dice-5-outline" class="w-4 h-4" />
+              <span>Khám Phá Ngẫu Nhiên</span>
+            </button>
+            <NuxtLink
+              to="/map"
+              class="px-5 py-3 rounded-2xl bg-charcoal-950/80 hover:bg-charcoal-900 border border-charcoal-750 hover:border-gold-500/50 text-ivory font-bold text-xs uppercase tracking-wider transition-all duration-300 flex items-center gap-2 hover:-translate-y-0.5"
+            >
+              <Icon name="mdi:map-legend" class="w-4 h-4 text-gold-400" />
+              <span>Bản Đồ GIS</span>
+            </NuxtLink>
+          </div>
+        </div>
+
+        <!-- Metrics pill bar -->
+        <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 mt-8 pt-6 border-t border-charcoal-800/60 max-w-4xl">
+          <div class="bg-charcoal-950/60 border border-charcoal-800 rounded-xl p-3 flex items-center gap-3">
+            <div class="w-9 h-9 rounded-lg bg-gold-500/10 text-gold-400 flex items-center justify-center shrink-0">
+              <Icon name="mdi:archive-outline" class="w-5 h-5" />
+            </div>
+            <div>
+              <span class="block text-base font-bold text-ivory font-heading leading-none">{{ store.totalCount }} Di Sản</span>
+              <span class="text-3xs text-charcoal-400 uppercase tracking-wider">Số hóa toàn diện</span>
+            </div>
+          </div>
+
+          <div class="bg-charcoal-950/60 border border-charcoal-800 rounded-xl p-3 flex items-center gap-3">
+            <div class="w-9 h-9 rounded-lg bg-blue-500/10 text-blue-400 flex items-center justify-center shrink-0">
+              <Icon name="mdi:headphones" class="w-5 h-5" />
+            </div>
+            <div>
+              <span class="block text-base font-bold text-ivory font-heading leading-none">100% Audio</span>
+              <span class="text-3xs text-charcoal-400 uppercase tracking-wider">Thuyết minh song ngữ</span>
+            </div>
+          </div>
+
+          <div class="bg-charcoal-950/60 border border-charcoal-800 rounded-xl p-3 flex items-center gap-3">
+            <div class="w-9 h-9 rounded-lg bg-purple-500/10 text-purple-400 flex items-center justify-center shrink-0">
+              <Icon name="mdi:rotate-3d" class="w-5 h-5" />
+            </div>
+            <div>
+              <span class="block text-base font-bold text-ivory font-heading leading-none">360° VR Tour</span>
+              <span class="text-3xs text-charcoal-400 uppercase tracking-wider">Tương tác hiện vật</span>
+            </div>
+          </div>
+
+          <div class="bg-charcoal-950/60 border border-charcoal-800 rounded-xl p-3 flex items-center gap-3">
+            <div class="w-9 h-9 rounded-lg bg-orange-500/10 text-orange-400 flex items-center justify-center shrink-0">
+              <Icon name="mdi:account-group-outline" class="w-5 h-5" />
+            </div>
+            <div>
+              <span class="block text-base font-bold text-ivory font-heading leading-none">{{ COMMUNITY_POSTS.length }} Ký Ức</span>
+              <span class="text-3xs text-charcoal-400 uppercase tracking-wider">Người dân đóng góp</span>
+            </div>
+          </div>
+        </div>
 
         <!-- Search bar — chỉ hiện ở tab Di Sản -->
-        <div v-if="activeMainTab === 'heritage'" class="mt-8 max-w-xl">
+        <div v-if="activeMainTab === 'heritage'" class="mt-8 max-w-2xl space-y-3">
           <div class="relative">
             <Icon
               name="mdi:magnify"
@@ -27,8 +96,8 @@
             <input
               v-model="searchQuery"
               type="text"
-              placeholder="Nhập tên di sản, danh thắng, từ khóa..."
-              class="w-full bg-charcoal-950 border border-charcoal-800 rounded-2xl text-ivory text-base pl-12 pr-12 py-4 placeholder-charcoal-500 focus:outline-none focus:border-gold-500 focus:ring-1 focus:ring-gold-500/20 transition-all duration-300"
+              placeholder="Tìm theo tên di sản, danh thắng, buôn sóc, hiện vật (ví dụ: Bom Bo, Bù Lạch, Cồng chiêng, Tà Thiết)..."
+              class="w-full bg-charcoal-950 border border-charcoal-800 rounded-2xl text-ivory text-sm pl-12 pr-12 py-3.5 placeholder-charcoal-500 focus:outline-none focus:border-gold-500 focus:ring-1 focus:ring-gold-500/20 transition-all duration-300"
             />
             <button
               v-if="searchQuery"
@@ -38,13 +107,105 @@
               <Icon name="mdi:close-circle" class="w-5 h-5" />
             </button>
           </div>
+
+          <!-- Suggested keyword chips -->
+          <div class="flex items-center gap-1.5 flex-wrap text-3xs text-charcoal-400">
+            <span class="font-semibold text-charcoal-500">Gợi ý tìm kiếm:</span>
+            <button
+              v-for="kw in ['Chiến Khu Đ', 'Sóc Bom Bo', 'Trảng Cỏ Bù Lạch', 'Cồng Chiêng', 'Dệt Thổ Cẩm', 'Thác Đứng', 'Căn Cứ U1']"
+              :key="kw"
+              type="button"
+              class="px-2.5 py-0.5 rounded-full bg-charcoal-950 border border-charcoal-800 hover:border-gold-500/40 hover:text-gold-300 transition-colors"
+              @click="searchQuery = kw"
+            >
+              #{{ kw }}
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== 3 CUNG ĐƯỜNG DI SẢN TRỌNG ĐIỂM (CURATED TRAILS) ===== -->
+    <div v-if="activeMainTab === 'heritage' && !searchQuery && !activeCategory && !activeCluster" class="border-b border-charcoal-850 bg-charcoal-950/80 py-8">
+      <div class="container-heritage">
+        <div class="flex items-end justify-between mb-5">
+          <div>
+            <span class="section-label text-gold-400">Hành trình khám phá</span>
+            <h3 class="font-heading text-xl md:text-2xl font-bold text-ivory mt-1">3 Cung Đường Di Sản Bù Đăng Đặc Sắc</h3>
+          </div>
+          <span class="text-charcoal-400 text-3xs font-semibold uppercase tracking-wider hidden sm:block">Chạm để lọc theo cung đường</span>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <!-- Trail 1 -->
+          <div
+            class="p-5 rounded-2xl bg-gradient-to-br from-red-950/40 via-charcoal-900 to-charcoal-950 border border-red-900/40 hover:border-red-500/50 transition-all duration-300 group cursor-pointer hover:-translate-y-0.5 shadow-lg"
+            @click="activeCategory = 'lich-su-cach-mang'"
+          >
+            <div class="flex items-center justify-between mb-3">
+              <span class="px-2.5 py-0.5 rounded-full bg-red-500/15 border border-red-500/30 text-red-400 text-3xs font-bold uppercase tracking-wider">Cung Đường Đỏ</span>
+              <span class="text-3xs text-charcoal-400">1 Ngày Lịch Sử</span>
+            </div>
+            <h4 class="font-heading font-bold text-ivory text-base group-hover:text-red-300 transition-colors leading-snug">
+              Huyền Thoại Kháng Chiến & Tiếng Chày Bom Bo
+            </h4>
+            <p class="text-charcoal-300 text-xs mt-1.5 line-clamp-2 leading-relaxed">
+              Chiến Khu Đ ➔ Sóc Bom Bo ➔ Căn Cứ Nửa Lon ➔ Căn Cứ Tà Thiết. Ký ức kiên trung thâu đêm giã gạo nuôi quân.
+            </p>
+            <div class="mt-4 pt-3 border-t border-charcoal-800/80 flex items-center justify-between text-3xs text-red-400 font-bold">
+              <span>Xem 6 di tích cách mạng</span>
+              <Icon name="mdi:arrow-right" class="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+            </div>
+          </div>
+
+          <!-- Trail 2 -->
+          <div
+            class="p-5 rounded-2xl bg-gradient-to-br from-green-950/40 via-charcoal-900 to-charcoal-950 border border-green-900/40 hover:border-green-500/50 transition-all duration-300 group cursor-pointer hover:-translate-y-0.5 shadow-lg"
+            @click="activeCategory = 'danh-lam-thang-canh'"
+          >
+            <div class="flex items-center justify-between mb-3">
+              <span class="px-2.5 py-0.5 rounded-full bg-green-500/15 border border-green-500/30 text-green-400 text-3xs font-bold uppercase tracking-wider">Cung Đường Xanh</span>
+              <span class="text-3xs text-charcoal-400">Sinh Thái & Thác Rừng</span>
+            </div>
+            <h4 class="font-heading font-bold text-ivory text-base group-hover:text-green-300 transition-colors leading-snug">
+              Kỳ Quan Thảo Nguyên & Thác Nước Đại Ngàn
+            </h4>
+            <p class="text-charcoal-300 text-xs mt-1.5 line-clamp-2 leading-relaxed">
+              Trảng Cỏ Bù Lạch ➔ Hồ Thác Mơ ➔ Thác Đứng Đăk Wuar ➔ Núi Bà Rá. Thung lũng cỏ tự nhiên 140 ha giữa rừng già.
+            </p>
+            <div class="mt-4 pt-3 border-t border-charcoal-800/80 flex items-center justify-between text-3xs text-green-400 font-bold">
+              <span>Xem 5 danh lam thắng cảnh</span>
+              <Icon name="mdi:arrow-right" class="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+            </div>
+          </div>
+
+          <!-- Trail 3 -->
+          <div
+            class="p-5 rounded-2xl bg-gradient-to-br from-gold-950/40 via-charcoal-900 to-charcoal-950 border border-gold-900/40 hover:border-gold-500/50 transition-all duration-300 group cursor-pointer hover:-translate-y-0.5 shadow-lg"
+            @click="activeCategory = 'van-hoa-phi-vat-the'"
+          >
+            <div class="flex items-center justify-between mb-3">
+              <span class="px-2.5 py-0.5 rounded-full bg-gold-500/15 border border-gold-500/30 text-gold-400 text-3xs font-bold uppercase tracking-wider">Cung Đường Văn Hóa</span>
+              <span class="text-3xs text-charcoal-400">Cùng Cội Nguồn UNESCO</span>
+            </div>
+            <h4 class="font-heading font-bold text-ivory text-base group-hover:text-gold-300 transition-colors leading-snug">
+              Hồn Thiêng Cồng Chiêng & Bản Sắc S'tiêng
+            </h4>
+            <p class="text-charcoal-300 text-xs mt-1.5 line-clamp-2 leading-relaxed">
+              Không gian cồng chiêng Yang Ching ➔ Dệt thổ cẩm Sơk Pơng ➔ Nghệ thuật Đàn đá cổ ➔ Lễ hội Mừng lúa mới Yang Sri.
+            </p>
+            <div class="mt-4 pt-3 border-t border-charcoal-800/80 flex items-center justify-between text-3xs text-gold-400 font-bold">
+              <span>Xem 5 di sản phi vật thể</span>
+              <Icon name="mdi:arrow-right" class="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+            </div>
+          </div>
         </div>
       </div>
     </div>
 
     <!-- ===== VIRTUAL TOUR ENTRY BANNER ===== -->
     <div class="border-b border-charcoal-850 bg-charcoal-950">
-      <div class="container-heritage py-5">
+      <div class="container-heritage py-4">
         <NuxtLink
           to="/explore/virtual-tour"
           id="virtual-tour-entry"
@@ -52,7 +213,7 @@
           style="background: linear-gradient(135deg, #1A140F 0%, #241C15 50%, #1A140F 100%);"
         >
           <!-- Thumbnail strip -->
-          <div class="hidden sm:flex flex-shrink-0 h-[92px] w-[230px] rounded-xl overflow-hidden relative border border-charcoal-800">
+          <div class="hidden sm:flex flex-shrink-0 h-[84px] w-[220px] rounded-xl overflow-hidden relative border border-charcoal-800">
             <img
               src="/video/virtual-tour/bom-bo/poster.jpg"
               alt="Khu Bảo Tồn Bom Bo"
@@ -73,7 +234,7 @@
           </div>
 
           <!-- Text content -->
-          <div class="flex-1 py-3 pl-3 sm:pl-0 pr-2">
+          <div class="flex-1 py-2.5 pl-3 sm:pl-0 pr-2">
             <div class="flex items-center gap-2 mb-1">
               <span class="inline-flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-widest text-gold-400 bg-gold-500/10 border border-gold-500/20 rounded-full px-2.5 py-0.5">
                 <span class="w-1.5 h-1.5 rounded-full bg-gold-400 animate-ping inline-block" />
@@ -632,5 +793,14 @@ function clearFilters() {
   activeCategory.value = ''
   activeCluster.value = ''
   store.clearFilters()
+}
+
+function discoverRandomHeritage() {
+  const list = HERITAGES
+  if (!list.length) return
+  const randomItem = list[Math.floor(Math.random() * list.length)]
+  if (randomItem) {
+    navigateTo(`/heritage/${randomItem.slug}`)
+  }
 }
 </script>

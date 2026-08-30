@@ -274,6 +274,7 @@ export const staticResources: SchoolResourceExtended[] = [
     school: 'THPT Lê Quý Đôn', author: 'Nhóm học sinh 12A1',
     coverImage: '/images/heritage/lich-su/chien-khu-d-md.webp',
     publishedAt: '2024-04-10', featured: true, downloadCount: 234, fileSize: '3.6 MB', difficulty: 3,
+    fileUrl: '/tai-lieu/chien-khu-d.pdf',
     motivation: 'Thế hệ cựu chiến binh Chiến khu Đ nay đều đã tuổi cao sức yếu. Chúng em muốn chạy đua với thời gian để lưu giữ lại những câu chuyện hào hùng chân thực nhất từ lời kể của họ.',
     keyFindings: ['Ghi âm và chép lại hơn 30 giờ phỏng vấn trực tiếp từ 12 nhân chứng lịch sử.', 'Phác thảo và số hóa sơ đồ hoạt động quân sự của 3 điểm đóng quân cũ.', 'Sưu tầm hình ảnh tư liệu của 15 loại hiện vật, vũ khí tự chế thời chiến.'],
     quizId: 'quiz-001',
@@ -287,6 +288,7 @@ export const staticResources: SchoolResourceExtended[] = [
     school: 'THCS Nguyễn Trường Tộ', author: 'Nhóm học sinh 9A',
     coverImage: '/images/heritage/van-hoa-phi-vat-the/di-san-ban-dia-md.webp',
     publishedAt: '2024-03-20', featured: false, downloadCount: 156, fileSize: '2.8 MB', difficulty: 2,
+    fileUrl: '/tai-lieu/soc-bom-bo-dong-nai.pdf',
     motivation: "Khi quan sát những tấm vải dệt của người S'tiêng, chúng em nhận thấy mỗi họa tiết đều đối xứng tuyệt đối và mang sắc màu núi rừng.",
     keyFindings: ['Số hóa 23 mẫu hoa văn thêu tay truyền thống.', 'Giải mã ý nghĩa: Họa tiết hình thoi chéo biểu thị hạt gạo no ấm.', 'Hồ sơ hóa quy trình pha nhuộm màu tự nhiên từ lá cây rừng.'],
     quizId: 'quiz-002',
@@ -300,6 +302,7 @@ export const staticResources: SchoolResourceExtended[] = [
     school: 'THPT Lê Quý Đôn', author: 'Vũ Quang Huy',
     coverImage: '/images/heritage/van-hoa-phi-vat-the/cong-chieng-md.webp',
     publishedAt: '2024-05-01', featured: false, downloadCount: 312, fileSize: '4.8 MB', difficulty: 1,
+    fileUrl: '/tai-lieu/dong-nai-nhung-nam-thang-khang-chien.pdf',
     motivation: 'Tiếng cồng chiêng là linh hồn kết nối con người với thế giới thần linh của người bản địa.',
     keyFindings: ['Số hóa 6 bản thu âm cồng chiêng cổ tiêu biểu.', 'Xây dựng sơ đồ bố trí không gian trình diễn cồng chiêng.', 'Tổng hợp 12 tài liệu nghiên cứu chuyên sâu về nhạc cụ đồng.'],
     quizId: 'quiz-002',
@@ -313,6 +316,7 @@ export const staticResources: SchoolResourceExtended[] = [
     school: 'THPT Lê Quý Đôn', author: 'Trần Thị Mai',
     coverImage: '/images/heritage/img-disanbudang/le-hoi-mung-lua-moi.png',
     publishedAt: '2024-05-15', featured: false, downloadCount: 198, fileSize: '1.9 MB', difficulty: 1,
+    fileUrl: '/tai-lieu/dong-nai-hom-nay-khat-vong-vuon-len.pdf',
     motivation: 'Nhằm xây dựng tài liệu tham khảo giảng dạy chính thống cho phân môn Giáo dục địa phương.',
     keyFindings: ['Hệ thống hóa 5 bước tế lễ chính thức của lễ hội Mừng lúa mới.', "Sưu tầm và biên dịch 3 bài khấn cầu thần Yang lúa.", 'Lập danh mục 8 lễ vật bắt buộc trong mâm cúng cộng đồng.'],
     pages: ["<h2>CHƯƠNG I: Ý NGHĨA TÂM LINH LỄ MỪNG LÚA MỚI</h2><p>Lễ <strong>cúng tạ ơn Yang Sri</strong> là nét đẹp văn hóa tâm linh quan trọng bậc nhất của đồng bào S'tiêng tại Xã Bù Đăng, tổ chức vào tháng 11-12 âm lịch.</p><blockquote>\"Yang Sri về kho lúa thì buôn sóc mới no ấm.\" — Già làng Điểu Nhuôn.</blockquote>", "<h2>CHƯƠNG II: NĂM BƯỚC TẾ LỄ</h2><ol><li>Lễ rước Yang Sri từ ruộng về kho</li><li>Lễ mổ heo, gà cúng Yang</li><li>Đọc bài khấn tiếng S'tiêng</li><li>Uống rượu cần cộng đồng</li><li>Lễ đóng cửa kho lúa</li></ol>", '<h2>CHƯƠNG III: TÀI LIỆU GIẢNG DẠY</h2><p>Bộ tài liệu gồm giáo án 2 tiết, phiếu học tập 12 câu hỏi, 3 bài khấn kèm phiên âm và dịch nghĩa. Đã thí điểm thành công tại THPT Lê Quý Đôn.</p>']
@@ -325,6 +329,7 @@ export const staticResources: SchoolResourceExtended[] = [
     school: 'THPT Chuyên Quang Trung', author: 'Nhóm Vật lý - Lịch sử',
     coverImage: '/images/heritage/van-hoa-phi-vat-the/van-hoa-stieng-lg.webp',
     publishedAt: '2024-06-10', featured: false, downloadCount: 145, fileSize: '5.2 MB', difficulty: 3,
+    fileUrl: '/tai-lieu/hanh-trinh-mo-coi-phuong-nam-tran-bien.pdf',
     motivation: 'Đàn đá là một trong những nhạc cụ cổ xưa nhất của nhân loại được phát hiện tại Việt Nam.',
     keyFindings: ['Khảo sát chi tiết 3 bộ đàn đá cổ được gìn giữ bởi các dòng họ lâu đời.', 'Đo đạc tần số âm thanh của từng thanh đá.', 'Tái dựng quy trình ghè đẽo cân chỉnh âm thanh.'],
     pages: ['<h2>CHƯƠNG I: ĐÀN ĐÁ TỪ LÒNG ĐẤT CỔ XƯA</h2><p>Đàn đá là biểu tượng âm nhạc của cư dân tiền sử sông Đồng Nai. Người xưa biết <strong>lựa chọn đá tự nhiên</strong> có mật độ phù hợp để phát ra âm thanh.</p><blockquote>"Chọn đá đàn là nghệ thuật lắng nghe lòng đá." — Nghệ nhân Điểu Nhân.</blockquote>', '<h2>CHƯƠNG II: PHÂN TÍCH VẬT LÝ ÂM THANH</h2><p>Phân tích bằng Spectroid cho thấy đàn đá tạo thang âm pentatonic đặc trưng Đông Nam Á. Đá sừng (hornfels) cho âm thanh trong nhất.</p>', '<h2>CHƯƠNG III: NHẠC CỤ TRE NỨA VÀ PHỤC DỰNG</h2><p>Ngoài đàn đá, nhóm khảo sát Đinh Tăk Ta, Đinh Pơng và Brô. Đã thực hành tái dựng một chiếc Đinh Tăk Ta hoàn chỉnh trong 4 giờ theo hướng dẫn nghệ nhân.</p>']
@@ -337,6 +342,7 @@ export const staticResources: SchoolResourceExtended[] = [
     school: 'THPT Chuyên Quang Trung', author: 'CLB Truyền Thông Măng Non',
     coverImage: '/images/heritage/lich-su/soc-bom-bo-lg.webp',
     publishedAt: '2024-07-02', featured: false, downloadCount: 187, fileSize: '218 MB', difficulty: 2,
+    fileUrl: '/tai-lieu/soc-bom-bo-dong-nai.pdf',
     motivation: 'Chúng em muốn ghi hình lại chính xác động tác giã gạo chày tay trước khi thế hệ nghệ nhân cuối cùng không còn nữa.',
     keyFindings: ["Quay và dựng phóng sự dài 12 phút, phục dựng cảnh giã gạo cùng 8 nghệ nhân.", 'Ghi lại nguyên bản giai điệu hò giã gạo cổ truyền.', "Phỏng vấn 3 thế hệ trong một gia đình S'tiêng."],
     quizId: 'quiz-011',
@@ -350,6 +356,7 @@ export const staticResources: SchoolResourceExtended[] = [
     school: 'THPT Chuyên Quang Trung', author: 'Nhóm học sinh 12 Sinh',
     coverImage: '/images/heritage/danh-thang/bu-lach-lg.webp',
     publishedAt: '2024-08-14', featured: false, downloadCount: 141, fileSize: '4.1 MB', difficulty: 3,
+    fileUrl: '/tai-lieu/bien-hoa-dong-nai-hanh-trinh-phat-trien.pdf',
     motivation: 'Giữa vùng rừng nhiệt đới, một thảm cỏ tự nhiên rộng hàng trăm hecta tồn tại bất thường.',
     keyFindings: ['Ghi nhận 34 loài thực vật đặc trưng, trong đó 5 loài chưa được định danh.', 'Lý giải nguyên nhân hình thành trảng cỏ dựa trên thổ nhưỡng tầng đất mỏng.', 'Ghi hình bằng bẫy ảnh 6 loài động vật hoang dã.'],
     quizId: 'quiz-009',
@@ -363,6 +370,7 @@ export const staticResources: SchoolResourceExtended[] = [
     school: 'THCS Nguyễn Trường Tộ', author: 'Tổ Địa Lý - Sinh Học',
     coverImage: '/images/heritage/danh-thang/thac-dung-lg.webp',
     publishedAt: '2024-09-05', featured: false, downloadCount: 176, fileSize: '2.2 MB', difficulty: 1,
+    fileUrl: '/tai-lieu/can-cu-u1.pdf',
     motivation: 'Học sinh thường chỉ biết Thác Đứng như điểm chụp ảnh. Giáo án này giúp các em nhìn thấy hàng triệu năm địa chất ẩn sau từng bậc đá.',
     keyFindings: ['Thiết kế 3 trạm quan sát thực địa với phiếu học tập riêng.', 'Xây dựng bộ 10 câu hỏi dẫn dắt học sinh tự suy luận.', 'Tỉ lệ học sinh hứng thú đạt 92% trong lớp thí điểm.'],
     quizId: 'quiz-010',
@@ -497,13 +505,62 @@ export const imageStoriesData: ImageStory[] = [
   { title: 'Cồng Chiêng & Vũ Điệu Xoang', tag: 'Văn Hóa', image: '/images/heritage/van-hoa-phi-vat-the/cong-chieng-md.webp', story: "Âm thanh cồng chiêng ngân vang kết nối buôn làng, là linh hồn sinh hoạt tâm linh và nghệ thuật biểu diễn của đồng bào S'tiêng Bù Đăng — chung cội nguồn với Cồng chiêng Tây Nguyên (UNESCO 2005)." }
 ]
 
-export const mockVideos = [
-  { title: 'Flycam Trảng Cỏ Bù Lạch Mùa Khô', cat: 'Thiên nhiên', duration: '3:22', thumb: '/images/heritage/danh-thang/bu-lach-lg.webp' },
-  { title: 'Lễ hội mừng lúa mới sóc Bom Bo 2024', cat: 'Văn hóa', duration: '6:10', thumb: '/images/heritage/img-disanbudang/Mung-Lua-Moi.png' }
+export interface StudyVideo {
+  title: string
+  cat: string
+  duration: string
+  thumb: string
+  videoUrl: string
+  description?: string
+}
+
+export const featuredVideoData: StudyVideo = {
+  title: 'Thác Mơ — Huyền Thoại Dak Mơ & Di Sản Bù Đăng',
+  cat: 'Phim Tư Liệu',
+  duration: '5:30',
+  thumb: '/images/heritage/danh-thang/thac-dung-lg.webp',
+  videoUrl: '/video/virtual-tour/trang-co/trang-co-trailer.mp4',
+  description: 'Thước phim tư liệu ghi lại vẻ đẹp nguyên sơ của Thác Mơ, sông Đắk R’măng và hệ sinh thái rừng già Bù Đăng — Thành Phố Đồng Nai.'
+}
+
+export const mockVideos: StudyVideo[] = [
+  {
+    title: 'Flycam Trảng Cỏ Bù Lạch Mùa Khô',
+    cat: 'Thiên nhiên',
+    duration: '3:22',
+    thumb: '/images/heritage/danh-thang/bu-lach-lg.webp',
+    videoUrl: '/video/virtual-tour/trang-co/trang-co-trailer.mp4',
+    description: 'Khung cảnh toàn cảnh trên cao của thung lũng Trảng Cỏ Bù Lạch rộng hơn 140 ha ôm trọn lòng hồ nước ngọt trong veo giữa rừng nhiệt đới.'
+  },
+  {
+    title: 'Khu Bảo Tồn & Nhịp Chày Sóc Bom Bo',
+    cat: 'Văn hóa',
+    duration: '4:15',
+    thumb: '/images/heritage/img-disanbudang/Mung-Lua-Moi.png',
+    videoUrl: '/video/virtual-tour/bom-bo/bom-bo-trailer.mp4',
+    description: 'Thước phim ghi lại di tích lịch sử Sóc Bom Bo, nhà dài truyền thống, cối chày giã gạo thời kháng chiến và không gian lễ hội cồng chiêng.'
+  },
+  {
+    title: 'Ký Ức Rừng Già & Chiến Khu Đ Huyền Thoại',
+    cat: 'Lịch sử',
+    duration: '5:10',
+    thumb: '/images/heritage/lich-su/chien-khu-d-md.webp',
+    videoUrl: '/video/virtual-tour/bom-bo/bom-bo-trailer.mp4',
+    description: 'Phim tư liệu điền dã tái hiện căn cứ địa kháng chiến trong đại ngàn Bù Đăng, nơi từng che chở các lực lượng cách mạng miền Đông Nam Bộ.'
+  },
+  {
+    title: 'Nghệ Thuật Cồng Chiêng & Vũ Điệu Xoang',
+    cat: 'Phi vật thể',
+    duration: '6:10',
+    thumb: '/images/heritage/van-hoa-phi-vat-the/cong-chieng-md.webp',
+    videoUrl: '/video/virtual-tour/trang-co/trang-co-trailer.mp4',
+    description: 'Hòa âm cồng chiêng ngân vang bên bếp lửa nhà dài và điệu múa xoang truyền thống của đồng bào S\'tiêng Bù Đăng.'
+  }
 ]
 
 export const mockAudios = [
-  { title: 'Tiếng cồng chiêng sóc Bom Bo cổ', cat: 'Âm nhạc bản địa', duration: '3:45', icon: 'mdi:music-note' },
-  { title: "Phiên âm dạy nói tiếng S'tiêng cơ bản", cat: 'Ngôn ngữ học', duration: '5:20', icon: 'mdi:microphone' },
-  { title: 'Truyền thuyết nguồn nước thần kỳ Dak Mơ', cat: 'Podcast truyện kể', duration: '7:15', icon: 'mdi:headphones' }
+  { title: 'Tiếng cồng chiêng sóc Bom Bo cổ', cat: 'Âm nhạc bản địa', duration: '3:45', icon: 'mdi:music-note', url: '/audio/khu-bao-ton-soc-bom-bo.mp3' },
+  { title: "Phiên âm dạy nói tiếng S'tiêng cơ bản", cat: 'Ngôn ngữ học', duration: '5:20', icon: 'mdi:microphone', url: '/audio/trang-co-bu-lach.mp3' },
+  { title: 'Truyền thuyết nguồn nước thần kỳ Dak Mơ', cat: 'Podcast truyện kể', duration: '7:15', icon: 'mdi:headphones', url: '/audio/trang-co-bu-lach.mp3' }
 ]
+
