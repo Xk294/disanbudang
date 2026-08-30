@@ -1,5 +1,6 @@
 import { HERITAGES } from '../../app/data/heritages'
 import { NEWS_ARTICLES, COMMUNITY_POSTS, EVENTS } from '../../app/data/posts'
+import { LESSONS_DATA } from '../../app/data/lessons'
 
 export default defineEventHandler(() => {
   const routes = [
@@ -17,16 +18,7 @@ export default defineEventHandler(() => {
     ...HERITAGES.map((h) => `/heritage/qr/${h.slug}/`),
     ...NEWS_ARTICLES.map((n) => `/stories/${n.slug}/`),
     ...EVENTS.map((e) => `/journal/${e.id}/`),
-    '/study/lesson/chien-khu-d/',
-    '/study/lesson/cong-chieng-stieng/',
-    '/study/lesson/soc-bom-bo/',
-    '/study/lesson/trang-co-bu-lach/',
-    '/study/lesson/nui-ba-ra/',
-    '/study/lesson/can-cu-nua-lon/',
-    '/study/lesson/chien-thang-phuoc-long/',
-    '/study/lesson/can-cu-ta-thiet/',
-    '/study/lesson/tho-cam-stieng/',
-    '/study/lesson/thac-dung-dak-wuar/',
+    ...Object.keys(LESSONS_DATA).map((id) => `/study/lesson/${id}/`),
     ...COMMUNITY_POSTS.map((p) => `/explore/${p.id}/`),
     ...COMMUNITY_POSTS.map((p) => `/explore/post/${p.id}/`),
   ]

@@ -1137,17 +1137,11 @@ onMounted(async () => {
       })
   }
 
-  // Keyboard navigation for Lightbox
+  // Keyboard navigation for Lightbox & sticky tabs observer
   if (import.meta.client) {
-    window.addEventListener('keydown', (e) => {
-      if (lightboxIndex.value === null) return
-      if (e.key === 'ArrowLeft') prevGalleryImage()
-      if (e.key === 'ArrowRight') nextGalleryImage()
-      if (e.key === 'Escape') lightboxIndex.value = null
-    })
+    window.addEventListener('keydown', handleLightboxKeydown)
 
-    // Intersection observer for sticky tabs
-    const observer = new IntersectionObserver(
+    tabObserver = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
           if (entry.isIntersecting) {
@@ -1161,8 +1155,27 @@ onMounted(async () => {
     const sectionIds = ['lead', 'tour360', 'timeline', 'story', 'context', 'timeline-alt', 'gallery', 'audio-guide', 'education', 'sources', 'location']
     sectionIds.forEach((id) => {
       const el = document.getElementById(id)
-      if (el) observer.observe(el)
+      if (el) tabObserver?.observe(el)
     })
+  }
+})
+
+let tabObserver: IntersectionObserver | null = null
+
+function handleLightboxKeydown(e: KeyboardEvent) {
+  if (lightboxIndex.value === null) return
+  if (e.key === 'ArrowLeft') prevGalleryImage()
+  if (e.key === 'ArrowRight') nextGalleryImage()
+  if (e.key === 'Escape') lightboxIndex.value = null
+}
+
+onBeforeUnmount(() => {
+  if (import.meta.client) {
+    window.removeEventListener('keydown', handleLightboxKeydown)
+    if (tabObserver) {
+      tabObserver.disconnect()
+      tabObserver = null
+    }
   }
 })
 

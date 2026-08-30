@@ -387,139 +387,39 @@
             </div>
 
             <div class="grid grid-cols-2 lg:grid-cols-4 gap-5 relative z-10">
-
-              <!-- Chương I: Sóc Bom Bo -->
               <div
+                v-for="chapter in expeditionChapters"
+                :key="chapter.id"
                 class="group flex flex-col items-center text-center gap-3 cursor-pointer"
-                @click="goToExpeditionChapter('soc-bom-bo')"
-                aria-label="Chương I: Sóc Bom Bo — Kháng chiến S'tiêng"
+                @click="goToExpeditionChapter(chapter.id)"
+                :aria-label="`${chapter.chapter}: ${chapter.title} — ${chapter.desc}`"
               >
                 <div
                   class="w-[104px] h-[104px] rounded-3xl flex items-center justify-center border-2 transition-all duration-500 relative shadow-lg"
-                  :class="expeditionChapters[0].done
+                  :class="chapter.done
                     ? 'bg-gold-500 border-gold-300 shadow-gold/25'
-                    : expeditionChapters[0].current
+                    : chapter.current
                       ? 'bg-charcoal-900 border-gold-500/70 shadow-gold-500/10 animate-pulse-slow'
                       : 'bg-charcoal-950 border-charcoal-700 group-hover:border-gold-500/50 group-hover:bg-charcoal-900'"
                 >
-                  <span v-if="expeditionChapters[0].done" class="absolute -top-2.5 -right-2.5 w-7 h-7 rounded-full bg-green-500 border-2 border-charcoal-900 flex items-center justify-center shadow">
+                  <span v-if="chapter.done" class="absolute -top-2.5 -right-2.5 w-7 h-7 rounded-full bg-green-500 border-2 border-charcoal-900 flex items-center justify-center shadow">
                     <Icon name="mdi:check" class="w-3.5 h-3.5 text-white" />
                   </span>
-                  <span v-else-if="expeditionChapters[0].current" class="absolute -top-2.5 -right-2.5 w-7 h-7 rounded-full bg-gold-500 border-2 border-charcoal-900 flex items-center justify-center shadow">
+                  <span v-else-if="chapter.current" class="absolute -top-2.5 -right-2.5 w-7 h-7 rounded-full bg-gold-500 border-2 border-charcoal-900 flex items-center justify-center shadow">
                     <Icon name="mdi:sword" class="w-3.5 h-3.5 text-charcoal-900" />
                   </span>
-                  <span class="text-4xl" :class="expeditionChapters[0].done ? 'grayscale-0' : 'grayscale-[30%]'">🔥</span>
+                  <span class="text-4xl" :class="chapter.done ? 'grayscale-0' : 'grayscale-[30%]'">{{ chapter.emoji }}</span>
                 </div>
                 <div class="space-y-0.5">
-                  <span class="block text-3xs font-bold text-gold-400/70 uppercase tracking-widest">Chương I</span>
-                  <h4 class="font-heading font-bold text-sm text-ivory leading-snug group-hover:text-gold-300 transition-colors">Sóc Bom Bo</h4>
-                  <p class="text-3xs text-charcoal-400 leading-snug max-w-[120px] mx-auto">Tiếng chày giã gạo kháng chiến S'tiêng</p>
+                  <span class="block text-3xs font-bold text-gold-400/70 uppercase tracking-widest">{{ chapter.chapter }}</span>
+                  <h4 class="font-heading font-bold text-sm text-ivory leading-snug group-hover:text-gold-300 transition-colors">{{ chapter.title }}</h4>
+                  <p class="text-3xs text-charcoal-400 leading-snug max-w-[120px] mx-auto">{{ chapter.desc }}</p>
                   <span class="inline-block mt-1 text-3xs font-bold px-2.5 py-0.5 rounded-full"
-                    :class="expeditionChapters[0].done ? 'bg-green-500/10 text-green-400' : expeditionChapters[0].current ? 'bg-gold-500/15 text-gold-400' : 'bg-charcoal-900 text-charcoal-500'">
-                    {{ expeditionChapters[0].done ? '✓ Hoàn thành' : expeditionChapters[0].current ? '▶ Đang học' : '+80 XP' }}
+                    :class="chapter.done ? 'bg-green-500/10 text-green-400' : chapter.current ? 'bg-gold-500/15 text-gold-400' : 'bg-charcoal-900 text-charcoal-500'">
+                    {{ chapter.done ? '✓ Hoàn thành' : chapter.current ? '▶ Đang học' : `+${chapter.xp} XP` }}
                   </span>
                 </div>
               </div>
-
-              <!-- Chương II: Chiến Khu Đ & Rừng Già -->
-              <div
-                class="group flex flex-col items-center text-center gap-3 cursor-pointer"
-                @click="goToExpeditionChapter('chien-khu-d')"
-                aria-label="Chương II: Chiến Khu Đ & Rừng Già"
-              >
-                <div
-                  class="w-[104px] h-[104px] rounded-3xl flex items-center justify-center border-2 transition-all duration-500 relative shadow-lg"
-                  :class="expeditionChapters[1].done
-                    ? 'bg-gold-500 border-gold-300 shadow-gold/25'
-                    : expeditionChapters[1].current
-                      ? 'bg-charcoal-900 border-gold-500/70 shadow-gold-500/10 animate-pulse-slow'
-                      : 'bg-charcoal-950 border-charcoal-700 group-hover:border-gold-500/50 group-hover:bg-charcoal-900'"
-                >
-                  <span v-if="expeditionChapters[1].done" class="absolute -top-2.5 -right-2.5 w-7 h-7 rounded-full bg-green-500 border-2 border-charcoal-900 flex items-center justify-center shadow">
-                    <Icon name="mdi:check" class="w-3.5 h-3.5 text-white" />
-                  </span>
-                  <span v-else-if="expeditionChapters[1].current" class="absolute -top-2.5 -right-2.5 w-7 h-7 rounded-full bg-gold-500 border-2 border-charcoal-900 flex items-center justify-center shadow">
-                    <Icon name="mdi:sword" class="w-3.5 h-3.5 text-charcoal-900" />
-                  </span>
-                  <span class="text-4xl">🌿</span>
-                </div>
-                <div class="space-y-0.5">
-                  <span class="block text-3xs font-bold text-gold-400/70 uppercase tracking-widest">Chương II</span>
-                  <h4 class="font-heading font-bold text-sm text-ivory leading-snug group-hover:text-gold-300 transition-colors">Chiến Khu Đ &amp; Rừng Già</h4>
-                  <p class="text-3xs text-charcoal-400 leading-snug max-w-[120px] mx-auto">Di tích cách mạng giữa đại ngàn</p>
-                  <span class="inline-block mt-1 text-3xs font-bold px-2.5 py-0.5 rounded-full"
-                    :class="expeditionChapters[1].done ? 'bg-green-500/10 text-green-400' : expeditionChapters[1].current ? 'bg-gold-500/15 text-gold-400' : 'bg-charcoal-900 text-charcoal-500'">
-                    {{ expeditionChapters[1].done ? '✓ Hoàn thành' : expeditionChapters[1].current ? '▶ Đang học' : '+80 XP' }}
-                  </span>
-                </div>
-              </div>
-
-              <!-- Chương III: Thanh Âm Cồng Chiêng -->
-              <div
-                class="group flex flex-col items-center text-center gap-3 cursor-pointer"
-                @click="goToExpeditionChapter('cong-chieng-stieng')"
-                aria-label="Chương III: Thanh Âm Cồng Chiêng S'tiêng"
-              >
-                <div
-                  class="w-[104px] h-[104px] rounded-3xl flex items-center justify-center border-2 transition-all duration-500 relative shadow-lg"
-                  :class="expeditionChapters[2].done
-                    ? 'bg-gold-500 border-gold-300 shadow-gold/25'
-                    : expeditionChapters[2].current
-                      ? 'bg-charcoal-900 border-gold-500/70 shadow-gold-500/10 animate-pulse-slow'
-                      : 'bg-charcoal-950 border-charcoal-700 group-hover:border-gold-500/50 group-hover:bg-charcoal-900'"
-                >
-                  <span v-if="expeditionChapters[2].done" class="absolute -top-2.5 -right-2.5 w-7 h-7 rounded-full bg-green-500 border-2 border-charcoal-900 flex items-center justify-center shadow">
-                    <Icon name="mdi:check" class="w-3.5 h-3.5 text-white" />
-                  </span>
-                  <span v-else-if="expeditionChapters[2].current" class="absolute -top-2.5 -right-2.5 w-7 h-7 rounded-full bg-gold-500 border-2 border-charcoal-900 flex items-center justify-center shadow">
-                    <Icon name="mdi:sword" class="w-3.5 h-3.5 text-charcoal-900" />
-                  </span>
-                  <span class="text-4xl">🎵</span>
-                </div>
-                <div class="space-y-0.5">
-                  <span class="block text-3xs font-bold text-gold-400/70 uppercase tracking-widest">Chương III</span>
-                  <h4 class="font-heading font-bold text-sm text-ivory leading-snug group-hover:text-gold-300 transition-colors">Thanh Âm Cồng Chiêng</h4>
-                  <p class="text-3xs text-charcoal-400 leading-snug max-w-[120px] mx-auto">Di sản UNESCO tiếng nói đại ngàn</p>
-                  <span class="inline-block mt-1 text-3xs font-bold px-2.5 py-0.5 rounded-full"
-                    :class="expeditionChapters[2].done ? 'bg-green-500/10 text-green-400' : expeditionChapters[2].current ? 'bg-gold-500/15 text-gold-400' : 'bg-charcoal-900 text-charcoal-500'">
-                    {{ expeditionChapters[2].done ? '✓ Hoàn thành' : expeditionChapters[2].current ? '▶ Đang học' : '+75 XP' }}
-                  </span>
-                </div>
-              </div>
-
-              <!-- Chương IV: Kỳ Quan Bù Lạch -->
-              <div
-                class="group flex flex-col items-center text-center gap-3 cursor-pointer"
-                @click="goToExpeditionChapter('trang-co-bu-lach')"
-                aria-label="Chương IV: Kỳ Quan Thiên Nhiên Trảng Cỏ Bù Lạch"
-              >
-                <div
-                  class="w-[104px] h-[104px] rounded-3xl flex items-center justify-center border-2 transition-all duration-500 relative shadow-lg"
-                  :class="expeditionChapters[3].done
-                    ? 'bg-gold-500 border-gold-300 shadow-gold/25'
-                    : expeditionChapters[3].current
-                      ? 'bg-charcoal-900 border-gold-500/70 shadow-gold-500/10 animate-pulse-slow'
-                      : 'bg-charcoal-950 border-charcoal-700 group-hover:border-gold-500/50 group-hover:bg-charcoal-900'"
-                >
-                  <span v-if="expeditionChapters[3].done" class="absolute -top-2.5 -right-2.5 w-7 h-7 rounded-full bg-green-500 border-2 border-charcoal-900 flex items-center justify-center shadow">
-                    <Icon name="mdi:check" class="w-3.5 h-3.5 text-white" />
-                  </span>
-                  <span v-else-if="expeditionChapters[3].current" class="absolute -top-2.5 -right-2.5 w-7 h-7 rounded-full bg-gold-500 border-2 border-charcoal-900 flex items-center justify-center shadow">
-                    <Icon name="mdi:sword" class="w-3.5 h-3.5 text-charcoal-900" />
-                  </span>
-                  <span class="text-4xl">🏞️</span>
-                </div>
-                <div class="space-y-0.5">
-                  <span class="block text-3xs font-bold text-gold-400/70 uppercase tracking-widest">Chương IV</span>
-                  <h4 class="font-heading font-bold text-sm text-ivory leading-snug group-hover:text-gold-300 transition-colors">Kỳ Quan Bù Lạch</h4>
-                  <p class="text-3xs text-charcoal-400 leading-snug max-w-[120px] mx-auto">Thiên nhiên hoang sơ 140 ha giữa rừng già</p>
-                  <span class="inline-block mt-1 text-3xs font-bold px-2.5 py-0.5 rounded-full"
-                    :class="expeditionChapters[3].done ? 'bg-green-500/10 text-green-400' : expeditionChapters[3].current ? 'bg-gold-500/15 text-gold-400' : 'bg-charcoal-900 text-charcoal-500'">
-                    {{ expeditionChapters[3].done ? '✓ Hoàn thành' : expeditionChapters[3].current ? '▶ Đang học' : '+70 XP' }}
-                  </span>
-                </div>
-              </div>
-
             </div>
           </div>
         </section>
