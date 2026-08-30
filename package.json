@@ -3,6 +3,12 @@
   "version": "0.3.2",
   "type": "module",
   "private": true,
+  "engines": {
+    "node": ">=22.0.0"
+  },
+  "volta": {
+    "node": "22.16.0"
+  },
   "scripts": {
     "build": "nuxt build",
     "dev": "npm run killport && NODE_OPTIONS='--max-old-space-size=4096' nuxt dev",
