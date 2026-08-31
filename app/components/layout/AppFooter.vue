@@ -108,7 +108,7 @@ const footerLinks = [
       { to: '/map', label: 'Bản Đồ Không Gian' },
       { to: '/study', label: 'Cổng Học Tập Số' },
       { to: '/explore/virtual-tour', label: 'Tour Ảo 360°' },
-      { to: '/study', label: 'Trắc Nghiệm & Khảo Cứu' },
+      { to: '/study?tab=quiz', label: 'Trắc Nghiệm Di Sản' },
     ],
   },
   {

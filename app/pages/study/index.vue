@@ -296,17 +296,17 @@
         <!-- Ô 4: Đấu Trí Di Sản & Thăng Cấp -->
         <div
           class="bento-card group relative overflow-hidden rounded-3xl border border-orange-800/20 bg-gradient-to-br from-orange-950/40 via-charcoal-900 to-charcoal-950 cursor-pointer"
-          @click="activeTab = 'achievements'; scrollToContent()"
+          @click="activeTab = 'quiz'; scrollToContent()"
           role="button"
-          aria-label="Mở Thành Tích và Hệ Thống Thăng Cấp"
+          aria-label="Mở 16 Bộ Trắc Nghiệm Di Sản"
         >
           <div class="absolute -top-16 -right-16 w-48 h-48 bg-orange-700/8 rounded-full blur-3xl group-hover:bg-orange-600/14 transition-all duration-500" />
           <div class="relative z-10 p-6 flex flex-col h-full min-h-[220px] justify-between">
             <div class="space-y-3">
-              <div class="w-14 h-14 rounded-2xl bg-orange-500/10 border border-orange-500/20 flex items-center justify-center text-3xl group-hover:scale-110 transition-transform duration-300">🏆</div>
+              <div class="w-14 h-14 rounded-2xl bg-orange-500/10 border border-orange-500/20 flex items-center justify-center text-3xl group-hover:scale-110 transition-transform duration-300">🎯</div>
               <div>
                 <span class="text-orange-300 text-3xs font-bold uppercase tracking-widest block mb-1">Đấu Trí Di Sản</span>
-                <h3 class="font-heading font-bold text-ivory text-base leading-snug group-hover:text-orange-200 transition-colors">Thăng Cấp &amp; Huy Hiệu</h3>
+                <h3 class="font-heading font-bold text-ivory text-base leading-snug group-hover:text-orange-200 transition-colors">16 Bộ Trắc Nghiệm</h3>
                 <p class="text-charcoal-400 text-xs mt-1.5 leading-relaxed line-clamp-2">{{ quizStore.quizzes.length }} bộ trắc nghiệm di sản — nhận XP, mở khóa huy hiệu và leo bảng xếp hạng.</p>
               </div>
             </div>
@@ -314,11 +314,12 @@
               <div class="flex items-center gap-1.5 text-orange-300 text-xs font-bold group-hover:gap-2.5 transition-all">
                 Chinh phục ngay <Icon name="mdi:arrow-right" class="w-4 h-4" />
               </div>
-              <span class="text-3xs text-orange-400/60 font-bold">{{ userXP }} XP</span>
+              <span class="text-3xs text-orange-400/60 font-bold">{{ quizStore.userProgress.completedQuizzes.length }}/{{ quizStore.quizzes.length }} hoàn thành</span>
             </div>
           </div>
           <div class="bento-gold-shimmer" />
         </div>
+
 
       </div>
     </section>
@@ -1250,6 +1251,226 @@
       </div>
 
       <!-- ================================================ -->
+      <!-- MODULE: TRẮC NGHIỆM DI SẢN (16 BỘ ĐỀ)           -->
+      <!-- ================================================ -->
+      <div v-if="activeTab === 'quiz'" class="max-w-6xl mx-auto space-y-8 animate-section-in">
+        <!-- Header -->
+        <div class="flex flex-col md:flex-row md:items-end justify-between gap-4">
+          <div>
+            <span class="section-label">🎯 Đấu trí & Khảo cứu</span>
+            <h3 class="font-heading text-2xl sm:text-3xl font-bold text-ivory mt-1">16 Bộ Trắc Nghiệm Di Sản</h3>
+            <p class="text-charcoal-400 text-xs sm:text-sm mt-1 max-w-2xl leading-relaxed">
+              160 câu hỏi tương tác chuẩn hóa khảo sát lịch sử, địa lý và văn hóa bản địa Bù Đăng. Làm bài kiểm tra để tích lũy XP và mở khóa toàn bộ huy hiệu danh giá.
+            </p>
+          </div>
+          <div class="flex items-center gap-3 shrink-0">
+            <span class="text-xs font-bold text-gold-400">
+              {{ quizStore.userProgress.completedQuizzes.length }}/{{ quizStore.quizzes.length }} hoàn thành
+            </span>
+            <div class="w-32 h-2 bg-charcoal-850 rounded-full overflow-hidden">
+              <div
+                class="h-full bg-gradient-to-r from-earth-600 to-gold-500 rounded-full transition-all duration-700"
+                :style="{ width: `${(quizStore.userProgress.completedQuizzes.length / Math.max(quizStore.quizzes.length, 1)) * 100}%` }"
+              />
+            </div>
+          </div>
+        </div>
+
+        <!-- Quick Summary Stats Bar -->
+        <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
+          <div class="bg-charcoal-950 border border-charcoal-850 rounded-2xl p-4 text-center">
+            <span class="block text-2xl font-bold font-heading text-gold-400 leading-none">
+              {{ quizStore.userProgress.completedQuizzes.length }}/{{ quizStore.quizzes.length }}
+            </span>
+            <span class="block text-3xs text-charcoal-400 uppercase tracking-wider mt-1 font-semibold">Bộ đề hoàn thành</span>
+          </div>
+          <div class="bg-charcoal-950 border border-charcoal-850 rounded-2xl p-4 text-center">
+            <span class="block text-2xl font-bold font-heading text-ivory leading-none">
+              {{ quizStore.userProgress.totalScore }}
+            </span>
+            <span class="block text-3xs text-charcoal-400 uppercase tracking-wider mt-1 font-semibold">Điểm đúng tích lũy</span>
+          </div>
+          <div class="bg-charcoal-950 border border-charcoal-850 rounded-2xl p-4 text-center">
+            <span class="block text-2xl font-bold font-heading text-orange-400 leading-none">
+              {{ quizStore.userProgress.earnedBadges.length }}/{{ quizStore.badges.length }}
+            </span>
+            <span class="block text-3xs text-charcoal-400 uppercase tracking-wider mt-1 font-semibold">Huy hiệu đạt được</span>
+          </div>
+          <div class="bg-charcoal-950 border border-charcoal-850 rounded-2xl p-4 text-center">
+            <span class="block text-2xl font-bold font-heading text-earth-300 leading-none">
+              {{ userXP }}
+            </span>
+            <span class="block text-3xs text-charcoal-400 uppercase tracking-wider mt-1 font-semibold">Tổng điểm XP</span>
+          </div>
+        </div>
+
+        <!-- Filter & Search bar -->
+        <div class="bg-charcoal-950/60 backdrop-blur-sm border border-charcoal-850 rounded-2xl p-4 space-y-3">
+          <div class="relative">
+            <Icon name="mdi:magnify" class="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-charcoal-500" />
+            <input
+              v-model="quizSearchQuery"
+              type="text"
+              placeholder="Tìm bộ trắc nghiệm theo tên di sản, chủ đề, địa danh..."
+              class="w-full pl-12 pr-4 py-3 bg-charcoal-900 border border-charcoal-800 rounded-xl text-sm text-ivory focus:outline-none focus:border-gold-500/60 transition-colors placeholder-charcoal-400"
+            />
+            <button
+              v-if="quizSearchQuery"
+              class="absolute right-4 top-1/2 -translate-y-1/2 text-charcoal-500 hover:text-ivory"
+              @click="quizSearchQuery = ''"
+              aria-label="Xóa tìm kiếm"
+            >
+              <Icon name="mdi:close" class="w-4 h-4" />
+            </button>
+          </div>
+
+          <div class="flex items-center gap-2 flex-wrap">
+            <button
+              class="filter-chip"
+              :class="quizFilterStatus === 'all' ? 'filter-chip-active' : 'filter-chip-inactive'"
+              @click="quizFilterStatus = 'all'"
+            >
+              Tất cả ({{ quizStore.quizzes.length }})
+            </button>
+            <button
+              class="filter-chip"
+              :class="quizFilterStatus === 'uncompleted' ? 'filter-chip-active' : 'filter-chip-inactive'"
+              @click="quizFilterStatus = 'uncompleted'"
+            >
+              Chưa làm ({{ quizStore.quizzes.length - quizStore.userProgress.completedQuizzes.length }})
+            </button>
+            <button
+              class="filter-chip"
+              :class="quizFilterStatus === 'completed' ? 'filter-chip-active' : 'filter-chip-inactive'"
+              @click="quizFilterStatus = 'completed'"
+            >
+              Đã hoàn thành ({{ quizStore.userProgress.completedQuizzes.length }})
+            </button>
+          </div>
+        </div>
+
+        <!-- Quiz Grid -->
+        <div v-if="filteredQuizzes.length === 0" class="text-center py-16 border border-dashed border-charcoal-800 rounded-2xl">
+          <Icon name="mdi:help-circle-outline" class="w-12 h-12 text-charcoal-400 mx-auto mb-3" />
+          <p class="text-charcoal-400 text-sm font-semibold">Không tìm thấy bộ trắc nghiệm phù hợp</p>
+          <button
+            class="mt-4 px-5 py-2 bg-charcoal-900 border border-charcoal-800 text-gold-400 hover:text-gold-300 text-xs font-bold rounded-xl transition-colors"
+            @click="quizSearchQuery = ''; quizFilterStatus = 'all'"
+          >
+            Xóa bộ lọc
+          </button>
+        </div>
+
+        <div v-else class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div
+            v-for="quiz in filteredQuizzes"
+            :key="quiz.id"
+            class="group bg-charcoal-950 border border-charcoal-850 hover:border-gold-500/35 rounded-3xl overflow-hidden transition-all duration-400 flex flex-col justify-between hover:-translate-y-1 hover:shadow-2xl hover:shadow-black/60 relative"
+          >
+            <!-- Card Image Cover -->
+            <div class="h-40 relative overflow-hidden bg-charcoal-900 shrink-0">
+              <NuxtImg
+                v-if="getHeritageForQuiz(quiz.heritageId)?.coverImage"
+                :src="getHeritageForQuiz(quiz.heritageId)!.coverImage"
+                :alt="quiz.title"
+                class="w-full h-full object-cover opacity-70 group-hover:opacity-90 group-hover:scale-105 transition-all duration-500"
+                loading="lazy"
+              />
+              <div class="absolute inset-0 bg-gradient-to-t from-charcoal-950 via-charcoal-950/30 to-transparent" />
+
+              <!-- Completion Badge -->
+              <div class="absolute top-3 left-3">
+                <span
+                  v-if="quizStore.userProgress.completedQuizzes.includes(quiz.id)"
+                  class="px-2.5 py-1 rounded-full bg-emerald-950/90 border border-emerald-500/40 text-emerald-400 text-3xs font-bold flex items-center gap-1 backdrop-blur-sm shadow-md"
+                >
+                  <Icon name="mdi:check-circle" class="w-3.5 h-3.5 text-emerald-400" />
+                  Đã hoàn thành
+                </span>
+                <span
+                  v-else
+                  class="px-2.5 py-1 rounded-full bg-charcoal-900/90 border border-charcoal-750 text-charcoal-300 text-3xs font-semibold backdrop-blur-sm"
+                >
+                  Chưa làm
+                </span>
+              </div>
+
+              <!-- Question Count Pill -->
+              <div class="absolute top-3 right-3 flex items-center gap-1.5 bg-charcoal-950/80 border border-charcoal-800 px-2.5 py-1 rounded-full text-3xs backdrop-blur-sm text-charcoal-300 font-semibold">
+                <Icon name="mdi:help-circle-outline" class="w-3 h-3 text-gold-400" />
+                <span>{{ quiz.questions.length }} câu</span>
+              </div>
+
+              <!-- Heritage Category / Title -->
+              <div class="absolute bottom-3 left-4 right-4">
+                <span class="text-3xs font-bold uppercase tracking-wider text-gold-300 bg-gold-500/15 border border-gold-500/25 px-2 py-0.5 rounded-full backdrop-blur-sm">
+                  {{ getHeritageForQuiz(quiz.heritageId)?.title ?? 'Di Sản Bù Đăng' }}
+                </span>
+              </div>
+            </div>
+
+            <!-- Card Body -->
+            <div class="p-5 flex-1 flex flex-col justify-between space-y-4">
+              <div class="space-y-2">
+                <h4 class="font-heading font-bold text-base text-ivory group-hover:text-gold-300 transition-colors leading-snug">
+                  {{ quiz.title }}
+                </h4>
+                <p class="text-charcoal-400 text-xs leading-relaxed line-clamp-2">
+                  {{ quiz.description }}
+                </p>
+              </div>
+
+              <!-- Badge reward info & Last result -->
+              <div class="space-y-3 pt-2">
+                <div
+                  v-if="getBadgeForQuiz(quiz.badgeId)"
+                  class="flex items-center gap-2 p-2.5 rounded-xl bg-charcoal-900/70 border border-charcoal-800/70 text-3xs"
+                >
+                  <Icon
+                    :name="getBadgeForQuiz(quiz.badgeId)!.icon"
+                    class="w-4 h-4 shrink-0"
+                    :style="{ color: getBadgeForQuiz(quiz.badgeId)!.color }"
+                  />
+                  <div class="min-w-0 flex-1">
+                    <span class="text-charcoal-400 block truncate">Phần thưởng huy hiệu:</span>
+                    <span class="font-bold text-ivory truncate block">{{ getBadgeForQuiz(quiz.badgeId)!.name }}</span>
+                  </div>
+                </div>
+
+                <!-- Last result score if completed -->
+                <div
+                  v-if="quizStore.getLastResult(quiz.id)"
+                  class="flex items-center justify-between text-3xs text-charcoal-400 px-1"
+                >
+                  <span>Điểm lần gần nhất:</span>
+                  <span class="font-bold text-gold-400">
+                    {{ quizStore.getLastResult(quiz.id)!.score }}/{{ quiz.questions.length }} đúng
+                  </span>
+                </div>
+
+                <!-- Action button -->
+                <button
+                  class="w-full py-2.5 px-4 rounded-xl text-xs font-bold transition-all duration-200 flex items-center justify-center gap-2 cursor-pointer"
+                  :class="quizStore.userProgress.completedQuizzes.includes(quiz.id)
+                    ? 'bg-charcoal-900 border border-charcoal-750 hover:border-gold-500/50 text-charcoal-200 hover:text-ivory'
+                    : 'bg-gold-500 hover:bg-gold-400 text-charcoal-950 shadow-gold/20 shadow-lg hover:shadow-gold/35'"
+                  @click="startQuiz(quiz)"
+                  :aria-label="`Bắt đầu trắc nghiệm: ${quiz.title}`"
+                >
+                  <Icon
+                    :name="quizStore.userProgress.completedQuizzes.includes(quiz.id) ? 'mdi:refresh' : 'mdi:play-circle-outline'"
+                    class="w-4 h-4"
+                  />
+                  <span>{{ quizStore.userProgress.completedQuizzes.includes(quiz.id) ? 'Làm lại bài thi' : 'Bắt đầu thử thách' }}</span>
+                  <span class="text-3xs opacity-80">(+{{ quiz.questions.length * 10 }} XP)</span>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ================================================ -->
       <!-- MODULE: HERITAGE LAB (NEW)                       -->
       <!-- ================================================ -->
       <div v-if="activeTab === 'lab'" class="max-w-6xl mx-auto space-y-10 animate-section-in">
@@ -1729,9 +1950,11 @@
 import { useStudySeo } from '~/composables/useMuseumSeo'
 import { useSwal } from '~/composables/useSwal'
 import { useQuizStore } from '~/stores/quiz'
+import { useHeritageStore } from '~/stores/heritage'
 import { useCollectionsStore } from '~/stores/collections'
 import { useAudioStore } from '~/stores/audio'
 import { NuxtLink } from '#components'
+import type { HeritageQuiz } from '~/types'
 import type { SchoolResourceExtended, TextAnnotation, GlossaryTerm, MapLandmark, ImageStory } from '~/types/study'
 import {
   typeLabels,
@@ -1764,6 +1987,7 @@ const route = useRoute()
 const { observeAll } = useScrollReveal()
 const swal = useSwal()
 const quizStore = useQuizStore()
+const heritageStore = useHeritageStore()
 const collectionsStore = useCollectionsStore()
 const audioStore = useAudioStore()
 
@@ -1876,9 +2100,10 @@ const activeCollectionName = computed(() =>
   activeCollectionFilter.value ? (collectionsStore.getById(activeCollectionFilter.value)?.name ?? '') : '',
 )
 
-// 7 Phân Hệ Chính theo thiết kế Gamified RPG Heritage Expedition
+// 8 Phân Hệ Chính theo thiết kế Gamified RPG Heritage Expedition
 const allNavItems = computed(() => [
   { id: 'lessons', label: 'Bài Học Số', shortLabel: 'Bài Học', icon: 'mdi:book-open-variant', emoji: '📖', badge: String(lessonCatalog.value.length) },
+  { id: 'quiz', label: 'Trắc Nghiệm Di Sản', shortLabel: 'Trắc Nghiệm', icon: 'mdi:help-circle-outline', emoji: '🎯', badge: String(quizStore.quizzes.length) },
   { id: 'lab', label: 'Trải Nghiệm Số', shortLabel: 'Lab Số', icon: 'mdi:flask-outline', emoji: '🔬', badge: 'Lab ✨' },
   { id: 'glossary', label: 'Flashcard 3D & Từ Điển', shortLabel: 'Từ Điển', icon: 'mdi:cards-outline', emoji: '🎴' },
   { id: 'passport', label: 'Hộ Chiếu Di Sản', shortLabel: 'Hộ Chiếu', icon: 'mdi:book-account-outline', emoji: '📜' },
@@ -1906,10 +2131,11 @@ const heroStats = computed(() => [
 const dashboardStats = computed(() => [
   { value: String(allResources.value.length), label: 'Nghiên cứu', icon: 'mdi:file-document-outline', iconBg: 'bg-gold-500/10', iconColor: 'text-gold-400', tab: 'research' },
   { value: String(lessonCatalog.value.length), label: 'Bài học', icon: 'mdi:school-outline', iconBg: 'bg-blue-500/10', iconColor: 'text-blue-400', tab: 'lessons' },
+  { value: String(quizStore.quizzes.length), label: 'Trắc nghiệm', icon: 'mdi:help-circle-outline', iconBg: 'bg-orange-500/10', iconColor: 'text-orange-400', tab: 'quiz' },
   { value: String(allResources.value.reduce((sum, r) => sum + (r.downloadCount ?? 0), 0)), label: 'Lượt tải', icon: 'mdi:download-outline', iconBg: 'bg-green-500/10', iconColor: 'text-green-400', tab: 'research' },
   { value: String(mapLandmarks.value.length), label: 'Địa danh', icon: 'mdi:map-marker-outline', iconBg: 'bg-purple-500/10', iconColor: 'text-purple-400', href: '/map' },
   { value: String(glossary.value.length), label: 'Flashcard', icon: 'mdi:cards-outline', iconBg: 'bg-earth-500/10', iconColor: 'text-earth-400', tab: 'glossary' },
-  { value: String(quizStore.badges.length), label: 'Huy hiệu', icon: 'mdi:trophy-outline', iconBg: 'bg-orange-500/10', iconColor: 'text-orange-400', tab: 'achievements' },
+  { value: String(quizStore.badges.length), label: 'Huy hiệu', icon: 'mdi:trophy-outline', iconBg: 'bg-gold-500/10', iconColor: 'text-gold-400', tab: 'achievements' },
 ])
 
 function goToDashboardStat(stat: { tab?: string; href?: string }) {
@@ -1921,6 +2147,44 @@ function goToDashboardStat(stat: { tab?: string; href?: string }) {
     activeTab.value = stat.tab
     scrollToContent()
   }
+}
+
+// ──────────────────────────────────────────────
+// QUIZ CATALOG STATE & HELPERS
+// ──────────────────────────────────────────────
+const quizSearchQuery = ref('')
+const quizFilterStatus = ref<'all' | 'completed' | 'uncompleted'>('all')
+
+const filteredQuizzes = computed(() => {
+  let list = quizStore.quizzes
+  if (quizSearchQuery.value.trim()) {
+    const q = quizSearchQuery.value.toLowerCase().trim()
+    list = list.filter((item) => {
+      const h = heritageStore.getById(item.heritageId)
+      return item.title.toLowerCase().includes(q)
+        || item.description.toLowerCase().includes(q)
+        || Boolean(h && h.title.toLowerCase().includes(q))
+    })
+  }
+  if (quizFilterStatus.value === 'completed') {
+    list = list.filter((item) => quizStore.userProgress.completedQuizzes.includes(item.id))
+  } else if (quizFilterStatus.value === 'uncompleted') {
+    list = list.filter((item) => !quizStore.userProgress.completedQuizzes.includes(item.id))
+  }
+  return list
+})
+
+function getHeritageForQuiz(heritageId: string) {
+  return heritageStore.getById(heritageId)
+}
+
+function getBadgeForQuiz(badgeId?: string) {
+  if (!badgeId) return null
+  return quizStore.badges.find((b) => b.id === badgeId) ?? null
+}
+
+function startQuiz(quiz: HeritageQuiz) {
+  quizStore.startQuiz(quiz)
 }
 
 // ──────────────────────────────────────────────
