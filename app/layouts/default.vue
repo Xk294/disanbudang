@@ -36,9 +36,12 @@ watch(
   () => nextTick(() => observeAll()),
 )
 
-// Visitor tracking — client-only, fire-and-forget
+// Auth listener & Visitor tracking — client-only
+const { initAuthListener } = useAuth()
 onMounted(() => {
+  initAuthListener()
   useVisitorTrack()
 })
 </script>
+
 

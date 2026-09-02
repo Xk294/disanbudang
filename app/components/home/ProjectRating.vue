@@ -93,24 +93,35 @@
           </button>
         </div>
 
-        <div v-else class="flex flex-col sm:flex-row items-center justify-between gap-3.5 bg-gradient-to-r from-gold-500/10 to-transparent border border-gold-500/20 rounded-2xl p-4 mb-6">
+        <div v-else class="flex flex-col sm:flex-row items-center justify-between gap-3.5 bg-gradient-to-r from-gold-500/10 via-charcoal-900/40 to-transparent border border-gold-500/20 rounded-2xl p-4 mb-6">
           <div class="flex items-center gap-3">
             <div class="w-8 h-8 rounded-xl bg-gold-500/20 flex items-center justify-center text-gold-400 shrink-0">
               <Icon name="mdi:shield-account-outline" class="w-4 h-4" />
             </div>
             <p class="text-xs text-ivory/90 leading-relaxed">
-              Yêu cầu <strong class="text-gold-400 font-semibold">Đăng nhập Google</strong> (1 chạm) để xác thực danh tính người đánh giá.
+              Vui lòng <strong class="text-gold-400 font-semibold">Đăng nhập</strong> (Google hoặc Facebook) để gửi đánh giá và nhận diện thành viên.
             </p>
           </div>
-          <button
-            class="flex items-center gap-2 px-4 py-2 rounded-xl bg-ivory hover:bg-gold-100 text-charcoal-950 font-semibold text-xs transition-all shadow-sm cursor-pointer shrink-0 active:scale-95"
-            :disabled="signingIn"
-            @click="handleGoogleSignIn"
-          >
-            <Icon v-if="signingIn" name="mdi:loading" class="w-4 h-4 animate-spin text-charcoal-800" />
-            <Icon v-else name="mdi:google" class="w-4 h-4 text-[#EA4335]" />
-            <span>Đăng nhập Google</span>
-          </button>
+          <div class="flex items-center gap-2 shrink-0 flex-wrap justify-center">
+            <button
+              class="flex items-center gap-2 px-3.5 py-2 rounded-xl bg-ivory hover:bg-gold-100 text-charcoal-950 font-semibold text-xs transition-all shadow-sm cursor-pointer active:scale-95 disabled:opacity-50"
+              :disabled="signingInProvider !== null"
+              @click="handleSignIn('google')"
+            >
+              <Icon v-if="signingInProvider === 'google'" name="mdi:loading" class="w-4 h-4 animate-spin text-charcoal-800" />
+              <Icon v-else name="mdi:google" class="w-4 h-4 text-[#EA4335]" />
+              <span>Google</span>
+            </button>
+            <button
+              class="flex items-center gap-2 px-3.5 py-2 rounded-xl bg-[#1877F2] hover:bg-[#166fe5] text-white font-semibold text-xs transition-all shadow-sm cursor-pointer active:scale-95 disabled:opacity-50"
+              :disabled="signingInProvider !== null"
+              @click="handleSignIn('facebook')"
+            >
+              <Icon v-if="signingInProvider === 'facebook'" name="mdi:loading" class="w-4 h-4 animate-spin text-white" />
+              <Icon v-else name="mdi:facebook" class="w-4 h-4 text-white" />
+              <span>Facebook</span>
+            </button>
+          </div>
         </div>
 
         <!-- Star picker -->
@@ -158,16 +169,27 @@
 
         <!-- Submit Button -->
         <div class="flex justify-center">
-          <button
-            v-if="!user"
-            class="flex items-center gap-2.5 px-8 py-3.5 rounded-2xl font-semibold text-sm bg-gold-500 hover:bg-gold-400 text-charcoal-950 transition-all duration-300 hover:shadow-lg hover:shadow-gold-500/25 active:scale-95 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
-            :disabled="signingIn || submitting || selectedStars === 0"
-            @click="handleGoogleSignIn"
-          >
-            <Icon v-if="signingIn" name="mdi:loading" class="w-4 h-4 animate-spin" />
-            <Icon v-else name="mdi:google" class="w-4 h-4" />
-            <span>Đăng nhập Google để gửi</span>
-          </button>
+          <div v-if="!user" class="flex flex-col sm:flex-row items-center justify-center gap-3 w-full sm:w-auto">
+            <button
+              class="flex items-center justify-center gap-2 px-6 py-3.5 rounded-2xl font-semibold text-xs sm:text-sm bg-ivory hover:bg-gold-100 text-charcoal-950 transition-all duration-200 hover:shadow-lg active:scale-95 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed w-full sm:w-auto"
+              :disabled="signingInProvider !== null || submitting || selectedStars === 0"
+              @click="handleSignIn('google')"
+            >
+              <Icon v-if="signingInProvider === 'google'" name="mdi:loading" class="w-4 h-4 animate-spin text-charcoal-800" />
+              <Icon v-else name="mdi:google" class="w-4 h-4 text-[#EA4335]" />
+              <span>Đăng nhập Google để gửi</span>
+            </button>
+
+            <button
+              class="flex items-center justify-center gap-2 px-6 py-3.5 rounded-2xl font-semibold text-xs sm:text-sm bg-[#1877F2] hover:bg-[#166fe5] text-white transition-all duration-200 hover:shadow-lg active:scale-95 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed w-full sm:w-auto"
+              :disabled="signingInProvider !== null || submitting || selectedStars === 0"
+              @click="handleSignIn('facebook')"
+            >
+              <Icon v-if="signingInProvider === 'facebook'" name="mdi:loading" class="w-4 h-4 animate-spin text-white" />
+              <Icon v-else name="mdi:facebook" class="w-4 h-4 text-white" />
+              <span>Đăng nhập Facebook để gửi</span>
+            </button>
+          </div>
 
           <button
             v-else
@@ -184,6 +206,7 @@
             <span>{{ submitted ? 'Đã lưu đánh giá' : (hasExistingRating ? 'Cập Nhật Đánh Giá' : 'Gửi Đánh Giá') }}</span>
           </button>
         </div>
+
 
         <!-- Error feedback -->
         <p v-if="errorMsg" class="text-center text-rose-400 text-xs mt-4 font-medium">{{ errorMsg }}</p>
@@ -258,14 +281,14 @@ interface RatingStats {
   myRating?: { stars: number; comment: string | null } | null
 }
 
-const { user, initAuthListener, signInWithGoogle, signOut, getIdToken } = useAuth()
+const { user, initAuthListener, signInWithGoogle, signInWithFacebook, signOut, getIdToken } = useAuth()
 
 // ── State ──
 const selectedStars = ref(0)
 const hoverStars = ref(0)
 const comment = ref('')
 const submitting = ref(false)
-const signingIn = ref(false)
+const signingInProvider = ref<'google' | 'facebook' | null>(null)
 const submitted = ref(false)
 const hasExistingRating = ref(false)
 const errorMsg = ref('')
@@ -319,13 +342,13 @@ watch(
 )
 
 // ── Auth handlers ──
-async function handleGoogleSignIn() {
-  signingIn.value = true
+async function handleSignIn(provider: 'google' | 'facebook') {
+  signingInProvider.value = provider
   errorMsg.value = ''
   try {
-    const res = await signInWithGoogle()
+    const res = provider === 'google' ? await signInWithGoogle() : await signInWithFacebook()
     if (!res.ok) {
-      errorMsg.value = res.error || 'Đăng nhập Google không thành công'
+      errorMsg.value = res.error || `Đăng nhập ${provider === 'google' ? 'Google' : 'Facebook'} không thành công`
       return
     }
     // If user already had chosen stars before clicking sign-in, auto submit!
@@ -333,10 +356,10 @@ async function handleGoogleSignIn() {
       await submitRating()
     }
   } catch (err) {
-    console.error('[rating] sign-in error:', err)
+    console.error(`[rating] ${provider} sign-in error:`, err)
     errorMsg.value = 'Đã có lỗi xảy ra khi đăng nhập'
   } finally {
-    signingIn.value = false
+    signingInProvider.value = null
   }
 }
 
@@ -354,9 +377,9 @@ async function submitRating() {
 
   // Must be authenticated
   if (!user.value) {
-    await handleGoogleSignIn()
     return
   }
+
 
   submitting.value = true
   errorMsg.value = ''
