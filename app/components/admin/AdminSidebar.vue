@@ -134,12 +134,19 @@ const navLinks = computed(() => [
     badge: 0,
   },
   {
+    to: '/admin/users',
+    label: 'Quản Lý Người Dùng',
+    icon: 'mdi:account-group',
+    badge: 0,
+  },
+  {
     to: '/admin/visitors',
     label: 'Lưu Lượng & Mã QR',
     icon: 'mdi:chart-timeline-variant',
     badge: 0,
   },
-])
+]
+)
 
 function isActive(to: string) {
   return route.path.startsWith(to)

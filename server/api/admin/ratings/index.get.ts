@@ -26,9 +26,9 @@ export default defineEventHandler(async (event) => {
   }
 
   if (search) {
-    conditions.push('(comment LIKE ? OR ip LIKE ?)')
+    conditions.push('(comment LIKE ? OR ip LIKE ? OR display_name LIKE ? OR email LIKE ?)')
     const pattern = `%${search}%`
-    bindings.push(pattern, pattern)
+    bindings.push(pattern, pattern, pattern, pattern)
   }
 
   const whereClause = conditions.length > 0 ? `WHERE ${conditions.join(' AND ')}` : ''

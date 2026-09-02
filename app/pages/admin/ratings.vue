@@ -134,6 +134,7 @@
           <thead>
             <tr class="border-b border-stone-800 text-stone-500 uppercase tracking-wider bg-stone-950/40">
               <th class="text-left px-5 py-3.5 font-semibold">Đánh giá</th>
+              <th class="text-left px-5 py-3.5 font-semibold">Người dùng</th>
               <th class="text-left px-5 py-3.5 font-semibold">Nhận xét & Góp ý</th>
               <th class="text-left px-5 py-3.5 font-semibold">Địa chỉ IP</th>
               <th class="text-right px-5 py-3.5 font-semibold">Thời gian</th>
@@ -156,6 +157,26 @@
                     class="w-4 h-4"
                   />
                   <span class="font-bold text-stone-200 ml-1.5 tabular-nums">{{ r.stars }}/5</span>
+                </div>
+              </td>
+
+              <!-- User (Google Auth) -->
+              <td class="px-5 py-3.5 whitespace-nowrap">
+                <div class="flex items-center gap-2.5">
+                  <img
+                    v-if="r.photo_url"
+                    :src="r.photo_url"
+                    :alt="r.display_name ?? 'User'"
+                    class="w-7 h-7 rounded-full object-cover border border-stone-700 shrink-0"
+                    referrerpolicy="no-referrer"
+                  />
+                  <div v-else class="w-7 h-7 rounded-full bg-stone-800 border border-stone-700 flex items-center justify-center text-stone-400 shrink-0">
+                    <Icon name="mdi:account" class="w-3.5 h-3.5" />
+                  </div>
+                  <div class="min-w-0">
+                    <p class="font-semibold text-stone-200 truncate">{{ r.display_name || 'Khách vãng lai' }}</p>
+                    <p v-if="r.email" class="text-[10px] text-stone-500 font-mono truncate">{{ r.email }}</p>
+                  </div>
                 </div>
               </td>
 
@@ -269,11 +290,16 @@ useHead({
 
 interface RatingRow {
   id: number
+  uid?: string
+  email?: string | null
+  display_name?: string | null
+  photo_url?: string | null
   ip: string
   stars: number
   comment: string | null
   created_at: string
 }
+
 
 interface BreakdownRow {
   stars: number
@@ -400,14 +426,17 @@ async function confirmDelete() {
 function exportCsv() {
   if (ratings.value.length === 0) return
 
-  const headers = ['ID', 'So Sao', 'Nhan Xet', 'Dia Chi IP', 'Thoi Gian']
+  const headers = ['ID', 'Nguoi Dung', 'Email', 'So Sao', 'Nhan Xet', 'Dia Chi IP', 'Thoi Gian']
   const rows = ratings.value.map(r => [
     `"${r.id}"`,
+    `"${(r.display_name || '').replace(/"/g, '""')}"`,
+    `"${(r.email || '').replace(/"/g, '""')}"`,
     r.stars,
     `"${(r.comment || '').replace(/"/g, '""').replace(/\n/g, ' ')}"`,
     `"${r.ip}"`,
     `"${r.created_at}"`,
   ])
+
 
   const csvContent = '\uFEFF' + [headers.join(','), ...rows.map(row => row.join(','))].join('\r\n')
   const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' })

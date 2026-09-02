@@ -54,14 +54,21 @@ CREATE TABLE contributions (
 );
 CREATE INDEX IF NOT EXISTS idx_contributions_status ON contributions(status, created_at DESC);
 
--- ----- Project Ratings (star + comment, one per IP) -----
+-- ----- Project Ratings (star + comment, authenticated per Google user) -----
 DROP TABLE IF EXISTS ratings;
 CREATE TABLE ratings (
-  id          INTEGER PRIMARY KEY AUTOINCREMENT,
-  ip          TEXT NOT NULL,
-  stars       INTEGER NOT NULL CHECK(stars BETWEEN 1 AND 5),
-  comment     TEXT CHECK(length(comment) <= 500),
-  created_at  DATETIME DEFAULT CURRENT_TIMESTAMP,
-  UNIQUE(ip)
+  id            INTEGER PRIMARY KEY AUTOINCREMENT,
+  uid           TEXT NOT NULL,
+  email         TEXT,
+  display_name  TEXT,
+  photo_url     TEXT,
+  ip            TEXT,
+  stars         INTEGER NOT NULL CHECK(stars BETWEEN 1 AND 5),
+  comment       TEXT CHECK(length(comment) <= 500),
+  created_at    DATETIME DEFAULT CURRENT_TIMESTAMP,
+  updated_at    DATETIME DEFAULT CURRENT_TIMESTAMP,
+  UNIQUE(uid)
 );
 CREATE INDEX IF NOT EXISTS idx_ratings_stars ON ratings(stars);
+CREATE INDEX IF NOT EXISTS idx_ratings_uid   ON ratings(uid);
+

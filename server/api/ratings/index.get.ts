@@ -7,7 +7,10 @@ export default defineEventHandler(async (event) => {
   const db = event.context.cloudflare?.env?.DB
   if (!db) throw createError({ statusCode: 503, statusMessage: 'Database unavailable' })
 
-  const [statsRaw, breakdownRaw, recents] = await Promise.all([
+  const query = getQuery(event)
+  const uid = typeof query.uid === 'string' && query.uid.trim() ? query.uid.trim() : null
+
+  const [statsRaw, breakdownRaw, recents, userRatingRaw] = await Promise.all([
     // Average & total count
     db.prepare(
       `SELECT AVG(stars) as avg_stars, COUNT(*) as total FROM ratings`,
@@ -20,10 +23,17 @@ export default defineEventHandler(async (event) => {
 
     // Latest 20 comments (non-null)
     db.prepare(
-      `SELECT stars, comment, created_at FROM ratings
+      `SELECT stars, comment, display_name, photo_url, created_at FROM ratings
        WHERE comment IS NOT NULL AND trim(comment) != ''
        ORDER BY created_at DESC LIMIT 20`,
     ).all(),
+
+    // Current user rating (if requested)
+    uid
+      ? db.prepare(
+          `SELECT stars, comment, created_at, updated_at FROM ratings WHERE uid = ?`,
+        ).bind(uid).first()
+      : Promise.resolve(null),
   ])
 
   const stats = statsRaw as { avg_stars: number | null; total: number } | null
@@ -34,5 +44,7 @@ export default defineEventHandler(async (event) => {
     total: stats?.total ?? 0,
     breakdown: breakdownRaw.results ?? [],
     comments: recents.results ?? [],
+    myRating: userRatingRaw ?? null,
   }
 })
+
