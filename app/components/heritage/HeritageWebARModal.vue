@@ -216,7 +216,7 @@ watch(() => props.initialArtifactKey, (val) => {
   }
 })
 
-const currentArtifact = computed(() => ARTIFACTS[selectedKey.value] || ARTIFACTS['dan-da-soc-bom-bo'])
+const currentArtifact = computed(() => (ARTIFACTS[selectedKey.value] || ARTIFACTS['dan-da-soc-bom-bo'])!)
 
 // 3D rotation & zoom state
 const rotationX = ref(10)

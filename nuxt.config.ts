@@ -88,7 +88,7 @@ export default defineNuxtConfig({
         '/explore/post/post-005',
         '/explore/post/post-006',
       ],
-      ignore: ['/admin', '/me'],
+      ignore: ['/admin', '/admin/**', '/me', '/me/**'],
     },
   },
 
@@ -113,7 +113,9 @@ export default defineNuxtConfig({
     '/news/com-lam-nep-nuong-stieng-bu-dang/': { redirect: { to: '/stories/com-lam-nep-nuong-stieng-bu-dang/', statusCode: 301 } },
     '/news/det-tho-cam-stieng-net-hoa-van-dai-ngan/': { redirect: { to: '/stories/det-tho-cam-stieng-net-hoa-van-dai-ngan/', statusCode: 301 } },
     '/news/dan-da-stieng-bu-dang-am-thanh-co-dai/': { redirect: { to: '/stories/dan-da-stieng-bu-dang-am-thanh-co-dai/', statusCode: 301 } },
+    '/admin': { ssr: false },
     '/admin/**': { ssr: false },
+    '/me': { ssr: false },
     '/me/**': { ssr: false },
   },
 
@@ -244,6 +246,8 @@ export default defineNuxtConfig({
 
   security: {
     headers: {
+      crossOriginOpenerPolicy: 'same-origin-allow-popups',
+      crossOriginEmbedderPolicy: 'unsafe-none',
       contentSecurityPolicy: {
         'img-src': [
           "'self'",
@@ -265,6 +269,14 @@ export default defineNuxtConfig({
           'https://apis.google.com',
           'https://*.googleapis.com',
           'https://*.gstatic.com',
+        ],
+        'connect-src': [
+          "'self'",
+          'https://*.googleapis.com',
+          'https://identitytoolkit.googleapis.com',
+          'https://securetoken.googleapis.com',
+          'https://*.firebaseio.com',
+          'https://*.firebaseapp.com',
         ],
         'frame-src': [
           "'self'",

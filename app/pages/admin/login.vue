@@ -74,7 +74,7 @@
 
 <script setup lang="ts">
 definePageMeta({
-  layout: 'admin',
+  layout: false,
 })
 
 useHead({
@@ -133,13 +133,13 @@ function formatFirebaseError(rawError: string): FriendlyError {
 }
 
 // Redirect if already authenticated as admin
-watch(authReady, (ready) => {
+watch([authReady, user], ([ready, u]) => {
   if (!ready) return
-  if (user.value && isAdmin.value) {
+  if (u && isAdmin.value) {
     navigateTo('/admin/contributions')
-  } else if (user.value && !isAdmin.value) {
+  } else if (u && !isAdmin.value) {
     // Signed in but not admin — sign out and show error
-    const signedInEmail = user.value.email || 'tài khoản này'
+    const signedInEmail = u.email || 'tài khoản này'
     signOut().then(() => {
       error.value = {
         title: 'Tài khoản không có quyền quản trị',
@@ -157,6 +157,9 @@ async function handleSignIn() {
     error.value = formatFirebaseError(result.error || '')
     loading.value = false
     return
+  }
+  if (user.value && isAdmin.value) {
+    await navigateTo('/admin/contributions')
   }
   loading.value = false
 }

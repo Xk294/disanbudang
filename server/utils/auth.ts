@@ -180,7 +180,8 @@ export async function requireAdmin(event: H3Event): Promise<FirebaseClaims> {
   const token = authHeader.slice(7).trim()
   const claims = await verifyFirebaseToken(token)
 
-  if (!ADMIN_EMAILS.includes(claims.email)) {
+  const email = (claims.email || '').trim().toLowerCase()
+  if (!ADMIN_EMAILS.some(adminEmail => adminEmail.trim().toLowerCase() === email)) {
     throw createError({ statusCode: 403, message: 'Forbidden: admin access only' })
   }
 

@@ -1956,7 +1956,7 @@
     <CertificateGeneratorModal
       :is-open="isCertificateModalOpen"
       :default-name="'Ban Giám Khảo Cuộc Thi'"
-      :quiz-score="quizStore.score"
+      :quiz-score="quizStore.userProgress.totalScore"
       @close="isCertificateModalOpen = false"
     />
   </div>
@@ -2181,7 +2181,7 @@ const filteredQuizzes = computed(() => {
     list = list.filter((item) => {
       const h = heritageStore.getById(item.heritageId)
       return item.title.toLowerCase().includes(q)
-        || item.description.toLowerCase().includes(q)
+        || Boolean(item.description?.toLowerCase().includes(q))
         || Boolean(h && h.title.toLowerCase().includes(q))
     })
   }

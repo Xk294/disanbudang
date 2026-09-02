@@ -1,32 +1,43 @@
 <template>
-  <div class="p-6 lg:p-8 max-w-7xl mx-auto">
+  <div class="p-4 sm:p-6 lg:p-8 max-w-7xl mx-auto w-full space-y-6">
     <!-- Header -->
-    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
+    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-2 border-b border-stone-800">
       <div>
-        <h1 class="text-xl font-bold text-stone-100">Đánh Giá & Phản Hồi</h1>
+        <h1 class="text-xl sm:text-2xl font-bold text-stone-100">Đánh Giá & Phản Hồi</h1>
         <p class="text-stone-400 text-xs mt-1">
-          Theo dõi đánh giá sao và ý kiến đóng góp trải nghiệm từ người dùng.
+          Theo dõi đánh giá sao và ý kiến đóng góp trải nghiệm từ cộng đồng người dùng.
         </p>
       </div>
 
-      <button
-        class="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-stone-900 border border-stone-800 hover:border-stone-700 hover:bg-stone-800 text-stone-300 text-xs font-medium transition-colors cursor-pointer w-fit"
-        :disabled="loading"
-        @click="fetchRatings"
-      >
-        <Icon :name="loading ? 'mdi:loading' : 'mdi:refresh'" :class="{ 'animate-spin': loading }" class="w-4 h-4 text-amber-500" />
-        Làm mới
-      </button>
+      <div class="flex items-center gap-2 flex-wrap">
+        <button
+          class="inline-flex items-center gap-2 px-3.5 py-2 rounded-xl bg-stone-900 border border-stone-800 hover:border-stone-700 hover:bg-stone-800 text-stone-300 text-xs font-medium transition-colors cursor-pointer"
+          :disabled="loading"
+          @click="fetchRatings"
+        >
+          <Icon :name="loading ? 'mdi:loading' : 'mdi:refresh'" :class="{ 'animate-spin': loading }" class="w-4 h-4 text-amber-500" />
+          Làm mới
+        </button>
+
+        <button
+          class="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-amber-500/10 hover:bg-amber-500/20 border border-amber-500/30 text-amber-300 text-xs font-semibold transition-colors cursor-pointer"
+          :disabled="loading || ratings.length === 0"
+          @click="exportCsv"
+        >
+          <Icon name="mdi:download" class="w-4 h-4" />
+          Xuất CSV
+        </button>
+      </div>
     </div>
 
     <!-- Stats Overview Cards -->
-    <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-6">
+    <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
       <!-- Average Score -->
       <div class="bg-stone-900/90 border border-stone-800 rounded-2xl p-5 flex items-center justify-between">
         <div>
           <p class="text-stone-500 text-xs uppercase tracking-wider mb-1">Điểm Trung Bình</p>
           <div class="flex items-baseline gap-2">
-            <span class="text-3xl font-bold text-amber-400">{{ stats.avgStars ?? '—' }}</span>
+            <span class="text-3xl font-extrabold text-amber-400">{{ stats.avgStars ?? '—' }}</span>
             <span class="text-stone-500 text-xs">/ 5.0</span>
           </div>
         </div>
@@ -39,7 +50,7 @@
       <div class="bg-stone-900/90 border border-stone-800 rounded-2xl p-5 flex items-center justify-between">
         <div>
           <p class="text-stone-500 text-xs uppercase tracking-wider mb-1">Tổng Lượt Đánh Giá</p>
-          <p class="text-3xl font-bold text-stone-100">{{ stats.total.toLocaleString() }}</p>
+          <p class="text-3xl font-extrabold text-stone-100">{{ stats.total.toLocaleString() }}</p>
         </div>
         <div class="w-12 h-12 rounded-2xl bg-stone-800 border border-stone-700 flex items-center justify-center text-stone-300">
           <Icon name="mdi:account-voice" class="w-6 h-6" />
@@ -65,11 +76,11 @@
     </div>
 
     <!-- Filter & Search Controls -->
-    <div class="flex flex-col sm:flex-row items-center justify-between gap-3 mb-6">
+    <div class="flex flex-col sm:flex-row items-center justify-between gap-3">
       <div class="flex flex-wrap gap-1 bg-stone-900/90 border border-stone-800 rounded-2xl p-1 w-full sm:w-fit">
         <button
           v-for="filter in starFilters"
-          :key="filter.value"
+          :key="filter.value ?? 'all'"
           class="flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-medium transition-colors cursor-pointer"
           :class="selectedStar === filter.value
             ? 'bg-stone-800 text-amber-400 font-semibold shadow-sm'
@@ -81,26 +92,27 @@
       </div>
 
       <!-- Search Input -->
-      <div class="relative w-full sm:w-72">
+      <div class="relative w-full sm:w-80">
         <Icon name="mdi:magnify" class="w-4 h-4 text-stone-500 absolute left-3 top-1/2 -translate-y-1/2" />
         <input
           v-model="searchQuery"
           type="text"
           placeholder="Tìm trong nhận xét, IP..."
-          class="w-full pl-9 pr-3 py-1.5 bg-stone-900 border border-stone-800 rounded-xl text-stone-200 text-xs placeholder-stone-500 focus:outline-none focus:border-amber-500/50"
+          class="w-full pl-9 pr-8 py-2 bg-stone-900 border border-stone-800 rounded-xl text-stone-200 text-xs placeholder-stone-500 focus:outline-none focus:border-amber-500/50"
+          @keyup.enter="handleSearch"
         />
         <button
           v-if="searchQuery"
           class="absolute right-2.5 top-1/2 -translate-y-1/2 text-stone-500 hover:text-stone-300"
-          @click="searchQuery = ''"
+          @click="searchQuery = ''; handleSearch()"
         >
           <Icon name="mdi:close-circle" class="w-3.5 h-3.5" />
         </button>
       </div>
     </div>
 
-    <!-- Ratings List -->
-    <div class="bg-stone-900 border border-stone-800 rounded-2xl overflow-hidden">
+    <!-- Ratings List Container -->
+    <div class="bg-stone-900 border border-stone-800 rounded-2xl overflow-hidden shadow-sm">
       <!-- Loading -->
       <div v-if="loading && !ratings.length" class="flex flex-col items-center justify-center py-20">
         <Icon name="mdi:loading" class="w-8 h-8 text-amber-500 animate-spin mb-2" />
@@ -108,28 +120,31 @@
       </div>
 
       <!-- Empty -->
-      <div v-else-if="!filteredRatings.length" class="text-center py-20">
+      <div v-else-if="!ratings.length" class="text-center py-20">
         <Icon name="mdi:star-off-outline" class="w-12 h-12 text-stone-700 mx-auto mb-2" />
-        <p class="text-stone-400 text-sm font-medium">Chưa có đánh giá nào phù hợp.</p>
+        <p class="text-stone-300 text-sm font-semibold">Chưa có đánh giá nào phù hợp.</p>
+        <p class="text-stone-500 text-xs mt-1">
+          {{ searchQuery || selectedStar !== null ? 'Thử xóa bộ lọc để xem toàn bộ đánh giá.' : 'Chưa có đánh giá nào được gửi lên.' }}
+        </p>
       </div>
 
       <!-- Table -->
       <div v-else class="overflow-x-auto">
         <table class="w-full text-xs">
           <thead>
-            <tr class="border-b border-stone-800 text-stone-500 uppercase tracking-wider">
-              <th class="text-left px-5 py-3 font-semibold">Đánh giá</th>
-              <th class="text-left px-5 py-3 font-semibold">Nhận xét & Góp ý</th>
-              <th class="text-left px-5 py-3 font-semibold">Địa chỉ IP</th>
-              <th class="text-right px-5 py-3 font-semibold">Thời gian</th>
-              <th class="text-right px-5 py-3 font-semibold">Hành động</th>
+            <tr class="border-b border-stone-800 text-stone-500 uppercase tracking-wider bg-stone-950/40">
+              <th class="text-left px-5 py-3.5 font-semibold">Đánh giá</th>
+              <th class="text-left px-5 py-3.5 font-semibold">Nhận xét & Góp ý</th>
+              <th class="text-left px-5 py-3.5 font-semibold">Địa chỉ IP</th>
+              <th class="text-right px-5 py-3.5 font-semibold">Thời gian</th>
+              <th class="text-right px-5 py-3.5 font-semibold">Hành động</th>
             </tr>
           </thead>
-          <tbody>
+          <tbody class="divide-y divide-stone-800/60">
             <tr
-              v-for="r in filteredRatings"
+              v-for="r in ratings"
               :key="r.id"
-              class="border-b border-stone-800/50 hover:bg-stone-800/30 transition-colors"
+              class="hover:bg-stone-800/30 transition-colors"
             >
               <!-- Stars -->
               <td class="px-5 py-3.5 whitespace-nowrap">
@@ -140,13 +155,13 @@
                     :name="i <= r.stars ? 'mdi:star' : 'mdi:star-outline'"
                     class="w-4 h-4"
                   />
-                  <span class="font-bold text-stone-200 ml-1.5">{{ r.stars }}/5</span>
+                  <span class="font-bold text-stone-200 ml-1.5 tabular-nums">{{ r.stars }}/5</span>
                 </div>
               </td>
 
               <!-- Comment -->
               <td class="px-5 py-3.5 max-w-md">
-                <p v-if="r.comment" class="text-stone-300 leading-relaxed">{{ r.comment }}</p>
+                <p v-if="r.comment" class="text-stone-200 leading-relaxed font-normal">{{ r.comment }}</p>
                 <span v-else class="text-stone-600 italic">Không để lại bình luận</span>
               </td>
 
@@ -156,14 +171,14 @@
               </td>
 
               <!-- Date -->
-              <td class="px-5 py-3.5 text-right text-stone-500 whitespace-nowrap">
+              <td class="px-5 py-3.5 text-right text-stone-500 whitespace-nowrap font-mono text-[11px]">
                 {{ formatDate(r.created_at) }}
               </td>
 
               <!-- Delete Action -->
               <td class="px-5 py-3.5 text-right whitespace-nowrap">
                 <button
-                  class="p-1.5 rounded-lg text-stone-500 hover:text-red-400 hover:bg-red-950/40 transition-colors cursor-pointer"
+                  class="p-2 rounded-xl text-stone-500 hover:text-red-400 hover:bg-red-950/40 transition-colors cursor-pointer"
                   title="Xóa đánh giá này"
                   :disabled="actionId === r.id"
                   @click="openDeleteModal(r)"
@@ -174,6 +189,31 @@
             </tr>
           </tbody>
         </table>
+      </div>
+
+      <!-- Pagination -->
+      <div v-if="totalPages > 1" class="px-5 py-3 border-t border-stone-800 flex items-center justify-between gap-4 flex-wrap bg-stone-950/40">
+        <span class="text-xs text-stone-500">
+          Trang {{ currentPage }} / {{ totalPages }} (Tổng {{ filteredTotal }} đánh giá)
+        </span>
+
+        <div class="flex items-center gap-1.5">
+          <button
+            class="px-3 py-1 rounded-lg bg-stone-800 hover:bg-stone-700 text-stone-300 text-xs font-medium disabled:opacity-40 disabled:cursor-not-allowed cursor-pointer transition-colors"
+            :disabled="currentPage <= 1 || loading"
+            @click="changePage(currentPage - 1)"
+          >
+            Trang trước
+          </button>
+          <span class="px-2 text-xs font-bold text-amber-400">{{ currentPage }}</span>
+          <button
+            class="px-3 py-1 rounded-lg bg-stone-800 hover:bg-stone-700 text-stone-300 text-xs font-medium disabled:opacity-40 disabled:cursor-not-allowed cursor-pointer transition-colors"
+            :disabled="currentPage >= totalPages || loading"
+            @click="changePage(currentPage + 1)"
+          >
+            Trang sau
+          </button>
+        </div>
       </div>
     </div>
 
@@ -217,7 +257,11 @@
 </template>
 
 <script setup lang="ts">
-definePageMeta({ layout: 'admin' })
+definePageMeta({
+  layout: 'admin',
+  middleware: 'admin',
+})
+
 useHead({
   title: 'Quản lý Đánh giá — Admin Di Sản Bù Đăng',
   meta: [{ name: 'robots', content: 'noindex,nofollow' }],
@@ -236,7 +280,8 @@ interface BreakdownRow {
   count: number
 }
 
-const { authReady, isAdmin, initAuthListener, getIdToken } = useAuth()
+const { getIdToken } = useAuth()
+const toast = useToast()
 
 const ratings = ref<RatingRow[]>([])
 const stats = ref<{ avgStars: number | null; total: number }>({ avgStars: null, total: 0 })
@@ -246,6 +291,12 @@ const selectedStar = ref<number | null>(null)
 const searchQuery = ref('')
 const actionId = ref<number | null>(null)
 const deleteTarget = ref<RatingRow | null>(null)
+
+// Pagination
+const currentPage = ref(1)
+const pageSize = 50
+const filteredTotal = ref(0)
+const totalPages = computed(() => Math.ceil(filteredTotal.value / pageSize) || 1)
 
 const starFilters = [
   { label: 'Tất cả', value: null },
@@ -257,34 +308,37 @@ const starFilters = [
 ]
 
 onMounted(() => {
-  initAuthListener()
+  fetchRatings()
 })
-
-watch(authReady, (ready) => {
-  if (!ready) return
-  if (!isAdmin.value) navigateTo('/admin/login')
-  else fetchRatings()
-}, { immediate: true })
 
 async function fetchRatings() {
   loading.value = true
   const token = await getIdToken()
-  if (!token) { navigateTo('/admin/login'); return }
+  if (!token) return
 
+  const offset = (currentPage.value - 1) * pageSize
   try {
     const data = await $fetch<{
       ratings: RatingRow[]
       stats: { avgStars: number | null; total: number }
       breakdown: BreakdownRow[]
+      filteredTotal: number
     }>('/api/admin/ratings', {
       headers: { Authorization: `Bearer ${token}` },
-      query: { stars: selectedStar.value ?? undefined },
+      query: {
+        stars: selectedStar.value ?? undefined,
+        search: searchQuery.value.trim() || undefined,
+        limit: pageSize,
+        offset,
+      },
     })
     ratings.value = data.ratings
     stats.value = data.stats
     breakdown.value = data.breakdown
+    filteredTotal.value = data.filteredTotal ?? data.ratings.length
   } catch (e) {
     console.error('[ratings] fetch error:', e)
+    toast.error('Không thể tải danh sách đánh giá')
   } finally {
     loading.value = false
   }
@@ -292,17 +346,20 @@ async function fetchRatings() {
 
 function setStarFilter(star: number | null) {
   selectedStar.value = star
+  currentPage.value = 1
   fetchRatings()
 }
 
-const filteredRatings = computed(() => {
-  if (!searchQuery.value.trim()) return ratings.value
-  const q = searchQuery.value.trim().toLowerCase()
-  return ratings.value.filter(r =>
-    (r.comment && r.comment.toLowerCase().includes(q)) ||
-    (r.ip && r.ip.toLowerCase().includes(q)),
-  )
-})
+function handleSearch() {
+  currentPage.value = 1
+  fetchRatings()
+}
+
+function changePage(p: number) {
+  if (p < 1 || p > totalPages.value) return
+  currentPage.value = p
+  fetchRatings()
+}
 
 function getStarCount(stars: number): number {
   const row = breakdown.value.find(b => b.stars === stars)
@@ -329,13 +386,38 @@ async function confirmDelete() {
       method: 'DELETE',
       headers: { Authorization: `Bearer ${token}` },
     })
+    toast.success('Đã xóa đánh giá thành công')
     deleteTarget.value = null
     await fetchRatings()
   } catch (e) {
     console.error('[ratings] delete error:', e)
+    toast.error('Xóa đánh giá thất bại')
   } finally {
     actionId.value = null
   }
+}
+
+function exportCsv() {
+  if (ratings.value.length === 0) return
+
+  const headers = ['ID', 'So Sao', 'Nhan Xet', 'Dia Chi IP', 'Thoi Gian']
+  const rows = ratings.value.map(r => [
+    `"${r.id}"`,
+    r.stars,
+    `"${(r.comment || '').replace(/"/g, '""').replace(/\n/g, ' ')}"`,
+    `"${r.ip}"`,
+    `"${r.created_at}"`,
+  ])
+
+  const csvContent = '\uFEFF' + [headers.join(','), ...rows.map(row => row.join(','))].join('\r\n')
+  const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' })
+  const url = URL.createObjectURL(blob)
+  const a = document.createElement('a')
+  a.href = url
+  a.download = `danh-gia-disanbudang-${new Date().toISOString().slice(0, 10)}.csv`
+  a.click()
+  URL.revokeObjectURL(url)
+  toast.success('Đã xuất file CSV thành công')
 }
 
 function formatDate(iso?: string) {

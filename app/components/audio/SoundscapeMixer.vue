@@ -224,7 +224,7 @@ function startGenerators() {
     const white = Math.random() * 2 - 1
     output[i] = (lastOut + (0.02 * white)) / 1.02
     lastOut = output[i] || 0
-    output[i] = output[i] * 3.5
+    output[i] = (output[i] ?? 0) * 3.5
   }
 
   const whiteNoise = audioContext.createBufferSource()

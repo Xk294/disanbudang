@@ -650,19 +650,19 @@ function onKeydown(e: KeyboardEvent) {
   if (e.key === '-' || e.key === '_') zoomOut()
   if (e.key === 'h' || e.key === 'H') toggleHotspots()
   if (e.key === 'ArrowLeft') {
-    targetLon.value += 15
+    targetLon += 15
     e.preventDefault()
   }
   if (e.key === 'ArrowRight') {
-    targetLon.value -= 15
+    targetLon -= 15
     e.preventDefault()
   }
   if (e.key === 'ArrowUp') {
-    targetLat.value = Math.min(85, targetLat.value + 10)
+    targetLat = Math.min(85, targetLat + 10)
     e.preventDefault()
   }
   if (e.key === 'ArrowDown') {
-    targetLat.value = Math.max(-85, targetLat.value - 10)
+    targetLat = Math.max(-85, targetLat - 10)
     e.preventDefault()
   }
   if (e.key === ' ') {

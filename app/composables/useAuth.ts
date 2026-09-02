@@ -20,7 +20,10 @@ export function useAuth() {
   // Shared state across all composable instances (SSR-safe)
   const user = useState<User | null>('auth.user', () => null)
   const authReady = useState<boolean>('auth.ready', () => false)
-  const isAdmin = computed(() => user.value?.email === ADMIN_EMAIL)
+  const isAdmin = computed(() => {
+    const email = user.value?.email?.trim().toLowerCase()
+    return Boolean(email && email === ADMIN_EMAIL.trim().toLowerCase())
+  })
 
   /** Set up onAuthStateChanged listener. Must be called inside onMounted (client-only). */
   function initAuthListener() {
@@ -53,6 +56,7 @@ export function useAuth() {
       const { GoogleAuthProvider, signInWithPopup } = await import('firebase/auth')
       const provider = new GoogleAuthProvider()
       const result = await signInWithPopup($auth, provider)
+      user.value = result.user
       return { ok: true, data: result.user }
     } catch (e: unknown) {
       const msg = e instanceof Error ? e.message : 'Sign-in failed'

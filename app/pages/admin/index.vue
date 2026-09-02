@@ -5,16 +5,13 @@
 </template>
 
 <script setup lang="ts">
-definePageMeta({ layout: 'admin' })
+definePageMeta({
+  layout: false,
+  middleware: 'admin',
+})
 
-// /admin always redirects — either to login or to contributions
+// /admin always redirects to /admin/contributions
 onMounted(() => {
-  const { authReady, isAdmin, initAuthListener } = useAuth()
-  initAuthListener()
-
-  watch(authReady, (ready) => {
-    if (!ready) return
-    navigateTo(isAdmin.value ? '/admin/contributions' : '/admin/login')
-  }, { immediate: true })
+  navigateTo('/admin/contributions')
 })
 </script>
