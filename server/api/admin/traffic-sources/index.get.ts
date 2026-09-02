@@ -38,12 +38,9 @@ export default defineEventHandler(async (event) => {
       return {
         ok: true,
         range,
-        relative,
-        total: 1,
-        non_bot_total: 1,
-        sources: [
-          { source: 'direct', count: 1, percentage: 100, type: 'direct' as const },
-        ],
+        total: 0,
+        non_bot_total: 0,
+        sources: [],
       }
     }
     throw createError({ statusCode: 503, statusMessage: 'Database unavailable' })
@@ -143,8 +140,8 @@ export default defineEventHandler(async (event) => {
 
     const items: Array<{ source: string; count: number }> = [...utmRows, ...refRows]
 
-    if (directCount > 0 || items.length === 0) {
-      items.push({ source: 'direct', count: Math.max(directCount, 1) })
+    if (directCount > 0) {
+      items.push({ source: 'direct', count: directCount })
     }
 
     // Merge duplicate sources and sort
@@ -171,7 +168,6 @@ export default defineEventHandler(async (event) => {
     return {
       ok: true,
       range,
-      relative,
       total,
       non_bot_total: total,
       sources,
@@ -181,10 +177,9 @@ export default defineEventHandler(async (event) => {
     return {
       ok: true,
       range,
-      relative,
       total: 0,
       non_bot_total: 0,
-      sources: [{ source: 'direct', count: 1, percentage: 100, type: 'direct' }],
+      sources: [],
     }
   }
 })

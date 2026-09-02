@@ -358,8 +358,8 @@
                 </p>
               </div>
 
-              <!-- Sparkline Graph -->
-              <div class="w-24 h-6 shrink-0 flex items-center justify-center">
+              <!-- Sparkline Graph (if real timeseries points exist) -->
+              <div v-if="routeItem.sparkline && routeItem.sparkline.length > 1" class="w-24 h-6 shrink-0 flex items-center justify-center">
                 <svg viewBox="0 0 100 24" class="w-full h-full overflow-visible">
                   <path
                     :d="renderSparkline(routeItem.sparkline)"

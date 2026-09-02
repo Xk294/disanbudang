@@ -23,26 +23,6 @@
 
     <!-- Controls Toolbar -->
     <div class="flex items-center gap-3 flex-wrap">
-      <!-- Relative Time Toggle Switch -->
-      <div class="flex items-center gap-2.5 px-3 py-1.5 rounded-xl bg-stone-900 border border-stone-800 text-xs text-stone-300">
-        <span class="text-stone-400 text-xs font-medium">Relative time</span>
-        <button
-          type="button"
-          class="relative inline-flex h-5 w-9 shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none"
-          :class="relativeTime ? 'bg-indigo-500' : 'bg-stone-800'"
-          aria-label="Toggle relative time"
-          @click="toggleRelativeTime"
-        >
-          <span
-            class="pointer-events-none inline-block h-4 w-4 transform rounded-full bg-white shadow-sm ring-0 transition duration-200 ease-in-out"
-            :class="relativeTime ? 'translate-x-4' : 'translate-x-0'"
-          />
-        </button>
-        <span class="text-[11px] font-bold font-mono tracking-wider" :class="relativeTime ? 'text-indigo-400' : 'text-stone-500'">
-          {{ relativeTime ? 'ON' : 'OFF' }}
-        </span>
-      </div>
-
       <!-- Range Input & Apply Button -->
       <div class="flex items-center gap-2 px-3 py-1.5 rounded-xl bg-stone-900 border border-stone-800 text-xs">
         <span class="text-stone-400 text-xs font-medium">Range</span>
@@ -187,7 +167,6 @@ useHead({
 const { getIdToken } = useAuth()
 const toast = useToast()
 
-const relativeTime = ref(false)
 const rangeInput = ref<number>(30)
 const activeRange = ref<number>(30)
 const loading = ref(false)
@@ -210,7 +189,6 @@ async function fetchTrafficSources() {
     const res = await $fetch<{
       ok: boolean
       range: number
-      relative: boolean
       total: number
       non_bot_total: number
       sources: TrafficSourceItem[]
@@ -218,7 +196,6 @@ async function fetchTrafficSources() {
       headers: { Authorization: `Bearer ${token}` },
       query: {
         range: activeRange.value,
-        relative: relativeTime.value ? 'true' : 'false',
       },
     })
 
@@ -239,11 +216,6 @@ function applyRange() {
   const parsed = Math.max(1, Math.min(365, rangeInput.value || 30))
   rangeInput.value = parsed
   activeRange.value = parsed
-  fetchTrafficSources()
-}
-
-function toggleRelativeTime() {
-  relativeTime.value = !relativeTime.value
   fetchTrafficSources()
 }
 

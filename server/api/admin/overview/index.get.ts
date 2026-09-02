@@ -37,22 +37,22 @@ function getFallbackOverview(range: string) {
       suspected_farm_devices: 0,
     },
     funnel_devices: {
-      visited: 1,
+      visited: 0,
       explored_features: 0,
       explored_pct: 0,
       completed_actions: 0,
       completed_pct: 0,
     },
     funnel_accounts: {
-      accounts_created: 1,
+      accounts_created: 0,
       deep_engaged: 0,
       engaged_pct: 0,
     },
-    traffic_sources: [{ source: 'direct (truy cập trực tiếp)', count: 1, percentage: 100 }],
+    traffic_sources: [],
     top_routes: [],
     devices_by_category: {
-      total: 1,
-      desktop: { count: 1, percentage: 100 },
+      total: 0,
+      desktop: { count: 0, percentage: 0 },
       mobile: { count: 0, percentage: 0 },
       bot: { count: 0, percentage: 0 },
     },
@@ -108,6 +108,8 @@ export default defineEventHandler(async (event) => {
   else if (range === '30') eventsTimeFilter = "created_at >= datetime('now', '-30 days')"
   const whereEventsTime = eventsTimeFilter ? `WHERE ${eventsTimeFilter}` : ''
 
+  const featurePaths = ['/tour360', '/explore/virtual-tour', '/study', '/map', '/heritage']
+
   try {
     const [
       usersCountRes,
@@ -122,6 +124,7 @@ export default defineEventHandler(async (event) => {
       ratingsCountRes,
       contributionsCountRes,
       trafficSourcesRes,
+      featureIpsRes,
     ] = await Promise.all([
       // 1. Registered users (all-time)
       safeRun(
@@ -244,6 +247,17 @@ export default defineEventHandler(async (event) => {
         `).all() as Promise<{ results?: Array<{ source: string; count: number }> }>,
         { results: [] }
       ),
+
+      // 13. Feature page visitors (for funnel)
+      safeRun(
+        db.prepare(`
+          SELECT COUNT(DISTINCT ip) as total
+          FROM visitor_logs
+          WHERE (${featurePaths.map(() => 'path LIKE ?').join(' OR ')})
+          ${timeFilter ? `AND ${timeFilter}` : ''}
+        `).bind(...featurePaths.map(p => `${p}%`)).first() as Promise<{ total: number } | null>,
+        { total: 0 }
+      ),
     ])
 
     // ─── KPIs ───────────────────────────────────────────────────────────────
@@ -270,12 +284,12 @@ export default defineEventHandler(async (event) => {
     if (mobileCount === 0 && desktopCount === 0 && botCount === 0 && totalVisits > 0) {
       desktopCount = totalVisits
     }
-    const deviceTotal = mobileCount + desktopCount + botCount || 1
+    const deviceTotal = mobileCount + desktopCount + botCount
     const devices_by_category = {
       total: deviceTotal,
-      desktop: { count: desktopCount, percentage: Math.round((desktopCount / deviceTotal) * 100) },
-      mobile: { count: mobileCount, percentage: Math.round((mobileCount / deviceTotal) * 100) },
-      bot: { count: botCount, percentage: Math.round((botCount / deviceTotal) * 100) },
+      desktop: { count: desktopCount, percentage: deviceTotal > 0 ? Math.round((desktopCount / deviceTotal) * 100) : 0 },
+      mobile: { count: mobileCount, percentage: deviceTotal > 0 ? Math.round((mobileCount / deviceTotal) * 100) : 0 },
+      bot: { count: botCount, percentage: deviceTotal > 0 ? Math.round((botCount / deviceTotal) * 100) : 0 },
     }
 
     // ─── Hourly chart ────────────────────────────────────────────────────────
@@ -297,40 +311,23 @@ export default defineEventHandler(async (event) => {
       return { hour: h, count, isPeak: h === peakHour && count > 0 }
     })
 
-    // ─── Top routes with daily sparkline ────────────────────────────────────
+    // ─── Top routes (real data only, no synthetic sparkline fabrication) ─────
     const rawPaths = topPathsRes?.results ?? []
     const totalPathViews = rawPaths.reduce((s, p) => s + (p.views || 0), 0) || 1
     const top_routes = rawPaths.map((r) => {
       const views = r.views || 0
       const pct = Math.round((views / totalPathViews) * 100)
-      const base = Math.max(1, Math.round(views / 14))
-      const sparkline = Array.from({ length: 14 }, (_, i) => {
-        const recency = 0.6 + (i / 13) * 0.7
-        return Math.max(0, Math.round(base * recency))
-      })
-      return { path: r.path, views, percentage: pct, sparkline }
+      return { path: r.path, views, percentage: pct, sparkline: [] as number[] }
     })
 
     // ─── Funnel ──────────────────────────────────────────────────────────────
-    // Feature pages that represent "tried a tool"
-    const featurePaths = ['/tour360', '/explore/virtual-tour', '/study', '/map', '/heritage']
-    const featureIpsRes = await safeRun(
-      db.prepare(`
-        SELECT COUNT(DISTINCT ip) as total
-        FROM visitor_logs
-        WHERE (${featurePaths.map(() => 'path LIKE ?').join(' OR ')})
-        ${timeFilter ? `AND ${timeFilter}` : ''}
-      `).bind(...featurePaths.map(p => `${p}%`)).first() as Promise<{ total: number } | null>,
-      { total: 0 }
-    )
-
     const exploredFeatures = featureIpsRes?.total ?? 0
     const totalRatings = ratingsCountRes?.total ?? 0
     const totalContributions = contributionsCountRes?.total ?? 0
     const completedActions = totalRatings + totalContributions
 
-    const visited = Math.max(uniqueIps, 1)
-    const accountsCreated = Math.max(totalUsers, 1)
+    const visited = uniqueIps
+    const accountsCreated = totalUsers
     const deepEngaged = totalRatings + totalContributions
 
     // ─── Traffic sources ─────────────────────────────────────────────────────
@@ -342,11 +339,11 @@ export default defineEventHandler(async (event) => {
       percentage: srcTotal > 0 ? Math.round(((r.count || 0) / srcTotal) * 100) : 0,
     }))
 
-    if (traffic_sources.length === 0) {
+    if (traffic_sources.length === 0 && totalVisits > 0) {
       traffic_sources = [
         {
           source: 'direct (truy cập trực tiếp)',
-          count: Math.max(totalVisits, 1),
+          count: totalVisits,
           percentage: 100,
         },
       ]
@@ -400,14 +397,14 @@ export default defineEventHandler(async (event) => {
       funnel_devices: {
         visited,
         explored_features: exploredFeatures,
-        explored_pct: Math.round((exploredFeatures / visited) * 100),
+        explored_pct: visited > 0 ? Math.round((exploredFeatures / visited) * 100) : 0,
         completed_actions: completedActions,
-        completed_pct: Math.round((completedActions / Math.max(exploredFeatures, 1)) * 100),
+        completed_pct: exploredFeatures > 0 ? Math.round((completedActions / exploredFeatures) * 100) : 0,
       },
       funnel_accounts: {
         accounts_created: accountsCreated,
         deep_engaged: deepEngaged,
-        engaged_pct: Math.round((deepEngaged / accountsCreated) * 100),
+        engaged_pct: accountsCreated > 0 ? Math.round((deepEngaged / accountsCreated) * 100) : 0,
       },
       traffic_sources,
       top_routes,

@@ -224,15 +224,24 @@
 
         <!-- Submit Button -->
         <div class="flex flex-col items-center justify-center">
-          <div v-if="!user" class="flex items-center justify-center w-full sm:w-auto">
+          <div v-if="!user" class="flex flex-col sm:flex-row items-center justify-center gap-3 w-full sm:w-auto">
             <button
-              class="flex items-center justify-center gap-2 px-6 py-3.5 rounded-2xl font-semibold text-xs sm:text-sm bg-ivory hover:bg-gold-100 text-charcoal-950 transition-all duration-200 hover:shadow-lg active:scale-95 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed w-full sm:w-auto"
-              :disabled="signingIn || submitting || !canSubmit"
-              @click="handleSignIn"
+              class="flex items-center justify-center gap-2 px-5 py-3 rounded-2xl font-semibold text-xs sm:text-sm bg-ivory hover:bg-gold-100 text-charcoal-950 transition-all duration-200 hover:shadow-lg active:scale-95 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed w-full sm:w-auto"
+              :disabled="signingInProvider !== null || submitting || !canSubmit"
+              @click="handleSignIn('google')"
             >
-              <Icon v-if="signingIn" name="mdi:loading" class="w-4 h-4 animate-spin text-charcoal-800" />
+              <Icon v-if="signingInProvider === 'google'" name="mdi:loading" class="w-4 h-4 animate-spin text-charcoal-800" />
               <Icon v-else name="mdi:google" class="w-4 h-4 text-[#EA4335]" />
               <span>Đăng nhập Google để gửi</span>
+            </button>
+            <button
+              class="flex items-center justify-center gap-2 px-5 py-3 rounded-2xl font-semibold text-xs sm:text-sm bg-[#1877F2] hover:bg-[#166fe5] text-white transition-all duration-200 hover:shadow-lg active:scale-95 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed w-full sm:w-auto"
+              :disabled="signingInProvider !== null || submitting || !canSubmit"
+              @click="handleSignIn('facebook')"
+            >
+              <Icon v-if="signingInProvider === 'facebook'" name="mdi:loading" class="w-4 h-4 animate-spin text-white" />
+              <Icon v-else name="mdi:facebook" class="w-4 h-4 text-white" />
+              <span>Đăng nhập Facebook</span>
             </button>
           </div>
 
@@ -330,14 +339,12 @@ interface RatingStats {
   myRating?: { stars: number | null; comment: string | null } | null
 }
 
-const { user, initAuthListener, signInWithGoogle, signOut, getIdToken } = useAuth()
-
-// ── State ──
-const selectedStars = ref(0)
-const hoverStars = ref(0)
-const comment = ref('')
+const { user, signInWithGoogle, signInWithFacebook, signOut, initAuthListener, getIdToken } = useAuth()
+const signingInProvider = ref<'google' | 'facebook' | null>(null)
 const submitting = ref(false)
-const signingIn = ref(false)
+const hoverStars = ref(0)
+const selectedStars = ref(0)
+const comment = ref('')
 const submitted = ref(false)
 const hasExistingRating = ref(false)
 const errorMsg = ref('')
@@ -409,16 +416,16 @@ watch(
 )
 
 // ── Auth handlers ──
-async function handleSignIn() {
-  signingIn.value = true
+async function handleSignIn(provider: 'google' | 'facebook' = 'google') {
+  signingInProvider.value = provider
   errorMsg.value = ''
   try {
-    const res = await signInWithGoogle()
+    const res = provider === 'google' ? await signInWithGoogle() : await signInWithFacebook()
     if (!res.ok) {
       if (isInAppBrowser.value || res.error?.toLowerCase().includes('popup') || res.error?.toLowerCase().includes('disallowed')) {
-        errorMsg.value = 'Trình duyệt ứng dụng chặn đăng nhập Google. Vui lòng bấm dấu 3 chấm (•••) ở góc trên màn hình và chọn "Mở bằng trình duyệt" (Chrome / Safari).'
+        errorMsg.value = 'Trình duyệt ứng dụng chặn đăng nhập. Vui lòng bấm dấu 3 chấm (•••) ở góc trên màn hình và chọn "Mở bằng trình duyệt" (Chrome / Safari).'
       } else {
-        errorMsg.value = res.error || 'Đăng nhập Google không thành công'
+        errorMsg.value = res.error || `Đăng nhập ${provider === 'google' ? 'Google' : 'Facebook'} không thành công`
       }
       return
     }
@@ -427,10 +434,10 @@ async function handleSignIn() {
       await submitRating()
     }
   } catch (err) {
-    console.error('[rating] Google sign-in error:', err)
+    console.error(`[rating] ${provider} sign-in error:`, err)
     errorMsg.value = 'Đã có lỗi xảy ra khi đăng nhập'
   } finally {
-    signingIn.value = false
+    signingInProvider.value = null
   }
 }
 

@@ -12,6 +12,23 @@ const VALID_TOOLS = new Set(['quiz', 'tour360', 'audio', 'map', 'contribute'])
 const VALID_ACTIONS = new Set(['start', 'complete'])
 
 export default defineEventHandler(async (event) => {
+  // Origin check in production
+  if (!import.meta.dev) {
+    const origin = getHeader(event, 'origin') ?? ''
+    const referer = getHeader(event, 'referer') ?? ''
+    const isAllowed =
+      !origin ||
+      origin === 'https://disanbudang.com' ||
+      origin === 'https://www.disanbudang.com' ||
+      origin.endsWith('.disanbudang.pages.dev') ||
+      origin.endsWith('.pages.dev') ||
+      referer.startsWith('https://disanbudang.com') ||
+      referer.includes('.pages.dev')
+    if (!isAllowed) {
+      throw createError({ statusCode: 403, statusMessage: 'Invalid request origin' })
+    }
+  }
+
   const body = await readBody(event)
   const { tool, action = 'start', heritage_id, idToken } = body ?? {}
 

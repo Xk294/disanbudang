@@ -448,13 +448,16 @@ const heritageStore = useHeritageStore()
 const route = useRoute()
 const isJourneyStarted = useState<boolean>('isJourneyStarted', () => false)
 
-const { user, isAdmin, signInWithGoogle, signOut } = useAuth()
+const { user, isAdmin, signInWithGoogle, signOut, syncUserToDb } = useAuth()
 const signingIn = ref(false)
 
 async function handleMobileSignIn() {
   signingIn.value = true
   try {
-    await signInWithGoogle()
+    const res = await signInWithGoogle()
+    if (res?.ok) {
+      await syncUserToDb()
+    }
   } finally {
     signingIn.value = false
   }

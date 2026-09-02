@@ -16,12 +16,21 @@ export function useVisitorTrack() {
   const route = useRoute()
   const { getIdToken } = useAuth()
   const visitCount = siteVisitCount()
+  let isInitialLanding = true
 
   async function track(path: string) {
     try {
       const idToken = await getIdToken()
-      const referrer = typeof document !== 'undefined' ? (document.referrer?.slice(0, 500) || undefined) : undefined
-      const utmSource = typeof window !== 'undefined' ? (new URLSearchParams(window.location.search).get('utm_source') || undefined) : undefined
+      // Only attach document.referrer on initial landing to avoid polluting internal SPA transitions
+      const referrer = isInitialLanding && typeof document !== 'undefined'
+        ? (document.referrer?.slice(0, 500) || undefined)
+        : undefined
+      const utmSource = typeof window !== 'undefined'
+        ? (new URLSearchParams(window.location.search).get('utm_source') || undefined)
+        : undefined
+
+      isInitialLanding = false
+
       const res = await $fetch<{ ok: boolean; totalVisits?: number }>('/api/analytics/visit', {
         method: 'POST',
         body: { path, referrer, utm_source: utmSource, idToken: idToken ?? undefined },
