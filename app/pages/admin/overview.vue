@@ -63,13 +63,32 @@
       </div>
     </div>
 
-    <!-- Loading / Empty State -->
+    <!-- Loading / Skeleton State -->
     <div v-if="loading && !overviewData" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
       <div v-for="i in 4" :key="i" class="bg-stone-900/90 border border-stone-800 rounded-2xl p-5 animate-pulse">
         <div class="w-10 h-10 rounded-xl bg-stone-800 mb-4" />
         <div class="h-8 w-20 bg-stone-800 rounded mb-2" />
         <div class="h-3 w-32 bg-stone-800/60 rounded" />
       </div>
+    </div>
+
+    <!-- Error & Retry State -->
+    <div v-else-if="fetchError && !overviewData" class="p-8 sm:p-12 rounded-2xl bg-stone-900/90 border border-stone-800 text-center space-y-4">
+      <div class="w-12 h-12 rounded-2xl bg-amber-500/10 border border-amber-500/20 flex items-center justify-center mx-auto text-amber-400">
+        <Icon name="mdi:alert-circle-outline" class="w-6 h-6" />
+      </div>
+      <div>
+        <h3 class="text-sm font-semibold text-stone-200">Không thể tải dữ liệu phân tích hệ thống</h3>
+        <p class="text-xs text-stone-400 mt-1 max-w-md mx-auto">{{ fetchError }}</p>
+      </div>
+      <button
+        type="button"
+        class="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-stone-800 hover:bg-stone-700 text-stone-200 text-xs font-medium transition-colors cursor-pointer"
+        @click="fetchOverview"
+      >
+        <Icon name="mdi:refresh" class="w-4 h-4 text-amber-500" />
+        <span>Thử lại</span>
+      </button>
     </div>
 
     <!-- Data: only render when overviewData is available -->
@@ -584,9 +603,9 @@ const toast = useToast()
 const loading = ref(false)
 const selectedRange = ref('7')
 const relativeTime = ref(false)
+const fetchError = ref<string | null>(null)
 
 const overviewData = ref<OverviewData | null>(null)
-
 
 const maxHourlyCount = computed(() => {
   const counts = overviewData.value?.actions_by_hour.map(i => i.count) ?? []
@@ -621,9 +640,11 @@ function renderSparkline(points: number[] | undefined) {
 
 async function fetchOverview() {
   loading.value = true
+  fetchError.value = null
   const token = await getIdToken()
   if (!token) {
     loading.value = false
+    fetchError.value = 'Chưa xác thực quyền quản trị'
     return
   }
 
@@ -633,10 +654,13 @@ async function fetchOverview() {
     })
     if (res && res.kpis) {
       overviewData.value = res
+      fetchError.value = null
     }
   } catch (err: any) {
     console.error('[AdminOverview] Fetch error:', err)
-    toast.error('Không thể tải dữ liệu phân tích', err?.data?.statusMessage || 'Lỗi kết nối')
+    const msg = err?.data?.statusMessage || err?.message || 'Lỗi kết nối máy chủ'
+    fetchError.value = msg
+    toast.error('Không thể tải dữ liệu phân tích', msg)
   } finally {
     loading.value = false
   }

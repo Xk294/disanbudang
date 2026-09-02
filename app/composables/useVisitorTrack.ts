@@ -11,6 +11,8 @@
 const siteVisitCount = () => useState<number | null>('siteVisitCount', () => null)
 
 export function useVisitorTrack() {
+  if (import.meta.server) return
+
   const route = useRoute()
   const { getIdToken } = useAuth()
   const visitCount = siteVisitCount()
@@ -18,14 +20,14 @@ export function useVisitorTrack() {
   async function track(path: string) {
     try {
       const idToken = await getIdToken()
-      const referrer = document.referrer?.slice(0, 500) || undefined
-      const utmSource = new URLSearchParams(window.location.search).get('utm_source') || undefined
+      const referrer = typeof document !== 'undefined' ? (document.referrer?.slice(0, 500) || undefined) : undefined
+      const utmSource = typeof window !== 'undefined' ? (new URLSearchParams(window.location.search).get('utm_source') || undefined) : undefined
       const res = await $fetch<{ ok: boolean; totalVisits?: number }>('/api/analytics/visit', {
         method: 'POST',
         body: { path, referrer, utm_source: utmSource, idToken: idToken ?? undefined },
       })
       // Update global counter if the server returned a total
-      if (res.ok && typeof res.totalVisits === 'number') {
+      if (res?.ok && typeof res.totalVisits === 'number') {
         visitCount.value = res.totalVisits
         if (import.meta.client) {
           localStorage.setItem('disanbudang_visit_count', String(res.totalVisits))
@@ -36,9 +38,9 @@ export function useVisitorTrack() {
     }
   }
 
-  onMounted(() => {
+  function startTracking() {
     // Attempt to restore cached count immediately to avoid UI pop
-    if (visitCount.value === null) {
+    if (visitCount.value === null && import.meta.client) {
       const cached = localStorage.getItem('disanbudang_visit_count')
       if (cached && !isNaN(Number(cached))) {
         visitCount.value = Number(cached)
@@ -48,10 +50,16 @@ export function useVisitorTrack() {
     // Track initial page
     track(route.path)
 
-    // Track on subsequent route changes; stop on unmount
-    const stop = watch(() => route.path, (p) => track(p))
-    onUnmounted(stop)
-  })
+    // Track on subsequent route changes
+    watch(() => route.path, (p) => track(p))
+  }
+
+  const instance = getCurrentInstance()
+  if (instance?.isMounted) {
+    startTracking()
+  } else {
+    onMounted(startTracking)
+  }
 }
 
 /** Read-only composable for components that only want to display the count */

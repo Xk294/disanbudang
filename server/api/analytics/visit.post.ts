@@ -5,6 +5,7 @@
  * Body: { path: string, referrer?: string, utm_source?: string, idToken?: string }
  */
 import { verifyFirebaseToken } from '../../utils/auth'
+import { ensureAnalyticsSchema } from '../../utils/schema'
 
 // Module-level cache to reduce full table scans under high concurrent traffic
 let cachedTotal: number | null = null
@@ -47,6 +48,9 @@ export default defineEventHandler(async (event) => {
     return { ok: true, totalVisits: 0 }
   }
 
+  // Ensure schema columns exist on D1
+  await ensureAnalyticsSchema(db)
+
   try {
     await db.prepare(`
       INSERT INTO visitor_logs (ip, email, display_name, path, user_agent, referrer, utm_source, visit_count, last_seen_at)
@@ -60,9 +64,22 @@ export default defineEventHandler(async (event) => {
         referrer     = COALESCE(excluded.referrer, visitor_logs.referrer),
         utm_source   = COALESCE(excluded.utm_source, visitor_logs.utm_source)
     `).bind(ip, email, displayName, path, userAgent, ref, utmSrc).run()
-  } catch (err) {
-    console.error('[analytics/visit] DB error:', err)
-    return { ok: false, totalVisits: cachedTotal ?? 0 }
+  } catch (err: any) {
+    console.warn('[analytics/visit] Primary insert failed, falling back to legacy insert:', err?.message)
+    try {
+      await db.prepare(`
+        INSERT INTO visitor_logs (ip, email, display_name, path, visit_count, last_seen_at)
+        VALUES (?, ?, ?, ?, 1, CURRENT_TIMESTAMP)
+        ON CONFLICT(ip, path) DO UPDATE SET
+          visit_count  = visitor_logs.visit_count + 1,
+          last_seen_at = CURRENT_TIMESTAMP,
+          email        = COALESCE(excluded.email, visitor_logs.email),
+          display_name = COALESCE(excluded.display_name, visitor_logs.display_name)
+      `).bind(ip, email, displayName, path).run()
+    } catch (fallbackErr: any) {
+      console.error('[analytics/visit] Fallback insert failed:', fallbackErr?.message)
+      return { ok: false, totalVisits: cachedTotal ?? 0 }
+    }
   }
 
   // Return aggregate total so the frontend can display a live counter.

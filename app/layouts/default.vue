@@ -40,9 +40,9 @@ watch(
 
 // Auth listener & Visitor tracking — client-only
 const { initAuthListener } = useAuth()
+useVisitorTrack()
 onMounted(() => {
   initAuthListener()
-  useVisitorTrack()
 })
 </script>
 

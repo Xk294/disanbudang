@@ -6,6 +6,7 @@
  * action: 'start' | 'complete' (default: 'start')
  */
 import { verifyFirebaseToken } from '../../utils/auth'
+import { ensureAnalyticsSchema } from '../../utils/schema'
 
 const VALID_TOOLS = new Set(['quiz', 'tour360', 'audio', 'map', 'contribute'])
 const VALID_ACTIONS = new Set(['start', 'complete'])
@@ -40,6 +41,9 @@ export default defineEventHandler(async (event) => {
   if (!db) {
     return { ok: true }
   }
+
+  // Ensure events table exists
+  await ensureAnalyticsSchema(db)
 
   try {
     await db.prepare(`

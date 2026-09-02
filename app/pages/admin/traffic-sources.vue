@@ -101,10 +101,20 @@
       </div>
 
       <!-- Empty State -->
-      <div v-else-if="!loading && sources.length === 0" class="text-center py-16">
-        <Icon name="mdi:chart-timeline-variant-shimmer" class="w-10 h-10 text-stone-700 mx-auto mb-2" />
+      <div v-else-if="!loading && sources.length === 0" class="text-center py-16 space-y-3">
+        <Icon name="mdi:chart-timeline-variant-shimmer" class="w-10 h-10 text-stone-700 mx-auto" />
         <p class="text-stone-300 text-sm font-semibold">Không tìm thấy nguồn lưu lượng nào.</p>
-        <p class="text-stone-500 text-xs mt-1">Thử chọn số ngày lớn hơn và nhấn Apply.</p>
+        <p class="text-stone-500 text-xs">Thử chọn số ngày lớn hơn và nhấn Apply.</p>
+        <div>
+          <button
+            type="button"
+            class="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl bg-stone-800 hover:bg-stone-700 text-stone-300 text-xs font-medium transition-colors cursor-pointer"
+            @click="fetchTrafficSources"
+          >
+            <Icon name="mdi:refresh" class="w-3.5 h-3.5 text-indigo-400" />
+            <span>Tải lại</span>
+          </button>
+        </div>
       </div>
 
       <!-- Inbound Sources Full List (No Cap) -->
