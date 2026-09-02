@@ -128,6 +128,7 @@ definePageMeta({ layout: false })
 
 const route = useRoute()
 const router = useRouter()
+const { trackEvent } = useTrackEvent()
 
 const allTours = computed(() => getAllVirtualTours())
 
@@ -235,6 +236,8 @@ onMounted(() => {
   if (modeQuery === 'video') {
     activeExperienceMode.value = 'video'
   }
+
+  trackEvent('tour360', 'start', selectedTourId.value)
 })
 </script>
 

@@ -18,9 +18,11 @@ export function useVisitorTrack() {
   async function track(path: string) {
     try {
       const idToken = await getIdToken()
+      const referrer = document.referrer?.slice(0, 500) || undefined
+      const utmSource = new URLSearchParams(window.location.search).get('utm_source') || undefined
       const res = await $fetch<{ ok: boolean; totalVisits?: number }>('/api/analytics/visit', {
         method: 'POST',
-        body: { path, idToken: idToken ?? undefined },
+        body: { path, referrer, utm_source: utmSource, idToken: idToken ?? undefined },
       })
       // Update global counter if the server returned a total
       if (res.ok && typeof res.totalVisits === 'number') {

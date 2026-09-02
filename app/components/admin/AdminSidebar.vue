@@ -128,6 +128,12 @@ const navLinks = computed(() => [
     badge: 0,
   },
   {
+    to: '/admin/traffic-sources',
+    label: 'Traffic Sources',
+    icon: 'mdi:source-fork',
+    badge: 0,
+  },
+  {
     to: '/admin/contributions',
     label: 'Duyệt Đóng Góp',
     icon: 'mdi:inbox-multiple',

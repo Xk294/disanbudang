@@ -108,41 +108,43 @@
           </button>
         </div>
 
-        <!-- In-App Browser (Zalo / Facebook) Guidance Warning -->
-        <div
-          v-if="isInAppBrowser && !user"
-          class="flex items-start gap-3 bg-amber-500/10 border border-amber-500/30 rounded-2xl p-4 mb-6 text-left"
-        >
-          <Icon name="mdi:information-outline" class="w-5 h-5 text-amber-400 shrink-0 mt-0.5" />
-          <div class="text-xs text-ivory/90 leading-relaxed space-y-1">
-            <p class="font-semibold text-amber-300">Đang mở qua ứng dụng Zalo hoặc Facebook?</p>
-            <p class="text-charcoal-300">
-              Google bảo mật chặn đăng nhập trên trình duyệt trong ứng dụng. Bạn hãy bấm vào biểu tượng <strong>dấu ba chấm (•••)</strong> ở góc trên màn hình và chọn <strong>"Mở bằng trình duyệt"</strong> (Safari / Chrome) để đánh giá nhé!
-            </p>
-          </div>
-        </div>
-
-        <div v-else class="flex flex-col sm:flex-row items-center justify-between gap-3.5 bg-gradient-to-r from-gold-500/10 via-charcoal-900/40 to-transparent border border-gold-500/20 rounded-2xl p-4 mb-6">
-          <div class="flex items-center gap-3">
-            <div class="w-8 h-8 rounded-xl bg-gold-500/20 flex items-center justify-center text-gold-400 shrink-0">
-              <Icon name="mdi:shield-account-outline" class="w-4 h-4" />
+        <!-- In-App Browser (Zalo / Facebook) Guidance Warning or Login Prompt (when not logged in) -->
+        <template v-if="!user">
+          <div
+            v-if="isInAppBrowser"
+            class="flex items-start gap-3 bg-amber-500/10 border border-amber-500/30 rounded-2xl p-4 mb-6 text-left"
+          >
+            <Icon name="mdi:information-outline" class="w-5 h-5 text-amber-400 shrink-0 mt-0.5" />
+            <div class="text-xs text-ivory/90 leading-relaxed space-y-1">
+              <p class="font-semibold text-amber-300">Đang mở qua ứng dụng Zalo hoặc Facebook?</p>
+              <p class="text-charcoal-300">
+                Google bảo mật chặn đăng nhập trên trình duyệt trong ứng dụng. Bạn hãy bấm vào biểu tượng <strong>dấu ba chấm (•••)</strong> ở góc trên màn hình và chọn <strong>"Mở bằng trình duyệt"</strong> (Safari / Chrome) để đánh giá nhé!
+              </p>
             </div>
-            <p class="text-xs text-ivory/90 leading-relaxed">
-              Vui lòng <strong class="text-gold-400 font-semibold">Đăng nhập Google</strong> để gửi đánh giá và nhận diện thành viên.
-            </p>
           </div>
-          <div class="flex items-center gap-2 shrink-0 flex-wrap justify-center">
-            <button
-              class="flex items-center gap-2 px-3.5 py-2 rounded-xl bg-ivory hover:bg-gold-100 text-charcoal-950 font-semibold text-xs transition-all shadow-sm cursor-pointer active:scale-95 disabled:opacity-50"
-              :disabled="signingIn"
-              @click="handleSignIn"
-            >
-              <Icon v-if="signingIn" name="mdi:loading" class="w-4 h-4 animate-spin text-charcoal-800" />
-              <Icon v-else name="mdi:google" class="w-4 h-4 text-[#EA4335]" />
-              <span>Google</span>
-            </button>
+
+          <div v-else class="flex flex-col sm:flex-row items-center justify-between gap-3.5 bg-gradient-to-r from-gold-500/10 via-charcoal-900/40 to-transparent border border-gold-500/20 rounded-2xl p-4 mb-6">
+            <div class="flex items-center gap-3">
+              <div class="w-8 h-8 rounded-xl bg-gold-500/20 flex items-center justify-center text-gold-400 shrink-0">
+                <Icon name="mdi:shield-account-outline" class="w-4 h-4" />
+              </div>
+              <p class="text-xs text-ivory/90 leading-relaxed">
+                Vui lòng <strong class="text-gold-400 font-semibold">Đăng nhập Google</strong> để gửi đánh giá và nhận diện thành viên.
+              </p>
+            </div>
+            <div class="flex items-center gap-2 shrink-0 flex-wrap justify-center">
+              <button
+                class="flex items-center gap-2 px-3.5 py-2 rounded-xl bg-ivory hover:bg-gold-100 text-charcoal-950 font-semibold text-xs transition-all shadow-sm cursor-pointer active:scale-95 disabled:opacity-50"
+                :disabled="signingIn"
+                @click="handleSignIn"
+              >
+                <Icon v-if="signingIn" name="mdi:loading" class="w-4 h-4 animate-spin text-charcoal-800" />
+                <Icon v-else name="mdi:google" class="w-4 h-4 text-[#EA4335]" />
+                <span>Google</span>
+              </button>
+            </div>
           </div>
-        </div>
+        </template>
 
         <!-- Star rating section header & annotation -->
         <div class="mb-3 text-center">

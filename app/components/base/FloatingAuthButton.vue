@@ -1,5 +1,5 @@
 <template>
-  <div class="floating-auth-root fixed bottom-20 sm:bottom-6 left-4 sm:left-6 z-[900]">
+  <div class="floating-auth-root hidden sm:block fixed bottom-6 left-6 z-[900]">
     <!-- Popover Menu when Logged In -->
     <Transition name="auth-popover">
       <div
@@ -132,13 +132,45 @@ const isOpen = ref(false)
 const popoverRef = ref<HTMLElement | null>(null)
 const route = useRoute()
 
+const isInAppBrowser = ref(false)
+
+if (import.meta.client) {
+  const ua = navigator.userAgent || navigator.vendor || ''
+  isInAppBrowser.value = /FBAN|FBAV|FB_IAB|FB4A|Instagram|Line|Kakaotalk|Twitter|ByteLocale|TikTok|Zalo|Snapchat|MicroMessenger/i.test(ua)
+}
+
 async function handleSignIn() {
   signingIn.value = true
   try {
     const res = await signInWithGoogle()
     if (res.ok) {
       await syncUserToDb()
+    } else {
+      const swal = (await import('sweetalert2')).default
+      if (isInAppBrowser.value || res.error?.toLowerCase().includes('popup') || res.error?.toLowerCase().includes('disallowed')) {
+        await swal.fire({
+          title: 'Mở bằng trình duyệt ngoài',
+          text: 'Trình duyệt ứng dụng (Zalo/Facebook) chặn xác thực Google. Vui lòng bấm dấu ba chấm (•••) ở góc trên màn hình và chọn "Mở bằng trình duyệt" (Safari / Chrome).',
+          icon: 'info',
+          confirmButtonText: 'Đã hiểu',
+          confirmButtonColor: '#e18c1b',
+          background: '#1c1917',
+          color: '#FAF8F5',
+        })
+      } else {
+        await swal.fire({
+          title: 'Đăng nhập chưa hoàn tất',
+          text: res.error || 'Không thể kết nối với dịch vụ xác thực Google. Vui lòng thử lại.',
+          icon: 'warning',
+          confirmButtonText: 'Đóng',
+          confirmButtonColor: '#e18c1b',
+          background: '#1c1917',
+          color: '#FAF8F5',
+        })
+      }
     }
+  } catch (err) {
+    console.error('[FloatingAuth] Sign-in error:', err)
   } finally {
     signingIn.value = false
   }

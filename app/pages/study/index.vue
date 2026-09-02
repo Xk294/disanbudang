@@ -2047,6 +2047,7 @@ const route = useRoute()
 const { observeAll } = useScrollReveal()
 const swal = useSwal()
 const quizStore = useQuizStore()
+const { trackEvent } = useTrackEvent()
 const heritageStore = useHeritageStore()
 const collectionsStore = useCollectionsStore()
 const audioStore = useAudioStore()
@@ -2245,6 +2246,7 @@ function getBadgeForQuiz(badgeId?: string) {
 
 function startQuiz(quiz: HeritageQuiz) {
   quizStore.startQuiz(quiz)
+  trackEvent('quiz', 'start', quiz.heritageId)
 }
 
 // ──────────────────────────────────────────────
@@ -2445,8 +2447,8 @@ const resources = computed<SchoolResourceExtended[]>(() => {
         publishedAt: meta.publishedAt || raw.publishedAt || '',
         featured: Boolean(meta.featured ?? raw.featured),
         downloadCount: Number(meta.downloadCount ?? raw.downloadCount ?? 0),
-        fileSize: meta.fileSize || raw.fileSize,
-        fileUrl: meta.fileUrl || raw.fileUrl,
+        fileSize: meta.fileSize || raw.fileSize || staticResources.find(s => s.id === id)?.fileSize,
+        fileUrl: meta.fileUrl || raw.fileUrl || staticResources.find(s => s.id === id)?.fileUrl,
         difficulty: meta.difficulty ?? raw.difficulty ?? 1,
         motivation: meta.motivation || raw.motivation,
         keyFindings: meta.keyFindings || raw.keyFindings || [],

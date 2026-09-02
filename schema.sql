@@ -26,6 +26,9 @@ CREATE TABLE visitor_logs (
   email          TEXT,                          -- null if anonymous
   display_name   TEXT,                          -- null if anonymous
   path           TEXT NOT NULL,
+  user_agent     TEXT,                          -- raw User-Agent header
+  referrer       TEXT,                          -- document.referrer (trimmed, max 500)
+  utm_source     TEXT,                          -- ?utm_source= param
   visit_count    INTEGER NOT NULL DEFAULT 1,
   first_seen_at  DATETIME DEFAULT CURRENT_TIMESTAMP,
   last_seen_at   DATETIME DEFAULT CURRENT_TIMESTAMP,
@@ -72,3 +75,16 @@ CREATE TABLE ratings (
 CREATE INDEX IF NOT EXISTS idx_ratings_stars ON ratings(stars);
 CREATE INDEX IF NOT EXISTS idx_ratings_uid   ON ratings(uid);
 
+-- ----- Events (feature usage tracking — one row per user action) -----
+DROP TABLE IF EXISTS events;
+CREATE TABLE events (
+  id           INTEGER PRIMARY KEY AUTOINCREMENT,
+  ip           TEXT NOT NULL,
+  uid          TEXT,                            -- null if not logged in
+  tool         TEXT NOT NULL CHECK(tool IN ('quiz','tour360','audio','map','contribute')),
+  action       TEXT NOT NULL DEFAULT 'start' CHECK(action IN ('start','complete')),
+  heritage_id  TEXT,                            -- related heritage slug (optional)
+  created_at   DATETIME DEFAULT CURRENT_TIMESTAMP
+);
+CREATE INDEX IF NOT EXISTS idx_events_tool ON events(tool, created_at DESC);
+CREATE INDEX IF NOT EXISTS idx_events_ip   ON events(ip);

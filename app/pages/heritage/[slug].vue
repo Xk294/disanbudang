@@ -908,6 +908,7 @@ const audioStore = useAudioStore()
 const quizStore = useQuizStore()
 const { getCategoryLabel } = useHeritage()
 const { observeAll } = useScrollReveal()
+const { trackEvent } = useTrackEvent()
 
 const isSourceModalOpen = ref(false)
 const lightboxIndex = ref<number | null>(null)
@@ -1183,12 +1184,14 @@ function playAudio() {
   if (heritage.value?.audio) {
     audioStore.loadTrack(heritage.value.audio, heritage.value.id)
     audioStore.play()
+    trackEvent('audio', 'start', heritage.value.id)
   }
 }
 
 function startQuiz() {
   if (relatedQuiz.value) {
     quizStore.startQuiz(relatedQuiz.value)
+    trackEvent('quiz', 'start', heritage.value?.id)
   }
 }
 

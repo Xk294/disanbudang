@@ -699,6 +699,7 @@ useMuseumSeo({
 const store = useHeritageStore()
 const audioStore = useAudioStore()
 const { getCategoryLabel } = useHeritage()
+const { trackEvent } = useTrackEvent()
 
 // Track desktop vs mobile — must be client-side only
 const isDesktop = ref(false)
@@ -915,6 +916,8 @@ onMounted(() => {
     if (tourTimer) clearTimeout(tourTimer)
   })
 
+  trackEvent('map', 'start')
+
   sidebarOpen.value = isDesktop.value
   if (route.query.select) {
     selectedId.value = route.query.select as string
@@ -1062,6 +1065,7 @@ function playAudio() {
     } else {
       audioStore.loadTrack(selectedHeritage.value.audio, selectedHeritage.value.id)
       audioStore.play()
+      trackEvent('audio', 'start', selectedHeritage.value.id)
     }
   }
 }

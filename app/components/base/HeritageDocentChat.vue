@@ -1,5 +1,5 @@
 <template>
-  <div class="heritage-docent-root fixed bottom-20 sm:bottom-6 right-4 sm:right-6 z-[900]">
+  <div class="heritage-docent-root hidden sm:block fixed bottom-6 right-6 z-[900]">
     
     <!-- Launcher Floating Button -->
     <button

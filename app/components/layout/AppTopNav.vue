@@ -126,6 +126,26 @@
             <Icon name="mdi:magnify" class="w-5 h-5" />
           </button>
 
+          <!-- Mobile User Avatar Indicator (if logged in) -->
+          <button
+            v-if="user"
+            type="button"
+            class="lg:hidden p-0.5 rounded-full border border-gold-500/50 hover:border-gold-300 transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-gold-500 shrink-0"
+            aria-label="Tài khoản cá nhân"
+            @click="isMobileOpen = !isMobileOpen"
+          >
+            <img
+              v-if="user.photoURL"
+              :src="user.photoURL"
+              :alt="user.displayName ?? 'Avatar'"
+              class="w-7 h-7 rounded-full object-cover"
+              referrerpolicy="no-referrer"
+            />
+            <div v-else class="w-7 h-7 rounded-full bg-gold-500/20 flex items-center justify-center text-gold-400 text-xs font-bold">
+              {{ (user.displayName || user.email || 'U').charAt(0).toUpperCase() }}
+            </div>
+          </button>
+
           <!-- Mobile Hamburger Toggle -->
           <button
             class="lg:hidden p-2 rounded-xl text-charcoal-200 hover:bg-charcoal-900/60 transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-gold-500"
@@ -145,6 +165,97 @@
         v-if="isMobileOpen"
         class="lg:hidden max-w-[1400px] mx-auto mt-2 heritage-navbar-box rounded-2xl p-4 shadow-2xl"
       >
+        <!-- Mobile User Account Section -->
+        <div class="mb-3 pb-3 border-b border-charcoal-800/80">
+          <div v-if="user" class="p-3 bg-charcoal-900/90 border border-gold-500/30 rounded-2xl">
+            <div class="flex items-center gap-3">
+              <img
+                v-if="user.photoURL"
+                :src="user.photoURL"
+                :alt="user.displayName ?? 'Avatar'"
+                class="w-10 h-10 rounded-full object-cover border border-gold-500/50 shrink-0"
+                referrerpolicy="no-referrer"
+              />
+              <div v-else class="w-10 h-10 rounded-full bg-gold-500/20 border border-gold-500/50 flex items-center justify-center text-gold-400 font-bold shrink-0">
+                {{ (user.displayName || user.email || 'U').charAt(0).toUpperCase() }}
+              </div>
+              <div class="min-w-0 flex-1">
+                <div class="flex items-center gap-1.5 flex-wrap">
+                  <h4 class="font-heading font-bold text-sm text-ivory truncate">{{ user.displayName || 'Thành viên Di Sản' }}</h4>
+                  <span class="inline-flex items-center gap-1 text-[8.5px] font-medium text-gold-400 bg-gold-500/10 px-1.5 py-0.5 rounded-full border border-gold-500/30">
+                    <span class="w-1.5 h-1.5 rounded-full bg-emerald-400" />
+                    Đã đăng nhập
+                  </span>
+                </div>
+                <p class="text-[10px] text-charcoal-400 font-mono truncate mt-0.5">{{ user.email }}</p>
+              </div>
+            </div>
+
+            <!-- Quick account links -->
+            <div class="mt-3 pt-2.5 border-t border-charcoal-800/60 grid grid-cols-2 gap-1.5 text-xs">
+              <NuxtLink
+                to="/me"
+                class="flex items-center gap-2 px-2.5 py-1.5 rounded-lg text-charcoal-200 hover:text-gold-300 hover:bg-gold-500/10 transition-colors"
+                @click="isMobileOpen = false"
+              >
+                <Icon name="mdi:account-circle-outline" class="w-4 h-4 text-gold-400" />
+                <span>Hồ sơ cá nhân</span>
+              </NuxtLink>
+              <NuxtLink
+                v-if="isAdmin"
+                to="/admin"
+                class="flex items-center gap-2 px-2.5 py-1.5 rounded-lg text-amber-300 hover:bg-amber-500/15 transition-colors"
+                @click="isMobileOpen = false"
+              >
+                <Icon name="mdi:shield-crown" class="w-4 h-4 text-amber-400" />
+                <span>Admin</span>
+              </NuxtLink>
+              <NuxtLink
+                to="/contribute"
+                class="flex items-center gap-2 px-2.5 py-1.5 rounded-lg text-charcoal-200 hover:text-gold-300 hover:bg-gold-500/10 transition-colors"
+                @click="isMobileOpen = false"
+              >
+                <Icon name="mdi:hand-heart-outline" class="w-4 h-4 text-gold-400" />
+                <span>Đóng góp</span>
+              </NuxtLink>
+              <button
+                type="button"
+                class="flex items-center gap-2 px-2.5 py-1.5 rounded-lg text-charcoal-400 hover:text-red-400 hover:bg-red-950/20 transition-colors cursor-pointer text-left"
+                @click="handleMobileSignOut"
+              >
+                <Icon name="mdi:logout" class="w-4 h-4" />
+                <span>Đăng xuất</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- When not logged in: One-tap Google Sign-In -->
+          <button
+            v-else
+            type="button"
+            class="w-full flex items-center justify-between p-3 rounded-2xl bg-charcoal-900/80 hover:bg-charcoal-800/90 border border-charcoal-700/80 hover:border-gold-500/40 transition-all cursor-pointer text-left"
+            :disabled="signingIn"
+            @click="handleMobileSignIn"
+          >
+            <div class="flex items-center gap-3">
+              <div class="w-8 h-8 rounded-full bg-white flex items-center justify-center shadow-sm shrink-0">
+                <Icon v-if="signingIn" name="mdi:loading" class="w-4 h-4 animate-spin text-charcoal-900" />
+                <svg v-else viewBox="0 0 24 24" class="w-4 h-4" aria-hidden="true">
+                  <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/>
+                  <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/>
+                  <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"/>
+                  <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/>
+                </svg>
+              </div>
+              <div>
+                <p class="text-xs font-semibold text-ivory">Đăng nhập bằng Google</p>
+                <p class="text-[10px] text-charcoal-400">Đồng bộ hồ sơ, điểm quiz & đánh giá</p>
+              </div>
+            </div>
+            <Icon name="mdi:chevron-right" class="w-4 h-4 text-charcoal-400" />
+          </button>
+        </div>
+
         <!-- Primary: Discovery & Learning section -->
         <p class="text-[9px] uppercase tracking-[0.18em] font-bold text-charcoal-500 mb-2 px-2">Khám Phá & Học Tập</p>
         <div class="space-y-0.5 mb-3" aria-label="Menu khám phá và học tập">
@@ -336,6 +447,23 @@ const searchInput = ref<HTMLInputElement | null>(null)
 const heritageStore = useHeritageStore()
 const route = useRoute()
 const isJourneyStarted = useState<boolean>('isJourneyStarted', () => false)
+
+const { user, isAdmin, signInWithGoogle, signOut } = useAuth()
+const signingIn = ref(false)
+
+async function handleMobileSignIn() {
+  signingIn.value = true
+  try {
+    await signInWithGoogle()
+  } finally {
+    signingIn.value = false
+  }
+}
+
+async function handleMobileSignOut() {
+  await signOut()
+  isMobileOpen.value = false
+}
 
 const isNavVisible = computed(() => true)
 

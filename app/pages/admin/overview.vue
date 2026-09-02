@@ -63,6 +63,18 @@
       </div>
     </div>
 
+    <!-- Loading / Empty State -->
+    <div v-if="loading && !overviewData" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+      <div v-for="i in 4" :key="i" class="bg-stone-900/90 border border-stone-800 rounded-2xl p-5 animate-pulse">
+        <div class="w-10 h-10 rounded-xl bg-stone-800 mb-4" />
+        <div class="h-8 w-20 bg-stone-800 rounded mb-2" />
+        <div class="h-3 w-32 bg-stone-800/60 rounded" />
+      </div>
+    </div>
+
+    <!-- Data: only render when overviewData is available -->
+    <template v-if="overviewData">
+
     <!-- 1. Top KPI Cards (4 Cards) -->
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
       <!-- Card 1: Registered Users -->
@@ -262,7 +274,13 @@
             <h2 class="text-xs font-bold uppercase tracking-wider text-stone-200">
               TRAFFIC SOURCES
             </h2>
-            <span class="text-[11px] font-mono text-stone-500">last 30d · non-bot</span>
+            <NuxtLink
+              to="/admin/traffic-sources"
+              class="text-[11px] font-medium text-amber-400 hover:text-amber-300 transition-colors flex items-center gap-1 group"
+            >
+              <span>Xem chi tiết</span>
+              <Icon name="mdi:arrow-right" class="w-3.5 h-3.5 group-hover:translate-x-0.5 transition-transform" />
+            </NuxtLink>
           </div>
 
           <!-- Direct inflation alert banner -->
@@ -488,6 +506,7 @@
         </div>
       </div>
     </div>
+    </template>
   </div>
 </template>
 
@@ -566,74 +585,11 @@ const loading = ref(false)
 const selectedRange = ref('7')
 const relativeTime = ref(false)
 
-const overviewData = ref<OverviewData>({
-  range: '7',
-  kpis: {
-    registered_users: 146,
-    runs_total: 775,
-    no_account_devices: 1021,
-    suspected_farm_devices: 2,
-  },
-  funnel_devices: {
-    visited: 1170,
-    explored_features: 412,
-    explored_pct: 35,
-    completed_actions: 284,
-    completed_pct: 69,
-  },
-  funnel_accounts: {
-    accounts_created: 146,
-    deep_engaged: 38,
-    engaged_pct: 26,
-  },
-  traffic_sources: [
-    { source: 'Quét mã QR Di tích (Thực địa)', count: 320, percentage: 41, badge: 'QR' },
-    { source: 'Direct / Chia sẻ Zalo & Tin nhắn', count: 184, percentage: 24, badge: 'Direct' },
-    { source: 'Google Search (disanbudang.com)', count: 115, percentage: 15, badge: 'Search' },
-    { source: 'Facebook & Mạng xã hội', count: 82, percentage: 10, badge: 'Social' },
-    { source: 'Cổng thông tin GD Huyện Bù Đăng', count: 48, percentage: 6, badge: 'Edu' },
-    { source: 'Cốc Cốc & Trình duyệt khác', count: 26, percentage: 4, badge: 'Browser' },
-  ],
-  top_routes: [
-    { path: '/heritage/khu-bao-ton-soc-bom-bo', views: 245, percentage: 28, sparkline: [12, 15, 18, 14, 22, 28, 20, 25, 30, 22, 19, 27, 34, 38] },
-    { path: '/tour360', views: 182, percentage: 21, sparkline: [8, 10, 14, 12, 18, 15, 20, 16, 24, 19, 22, 25, 28, 30] },
-    { path: '/study/quiz', views: 134, percentage: 15, sparkline: [5, 8, 12, 9, 14, 18, 12, 15, 20, 16, 18, 22, 24, 26] },
-    { path: '/heritage/thac-dung-bu-dang', views: 98, percentage: 11, sparkline: [4, 6, 8, 10, 12, 9, 14, 11, 15, 13, 16, 18, 20, 22] },
-    { path: '/map', views: 76, percentage: 9, sparkline: [6, 7, 5, 8, 11, 9, 12, 10, 13, 11, 14, 12, 15, 17] },
-    { path: '/heritage/trang-co-bu-lach', views: 54, percentage: 6, sparkline: [3, 4, 6, 5, 8, 7, 9, 8, 10, 9, 11, 12, 13, 15] },
-  ],
-  devices_by_category: {
-    total: 1850,
-    desktop: { count: 720, percentage: 38.9 },
-    mobile: { count: 1040, percentage: 56.2 },
-    bot: { count: 90, percentage: 4.9 },
-  },
-  actions_by_hour: [
-    { hour: '00', count: 6 }, { hour: '01', count: 3 }, { hour: '02', count: 2 },
-    { hour: '03', count: 1 }, { hour: '04', count: 4 }, { hour: '05', count: 9 },
-    { hour: '06', count: 18 }, { hour: '07', count: 35 }, { hour: '08', count: 48 },
-    { hour: '09', count: 62 }, { hour: '10', count: 54 }, { hour: '11', count: 38 },
-    { hour: '12', count: 28 }, { hour: '13', count: 42 }, { hour: '14', count: 58 },
-    { hour: '15', count: 52 }, { hour: '16', count: 46 }, { hour: '17', count: 39 },
-    { hour: '18', count: 44 }, { hour: '19', count: 68 }, { hour: '20', count: 75, isPeak: true },
-    { hour: '21', count: 64 }, { hour: '22', count: 36 }, { hour: '23', count: 16 },
-  ],
-  peak_hour_info: {
-    hour: '20:00 - 21:00',
-    count: 75,
-    total_actions: 846,
-  },
-  runs_by_tool: [
-    { tool: 'quiz', name: 'Trắc Nghiệm Di Sản (Quiz)', count: 298, percentage: 42, icon: 'mdi:school-outline' },
-    { tool: 'tour360', name: 'Thực Tế Ảo 360° VR Tour', count: 215, percentage: 30, icon: 'mdi:rotate-3d-variant' },
-    { tool: 'audio', name: 'Thuyết Minh Audio Guide', count: 112, percentage: 16, icon: 'mdi:headphones' },
-    { tool: 'map', name: 'Bản Đồ Di Sản Tương Tác', count: 68, percentage: 9, icon: 'mdi:map-legend' },
-    { tool: 'contribute', name: 'Đóng Góp Tư Liệu Di Sản', count: 24, percentage: 3, icon: 'mdi:hand-heart-outline' },
-  ],
-})
+const overviewData = ref<OverviewData | null>(null)
+
 
 const maxHourlyCount = computed(() => {
-  const counts = overviewData.value.actions_by_hour.map(i => i.count)
+  const counts = overviewData.value?.actions_by_hour.map(i => i.count) ?? []
   return Math.max(...counts, 1)
 })
 

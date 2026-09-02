@@ -111,6 +111,7 @@ const nearbyHeritage = ref<Heritage | null>(null)
 const nearbyDistance = ref(0)
 const mapStyle = ref<'dark' | 'satellite'>('satellite')
 let currentBaseLayers: any[] = []
+const adminLabelMarkers: any[] = []
 
 // Brighter, more vivid colors that pop on dark map tile
 const categoryColors: Record<string, string> = {
@@ -274,6 +275,7 @@ onMounted(async () => {
   map.on('zoomend', () => {
     if (LInstance && map) {
       addMarkers(LInstance)
+      addAdminLabels(LInstance)
     }
   })
 
@@ -581,6 +583,53 @@ watch(() => props.selectedRoute, () => {
   updateRouteLine()
 }, { deep: true })
 
+const ADMIN_LABELS: { name: string; lat: number; lng: number; level: 'city' | 'ward'; sub?: string; minZoom: number; maxZoom?: number }[] = [
+  // Cấp thành phố — hiện ở zoom 7–11
+  { name: 'Thành phố Đồng Nai', lat: 11.75, lng: 107.05, level: 'city', minZoom: 7, maxZoom: 11 },
+  // Các phường/xã lớn khu vực Bình Phước cũ — hiện từ zoom 9
+  { name: 'Lộc Ninh',   lat: 11.835, lng: 106.583, level: 'ward', sub: 'phường', minZoom: 9 },
+  { name: 'Bình Long',  lat: 11.640, lng: 106.600, level: 'ward', sub: 'phường', minZoom: 9 },
+  { name: 'Phước Long', lat: 11.857, lng: 106.997, level: 'ward', sub: 'phường', minZoom: 9 },
+  { name: 'Bình Phước', lat: 11.537, lng: 106.895, level: 'ward', sub: 'phường', minZoom: 9 },
+  { name: 'Đồng Xoài', lat: 11.515, lng: 106.915, level: 'ward', sub: 'phường', minZoom: 10 },
+  { name: 'Chơn Thành', lat: 11.420, lng: 106.683, level: 'ward', sub: 'phường', minZoom: 9 },
+  { name: 'Bù Đăng',   lat: 11.787, lng: 107.170, level: 'ward', sub: 'xã',     minZoom: 9 },
+  { name: 'Bù Gia Mập', lat: 12.098, lng: 107.073, level: 'ward', sub: 'xã',    minZoom: 9 },
+  { name: 'Bù Đốp',    lat: 11.940, lng: 106.837, level: 'ward', sub: 'xã',     minZoom: 9 },
+  { name: 'Phú Riềng', lat: 11.715, lng: 107.040, level: 'ward', sub: 'xã',     minZoom: 9 },
+]
+
+function clearAdminLabels() {
+  adminLabelMarkers.forEach((m) => m.remove())
+  adminLabelMarkers.length = 0
+}
+
+function addAdminLabels(L: any) {
+  clearAdminLabels()
+  if (!map || !L) return
+  const zoom = map.getZoom()
+
+  ADMIN_LABELS.forEach((label) => {
+    if (zoom < label.minZoom) return
+    if (label.maxZoom !== undefined && zoom > label.maxZoom) return
+
+    const isCity = label.level === 'city'
+    const html = isCity
+      ? `<div style="font-family:inherit;font-size:12px;font-weight:700;color:#F5F1EA;text-shadow:0 0 10px rgba(0,0,0,1),0 1px 4px rgba(0,0,0,0.9);letter-spacing:0.12em;white-space:nowrap;text-transform:uppercase;pointer-events:none;user-select:none;">Thành phố Đồng Nai</div>`
+      : `<div style="font-family:inherit;text-align:center;pointer-events:none;user-select:none;"><div style="font-size:11px;font-weight:600;color:#ffffff;text-shadow:0 0 6px rgba(0,0,0,1),0 1px 3px rgba(0,0,0,0.9);white-space:nowrap;letter-spacing:0.02em;">${label.name}</div><div style="font-size:8.5px;font-weight:500;color:#C7A664;text-shadow:0 0 4px rgba(0,0,0,0.9);letter-spacing:0.05em;margin-top:1px;">${label.sub}</div></div>`
+
+    const icon = L.divIcon({
+      html,
+      className: 'admin-label-host',
+      iconSize: isCity ? [170, 18] : [90, 26],
+      iconAnchor: isCity ? [85, 9] : [45, 13],
+    })
+
+    const marker = L.marker([label.lat, label.lng], { icon, interactive: false, keyboard: false }).addTo(map)
+    adminLabelMarkers.push(marker)
+  })
+}
+
 function applyMapStyle(style: 'dark' | 'satellite') {
   if (!map || !LInstance) return
 
@@ -613,18 +662,8 @@ function applyMapStyle(style: 'dark' | 'satellite') {
       }
     )
 
-    // Esri Dark Gray Canvas — Reference Labels (sharp, readable place names)
-    const refLayer = LInstance.tileLayer(
-      'https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Dark_Gray_Reference/MapServer/tile/{z}/{y}/{x}',
-      {
-        ...tileOptions,
-        opacity: 0.95,
-      }
-    )
-
     base.addTo(map)
-    refLayer.addTo(map)
-    currentBaseLayers = [base, refLayer]
+    currentBaseLayers = [base]
   } else {
     // Esri World Imagery (Satellite view of forests, rivers, terrain)
     const sat = LInstance.tileLayer(
@@ -636,19 +675,10 @@ function applyMapStyle(style: 'dark' | 'satellite') {
       }
     )
 
-    // Reference labels on satellite
-    const labels = LInstance.tileLayer(
-      'https://server.arcgisonline.com/ArcGIS/rest/services/Reference/World_Boundaries_and_Places/MapServer/tile/{z}/{y}/{x}',
-      {
-        ...tileOptions,
-        opacity: 0.85,
-      }
-    )
-
     sat.addTo(map)
-    labels.addTo(map)
-    currentBaseLayers = [sat, labels]
+    currentBaseLayers = [sat]
   }
+  addAdminLabels(LInstance)
 }
 
 function toggleMapStyle() {
@@ -657,6 +687,7 @@ function toggleMapStyle() {
 }
 
 onUnmounted(() => {
+  clearAdminLabels()
   resizeObserver?.disconnect()
   resizeObserver = null
   currentBaseLayers.forEach((l) => {
@@ -680,7 +711,8 @@ onUnmounted(() => {
 /* Marker host — no Leaflet default border */
 :deep(.leaflet-div-icon),
 :deep(.heritage-marker-host),
-:deep(.heritage-cluster-host) {
+:deep(.heritage-cluster-host),
+:deep(.admin-label-host) {
   background: transparent !important;
   border: none !important;
   box-shadow: none !important;
