@@ -13,11 +13,13 @@
 
         <!-- Skip button -->
         <button
-          class="skip-btn absolute top-5 right-5 sm:top-7 sm:right-8 z-30 inline-flex items-center gap-2 px-4 py-2 rounded-full border border-[#D4AF37]/40 bg-[#120B04]/80 backdrop-blur-md text-[#FFF0C2] hover:text-white hover:border-[#D4AF37] hover:bg-[#D4AF37]/20 text-xs sm:text-sm uppercase tracking-[0.2em] font-heading transition-all duration-300 shadow-[0_4px_20px_rgba(0,0,0,0.6)] hover:shadow-[0_0_20px_rgba(212,175,55,0.4)]"
+          class="skip-btn absolute top-4 right-4 sm:top-7 sm:right-8 z-40 inline-flex items-center gap-2.5 px-4 sm:px-5 py-2.5 rounded-full border border-[#D4AF37]/70 bg-[#120B04]/90 backdrop-blur-xl text-[#FFF0C2] hover:text-white hover:border-[#D4AF37] hover:bg-[#D4AF37]/30 text-xs sm:text-sm uppercase tracking-[0.18em] font-heading font-bold transition-all duration-300 shadow-[0_4px_24px_rgba(0,0,0,0.8)] hover:shadow-[0_0_28px_rgba(212,175,55,0.6)] hover:scale-105 active:scale-95"
           @click="dismissIntro"
+          title="Vào thẳng Bảo Tàng Số"
         >
-          <span>Bỏ Qua</span>
-          <svg class="w-3.5 h-3.5 sm:w-4 sm:h-4 text-[#D4AF37]" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8">
+          <span>Khám Phá Ngay</span>
+          <span class="w-1.5 h-1.5 rounded-full bg-[#D4AF37] animate-ping" />
+          <svg class="w-4 h-4 text-[#D4AF37] transition-transform duration-300 group-hover:translate-x-1" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2">
             <path d="M3 8h10M9 4l4 4-4 4" stroke-linecap="round" stroke-linejoin="round" />
           </svg>
         </button>

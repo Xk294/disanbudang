@@ -249,17 +249,16 @@ onMounted(async () => {
     wheelPxPerZoomLevel: 120,
   })
 
-  // OpenStreetMap với Dark Theme Filter — 100% miễn phí, ổn định, không watermark
-  const baseTileLayer = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright" style="color:#C7A664" target="_blank" rel="noopener">OpenStreetMap</a>',
-    subdomains: ['a', 'b', 'c'],
-    maxZoom: 18,
+  // CartoDB Dark Matter Tile Layer — Bản địa Dark Mode, siêu mượt, không cần CSS filter CPU
+  const baseTileLayer = L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/dark_all/{z}/{x}/{y}{r}.png', {
+    attribution: '&copy; <a href="https://carto.com/" style="color:#C7A664" target="_blank" rel="noopener">CARTO</a> &copy; <a href="https://www.openstreetmap.org/copyright" style="color:#C7A664" target="_blank" rel="noopener">OpenStreetMap</a>',
+    subdomains: ['a', 'b', 'c', 'd'],
+    maxZoom: 19,
     minZoom: 7,
-    keepBuffer: 3,
+    keepBuffer: 4,
     updateWhenZooming: false,
     updateWhenIdle: true,
-    updateInterval: 120,
-    className: 'dark-map-tiles',
+    updateInterval: 80,
     crossOrigin: true,
   })
 
@@ -681,14 +680,8 @@ onUnmounted(() => {
   height: 34px !important;
   line-height: 34px !important;
 }
-/* Dark mode filter CHỈ áp dụng lên ảnh tile - tránh double invert và không can thiệp transform của Leaflet */
-:deep(.dark-map-tiles .leaflet-tile) {
-  filter: invert(100%) hue-rotate(180deg) brightness(85%) contrast(90%);
-  transition: opacity 0.15s ease-out;
-}
-
 :deep(.leaflet-container) {
-  background: #14120f !important;
+  background: #0d0f12 !important;
   font-family: inherit;
 }
 </style>

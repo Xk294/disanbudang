@@ -344,27 +344,45 @@
 
       <!-- Map Area -->
       <div class="flex-1 relative">
-        <!-- Floating Timeline Bar on Map Top -->
-        <div class="absolute top-4 left-4 z-[400] hidden sm:flex items-center gap-1.5 p-1.5 rounded-2xl bg-charcoal-950/85 backdrop-blur-xl border border-charcoal-800 shadow-xl">
-          <div class="flex items-center gap-1 px-2.5 py-1 text-3xs font-bold uppercase tracking-wider text-gold-400 border-r border-charcoal-800">
-            <Icon name="mdi:timeline-clock-outline" class="w-3.5 h-3.5" />
-            <span>Thời Kỳ</span>
+        <!-- Floating Time-Travel GIS 4D Control Bar on Map Top -->
+        <div class="absolute top-4 left-4 z-[400] hidden sm:flex items-center gap-1.5 p-1.5 rounded-2xl bg-charcoal-950/90 backdrop-blur-2xl border border-gold-500/30 shadow-2xl shadow-black/80">
+          <div class="flex items-center gap-1.5 px-3 py-1.5 text-3xs font-bold uppercase tracking-wider text-gold-400 border-r border-charcoal-800">
+            <Icon name="mdi:history" class="w-4 h-4 text-gold-400 animate-pulse" />
+            <span class="font-heading tracking-widest">Time-Travel 4D</span>
           </div>
           <button
-            class="px-3 py-1.5 rounded-xl text-3xs font-bold uppercase tracking-wider transition-all duration-200 cursor-pointer"
+            class="px-3.5 py-1.5 rounded-xl text-3xs font-bold uppercase tracking-wider transition-all duration-200 cursor-pointer"
             :class="activePeriod === '' ? 'bg-gold-500 text-charcoal-950 shadow-md font-extrabold' : 'text-charcoal-300 hover:text-ivory hover:bg-charcoal-850'"
             @click="activePeriod = ''"
           >
-            Tất Cả
+            Toàn Cảnh
           </button>
           <button
-            v-for="per in periods"
-            :key="per.id"
-            class="px-3 py-1.5 rounded-xl text-3xs font-bold uppercase tracking-wider transition-all duration-200 cursor-pointer"
-            :class="activePeriod === per.id ? 'bg-gold-500 text-charcoal-950 shadow-md font-extrabold' : 'text-charcoal-300 hover:text-ivory hover:bg-charcoal-850'"
-            @click="activePeriod = per.id"
+            class="px-3.5 py-1.5 rounded-xl text-3xs font-bold uppercase tracking-wider transition-all duration-200 cursor-pointer flex items-center gap-1.5"
+            :class="activePeriod === 'khang-chien' ? 'bg-red-500 text-white shadow-md font-extrabold shadow-red-500/30' : 'text-charcoal-300 hover:text-red-300 hover:bg-charcoal-850'"
+            @click="activePeriod = 'khang-chien'"
+            title="Thời kỳ Kháng chiến (1960 - 1975)"
           >
-            {{ per.label }}
+            <Icon name="mdi:shield-cross" class="w-3.5 h-3.5" />
+            <span>1965 – 1975</span>
+          </button>
+          <button
+            class="px-3.5 py-1.5 rounded-xl text-3xs font-bold uppercase tracking-wider transition-all duration-200 cursor-pointer flex items-center gap-1.5"
+            :class="activePeriod === 'co-dai' ? 'bg-amber-600 text-white shadow-md font-extrabold shadow-amber-600/30' : 'text-charcoal-300 hover:text-amber-300 hover:bg-charcoal-850'"
+            @click="activePeriod = 'co-dai'"
+            title="Thời kỳ Cổ đại & Bản sắc truyền thống"
+          >
+            <Icon name="mdi:music-clef-treble" class="w-3.5 h-3.5" />
+            <span>Văn Hóa Cổ Truyền</span>
+          </button>
+          <button
+            class="px-3.5 py-1.5 rounded-xl text-3xs font-bold uppercase tracking-wider transition-all duration-200 cursor-pointer flex items-center gap-1.5"
+            :class="activePeriod === 'hien-dai' ? 'bg-emerald-600 text-white shadow-md font-extrabold shadow-emerald-600/30' : 'text-charcoal-300 hover:text-emerald-300 hover:bg-charcoal-850'"
+            @click="activePeriod = 'hien-dai'"
+            title="Thời kỳ Hiện đại (Bảo tồn & Sinh thái)"
+          >
+            <Icon name="mdi:pine-tree" class="w-3.5 h-3.5" />
+            <span>Sinh Thái Hiện Đại</span>
           </button>
         </div>
 

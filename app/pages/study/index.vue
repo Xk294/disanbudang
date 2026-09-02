@@ -83,9 +83,9 @@
         </p>
 
         <!-- Hero CTAs -->
-        <div class="flex flex-col sm:flex-row items-center justify-center gap-4" style="animation: fadeSlideUp 0.9s 0.35s cubic-bezier(0.16,1,0.3,1) both">
+        <div class="flex flex-col sm:flex-row items-center justify-center gap-3.5" style="animation: fadeSlideUp 0.9s 0.35s cubic-bezier(0.16,1,0.3,1) both">
           <button
-            class="group px-8 py-4 bg-gold-500 hover:bg-gold-400 text-charcoal-950 font-bold rounded-2xl text-sm uppercase tracking-wider transition-all duration-300 hover:shadow-gold/30 hover:shadow-xl hover:-translate-y-0.5 flex items-center gap-2"
+            class="group px-7 py-3.5 bg-gold-500 hover:bg-gold-400 text-charcoal-950 font-bold rounded-2xl text-xs sm:text-sm uppercase tracking-wider transition-all duration-300 hover:shadow-gold/30 hover:shadow-xl hover:-translate-y-0.5 flex items-center gap-2"
             @click="scrollToContent(); activeTab = 'lessons'"
             aria-label="Bắt đầu hành trình học tập"
           >
@@ -93,12 +93,20 @@
             Bắt đầu hành trình
           </button>
           <button
-            class="group px-8 py-4 bg-charcoal-950/60 backdrop-blur-xl hover:bg-charcoal-900/80 border border-charcoal-700 hover:border-gold-500/50 text-ivory font-bold rounded-2xl text-sm uppercase tracking-wider transition-all duration-300 hover:-translate-y-0.5 flex items-center gap-2"
+            class="group px-6 py-3.5 bg-charcoal-900/90 hover:bg-charcoal-800 border border-gold-500/40 text-gold-300 font-bold rounded-2xl text-xs sm:text-sm uppercase tracking-wider transition-all duration-300 hover:-translate-y-0.5 flex items-center gap-2 shadow-lg shadow-gold-500/10"
+            @click="isCertificateModalOpen = true"
+            aria-label="Nhận Chứng Chỉ Số Nhà Khám Phá"
+          >
+            <Icon name="mdi:certificate-outline" class="w-5 h-5 text-gold-400" />
+            Nhận Chứng Chỉ Số
+          </button>
+          <button
+            class="group px-6 py-3.5 bg-charcoal-950/60 backdrop-blur-xl hover:bg-charcoal-900/80 border border-charcoal-700 hover:border-gold-500/50 text-ivory font-bold rounded-2xl text-xs sm:text-sm uppercase tracking-wider transition-all duration-300 hover:-translate-y-0.5 flex items-center gap-2"
             @click="searchOverlayOpen = true"
             aria-label="Mở tìm kiếm nhanh"
           >
             <Icon name="mdi:magnify" class="w-5 h-5" />
-            Tìm kiếm nhanh
+            Tìm nhanh
             <kbd class="hidden md:inline-flex items-center px-1.5 py-0.5 rounded text-3xs bg-charcoal-800 border border-charcoal-700 text-charcoal-400 font-mono">{{ studyShortcutKey }}</kbd>
           </button>
         </div>
@@ -1943,6 +1951,14 @@
         </div>
       </div>
     </Transition>
+
+    <!-- Certificate Generator Modal -->
+    <CertificateGeneratorModal
+      :is-open="isCertificateModalOpen"
+      :default-name="'Ban Giám Khảo Cuộc Thi'"
+      :quiz-score="quizStore.score"
+      @close="isCertificateModalOpen = false"
+    />
   </div>
 </template>
 
@@ -1981,7 +1997,10 @@ import {
 } from '~/data/studyData'
 
 // Inject EducationalOrganization + LearningResource schema
+definePageMeta({ layout: 'default' })
 useStudySeo()
+
+const isCertificateModalOpen = ref(false)
 
 const route = useRoute()
 const { observeAll } = useScrollReveal()

@@ -20,6 +20,8 @@
     <QuizPlayModal />
     <!-- Scroll To Top button -->
     <ScrollToTop />
+    <!-- Global Zero-API Heritage Docent Chat -->
+    <HeritageDocentChat />
   </div>
 </template>
 

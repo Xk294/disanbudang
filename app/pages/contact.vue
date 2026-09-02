@@ -28,7 +28,8 @@
             </div>
             <div>
               <p class="text-charcoal-400 text-xs uppercase tracking-wider mb-1">{{ info.label }}</p>
-              <p class="font-medium text-ivory text-sm">{{ info.value }}</p>
+              <a v-if="info.href" :href="info.href" class="font-medium text-ivory text-sm hover:text-gold-300 transition-colors">{{ info.value }}</a>
+              <p v-else class="font-medium text-ivory text-sm">{{ info.value }}</p>
             </div>
           </div>
 
@@ -153,9 +154,9 @@ const subjectLabels: Record<string, string> = {
 }
 
 const contactInfo = [
-  { icon: 'mdi:map-marker-outline', label: 'Địa Chỉ', value: 'Thành Phố Đồng Nai, Việt Nam' },
-  { icon: 'mdi:phone-outline', label: 'Số Điện Thoại', value: '0355 356 294' },
-  { icon: 'mdi:email-outline', label: 'Email', value: 'nguyenxuankiet294@gmail.com' },
+  { icon: 'mdi:map-marker-outline', label: 'Địa Chỉ', value: 'Thành Phố Đồng Nai, Việt Nam', href: null },
+  { icon: 'mdi:phone-outline', label: 'Số Điện Thoại', value: '0355 356 294', href: 'tel:0355356294' },
+  { icon: 'mdi:email-outline', label: 'Email', value: 'nguyenxuankiet294@gmail.com', href: `mailto:${CONTACT_EMAIL}` },
 ]
 
 function handleSubmit() {

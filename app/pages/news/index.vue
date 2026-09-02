@@ -94,6 +94,10 @@ useMuseumSeo({
 })
 
 useHead({
+  meta: [{ name: 'robots', content: 'noindex,nofollow' }],
+})
+
+useHead({
   script: EVENTS.map(event => ({
     type: 'application/ld+json',
     innerHTML: JSON.stringify({

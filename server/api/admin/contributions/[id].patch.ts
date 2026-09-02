@@ -14,8 +14,8 @@ export default defineEventHandler(async (event) => {
   const body = await readBody(event)
   const { status, review_note } = body ?? {}
 
-  if (!status || !['approved', 'rejected'].includes(status)) {
-    throw createError({ statusCode: 400, statusMessage: 'status must be approved or rejected' })
+  if (!status || !['approved', 'rejected', 'pending'].includes(status)) {
+    throw createError({ statusCode: 400, statusMessage: 'status must be approved, rejected or pending' })
   }
 
   const db = event.context.cloudflare?.env?.DB

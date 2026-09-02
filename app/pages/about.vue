@@ -514,8 +514,12 @@
                 </span>
               </div>
             </div>
-
           </div>
+        </div>
+
+        <!-- Social Impact Dashboard Section -->
+        <div class="mb-20 reveal">
+          <SocialImpactDashboard />
         </div>
 
         <!-- Roadmap timeline -->

@@ -596,6 +596,33 @@
         </div>
       </div>
     </div>
+
+    <!-- ===== TAB: HÒA ÂM & WEBAR 3D ===== -->
+    <div v-show="activeMainTab === 'soundscape'" class="container-heritage py-10 space-y-12">
+      <!-- 1. Soundscape Mixer -->
+      <SoundscapeMixer />
+
+      <!-- 2. WebAR 3D Showcase Banner -->
+      <div class="bg-gradient-to-r from-charcoal-950 via-charcoal-900 to-charcoal-950 border border-gold-500/30 rounded-3xl p-6 sm:p-8 flex flex-col lg:flex-row items-center justify-between gap-6 shadow-2xl">
+        <div class="space-y-2 max-w-xl">
+          <span class="text-3xs uppercase font-bold tracking-widest text-gold-400 bg-gold-500/10 px-3 py-1 rounded-full border border-gold-500/30">Công Nghệ Thực Tế Ảo Tăng Cường</span>
+          <h3 class="font-heading font-bold text-xl sm:text-2xl text-ivory">Chiếu Hiện Vật 3D Lên Bàn Bằng WebAR</h3>
+          <p class="text-xs sm:text-sm text-charcoal-300 leading-relaxed">
+            Xem mô hình 3D xoay 360°, nghe âm thanh phát ra khi chạm vào Đàn Đá, Cồng Chiêng S'Tiêng, Gùi Thổ Cẩm hoặc chiếu trực tiếp lên mặt bàn của bạn bằng camera điện thoại.
+          </p>
+        </div>
+        <button
+          class="btn-primary px-7 py-3.5 text-sm font-bold flex items-center gap-2.5 shadow-xl shadow-gold-500/20 shrink-0"
+          @click="isARModalOpen = true"
+        >
+          <Icon name="mdi:cube-scan" class="w-5 h-5" />
+          <span>Mở Không Gian WebAR 3D</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- WebAR Modal -->
+    <HeritageWebARModal :is-open="isARModalOpen" @close="isARModalOpen = false" />
   </div>
 </template>
 
@@ -653,6 +680,7 @@ const sortOrder = ref('views')
 const isLoading = ref(false)
 const activeMainTab = ref(route.query.tab === 'community' ? 'community' : 'heritage')
 const activeCommunityTab = ref('all')
+const isARModalOpen = ref(false)
 
 watch(() => route.query.tab, (newTab) => {
   if (newTab === 'community' || newTab === 'heritage') {
@@ -663,6 +691,7 @@ watch(() => route.query.tab, (newTab) => {
 const mainTabs = computed(() => [
   { id: 'heritage', label: 'Di Sản', icon: 'mdi:archive-outline', count: store.totalCount },
   { id: 'community', label: 'Ký Ức Cộng Đồng', icon: 'mdi:account-group-outline', count: COMMUNITY_POSTS.length },
+  { id: 'soundscape', label: 'Hòa Âm & WebAR 3D', icon: 'mdi:waveform', count: 'Mới' },
 ])
 
 const communityTabs = [

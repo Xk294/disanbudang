@@ -187,7 +187,7 @@ const otherStories = computed(() => {
 
 const categoryLabels: Record<NewsCategory, string> = {
   'su-kien': 'Sự Kiện',
-  'tin-tuc': 'Ẩm Thực & Đời Sống',
+  'tin-tuc': 'Ẩm Thực & Ký Ức',
   'nghien-cuu': 'Nghiên Cứu Chuyên Sâu',
   'hoat-dong': 'Hoạt Động',
 }

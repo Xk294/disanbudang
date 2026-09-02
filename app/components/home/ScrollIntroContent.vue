@@ -7,9 +7,9 @@
     </div>
 
     <!-- Title: Guaranteed 1 Line with clamp() and whitespace-nowrap -->
-    <h1 class="font-heading font-black tracking-wide whitespace-nowrap text-[clamp(1.15rem,3.3vw,2.5rem)] leading-tight royal-title-gold drop-shadow-[0_4px_24px_rgba(212,175,55,0.45)] mb-2 sm:mb-3">
+    <p class="font-heading font-black tracking-wide whitespace-nowrap text-[clamp(1.15rem,3.3vw,2.5rem)] leading-tight royal-title-gold drop-shadow-[0_4px_24px_rgba(212,175,55,0.45)] mb-2 sm:mb-3">
       Bảo Tàng Số Di Sản Bù Đăng
-    </h1>
+    </p>
 
     <!-- Gold divider -->
     <div class="divider flex items-center justify-center gap-3 sm:gap-4 mb-2 sm:mb-3 w-full max-w-xs">

@@ -129,6 +129,12 @@
 import type { NewsCategory } from '~/types'
 import { NEWS_ARTICLES } from '~/data/posts'
 
+definePageMeta({ layout: 'default' })
+
+useHead({
+  meta: [{ name: 'robots', content: 'noindex,nofollow' }],
+})
+
 const route = useRoute()
 const slug = computed(() => route.params.slug as string)
 
