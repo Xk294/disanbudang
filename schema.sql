@@ -63,7 +63,7 @@ CREATE TABLE ratings (
   display_name  TEXT,
   photo_url     TEXT,
   ip            TEXT,
-  stars         INTEGER NOT NULL CHECK(stars BETWEEN 1 AND 5),
+  stars         INTEGER CHECK(stars IS NULL OR (stars BETWEEN 1 AND 5)),
   comment       TEXT CHECK(length(comment) <= 500),
   created_at    DATETIME DEFAULT CURRENT_TIMESTAMP,
   updated_at    DATETIME DEFAULT CURRENT_TIMESTAMP,

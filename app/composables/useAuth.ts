@@ -64,21 +64,6 @@ export function useAuth() {
     }
   }
 
-  /** Sign in with Facebook popup. Returns Result<User>. */
-  async function signInWithFacebook(): Promise<Result<User>> {
-    if (!import.meta.client) return { ok: false, error: 'Client only' }
-    const { $auth } = useNuxtApp() as { $auth: import('firebase/auth').Auth }
-    try {
-      const { FacebookAuthProvider, signInWithPopup } = await import('firebase/auth')
-      const provider = new FacebookAuthProvider()
-      const result = await signInWithPopup($auth, provider)
-      user.value = result.user
-      return { ok: true, data: result.user }
-    } catch (e: unknown) {
-      const msg = e instanceof Error ? e.message : 'Đăng nhập Facebook thất bại'
-      return { ok: false, error: msg }
-    }
-  }
 
   /** Sign out from Firebase. */
   async function signOut() {
@@ -111,7 +96,6 @@ export function useAuth() {
     initAuthListener,
     getIdToken,
     signInWithGoogle,
-    signInWithFacebook,
     signOut,
     syncUserToDb,
   }

@@ -60,9 +60,24 @@
         <h3 class="font-heading font-semibold text-ivory text-lg mb-2 text-center">
           {{ submitted ? '✨ Cảm ơn bạn đã gửi đánh giá!' : (hasExistingRating ? 'Cập Nhật Đánh Giá Của Bạn' : 'Gửi Đánh Giá Của Bạn') }}
         </h3>
-        <p class="text-center text-xs text-charcoal-400 mb-6">
+        <p class="text-center text-xs text-charcoal-400 mb-4">
           {{ hasExistingRating ? 'Bạn đã từng đánh giá dự án này. Bạn có thể cập nhật lại số sao và cảm nhận bên dưới.' : 'Mỗi đóng góp ý kiến của bạn là động lực to lớn giúp bảo tồn và lan tỏa di sản Bù Đăng.' }}
         </p>
+
+        <!-- 3 Flexible Options Guidance Pill -->
+        <div class="flex items-center justify-center mb-6">
+          <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-charcoal-950/60 border border-charcoal-800 text-[11px] text-charcoal-400 text-center flex-wrap justify-center shadow-inner">
+            <span class="text-gold-400 font-semibold flex items-center gap-1">
+              <Icon name="mdi:check-decagram-outline" class="w-3.5 h-3.5" />
+              3 phương án gửi:
+            </span>
+            <span>1. Chỉ đánh giá sao</span>
+            <span class="text-charcoal-700">•</span>
+            <span>2. Chỉ gửi nhận xét</span>
+            <span class="text-charcoal-700">•</span>
+            <span>3. Gửi cả sao & nhận xét</span>
+          </div>
+        </div>
 
         <!-- User Authentication Status Banner -->
         <div v-if="user" class="flex items-center justify-between bg-charcoal-950/60 border border-charcoal-800 rounded-2xl p-3.5 mb-6">
@@ -93,52 +108,70 @@
           </button>
         </div>
 
+        <!-- In-App Browser (Zalo / Facebook) Guidance Warning -->
+        <div
+          v-if="isInAppBrowser && !user"
+          class="flex items-start gap-3 bg-amber-500/10 border border-amber-500/30 rounded-2xl p-4 mb-6 text-left"
+        >
+          <Icon name="mdi:information-outline" class="w-5 h-5 text-amber-400 shrink-0 mt-0.5" />
+          <div class="text-xs text-ivory/90 leading-relaxed space-y-1">
+            <p class="font-semibold text-amber-300">Đang mở qua ứng dụng Zalo hoặc Facebook?</p>
+            <p class="text-charcoal-300">
+              Google bảo mật chặn đăng nhập trên trình duyệt trong ứng dụng. Bạn hãy bấm vào biểu tượng <strong>dấu ba chấm (•••)</strong> ở góc trên màn hình và chọn <strong>"Mở bằng trình duyệt"</strong> (Safari / Chrome) để đánh giá nhé!
+            </p>
+          </div>
+        </div>
+
         <div v-else class="flex flex-col sm:flex-row items-center justify-between gap-3.5 bg-gradient-to-r from-gold-500/10 via-charcoal-900/40 to-transparent border border-gold-500/20 rounded-2xl p-4 mb-6">
           <div class="flex items-center gap-3">
             <div class="w-8 h-8 rounded-xl bg-gold-500/20 flex items-center justify-center text-gold-400 shrink-0">
               <Icon name="mdi:shield-account-outline" class="w-4 h-4" />
             </div>
             <p class="text-xs text-ivory/90 leading-relaxed">
-              Vui lòng <strong class="text-gold-400 font-semibold">Đăng nhập</strong> (Google hoặc Facebook) để gửi đánh giá và nhận diện thành viên.
+              Vui lòng <strong class="text-gold-400 font-semibold">Đăng nhập Google</strong> để gửi đánh giá và nhận diện thành viên.
             </p>
           </div>
           <div class="flex items-center gap-2 shrink-0 flex-wrap justify-center">
             <button
               class="flex items-center gap-2 px-3.5 py-2 rounded-xl bg-ivory hover:bg-gold-100 text-charcoal-950 font-semibold text-xs transition-all shadow-sm cursor-pointer active:scale-95 disabled:opacity-50"
-              :disabled="signingInProvider !== null"
-              @click="handleSignIn('google')"
+              :disabled="signingIn"
+              @click="handleSignIn"
             >
-              <Icon v-if="signingInProvider === 'google'" name="mdi:loading" class="w-4 h-4 animate-spin text-charcoal-800" />
+              <Icon v-if="signingIn" name="mdi:loading" class="w-4 h-4 animate-spin text-charcoal-800" />
               <Icon v-else name="mdi:google" class="w-4 h-4 text-[#EA4335]" />
               <span>Google</span>
-            </button>
-            <button
-              class="flex items-center gap-2 px-3.5 py-2 rounded-xl bg-[#1877F2] hover:bg-[#166fe5] text-white font-semibold text-xs transition-all shadow-sm cursor-pointer active:scale-95 disabled:opacity-50"
-              :disabled="signingInProvider !== null"
-              @click="handleSignIn('facebook')"
-            >
-              <Icon v-if="signingInProvider === 'facebook'" name="mdi:loading" class="w-4 h-4 animate-spin text-white" />
-              <Icon v-else name="mdi:facebook" class="w-4 h-4 text-white" />
-              <span>Facebook</span>
             </button>
           </div>
         </div>
 
+        <!-- Star rating section header & annotation -->
+        <div class="mb-3 text-center">
+          <div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-charcoal-950/80 border border-charcoal-800 text-[11px] text-charcoal-300 font-semibold mb-1.5">
+            <Icon name="mdi:star-shooting-outline" class="w-3.5 h-3.5 text-gold-400" />
+            <span>ĐÁNH GIÁ MỨC ĐỘ HÀI LÒNG BẰNG SỐ SAO</span>
+          </div>
+          <p class="text-xs text-charcoal-400">
+            Chạm hoặc bấm vào sao để chấm điểm
+          </p>
+        </div>
+
         <!-- Star picker -->
-        <div class="flex justify-center gap-2 mb-4">
+        <div class="flex items-center justify-center gap-2 mb-2">
           <button
             v-for="s in 5"
             :key="s"
-            class="w-11 h-11 rounded-xl transition-all duration-200 hover:scale-110 active:scale-95 flex items-center justify-center cursor-pointer"
+            type="button"
+            class="w-11 h-11 rounded-2xl bg-charcoal-950/40 hover:bg-charcoal-800/60 border border-transparent hover:border-gold-500/30 transition-all duration-200 hover:scale-110 active:scale-95 flex items-center justify-center cursor-pointer"
             :aria-label="`${s} sao`"
+            :title="`${s} sao - ${STAR_LABELS[s] || ''}`"
             :disabled="submitting"
-            @click="selectedStars = s"
+            @click="toggleStar(s)"
             @mouseenter="hoverStars = s"
             @mouseleave="hoverStars = 0"
           >
             <Icon
               :name="s <= (hoverStars || selectedStars) ? 'mdi:star' : 'mdi:star-outline'"
-              class="w-8 h-8 transition-all duration-150"
+              class="w-7 h-7 transition-all duration-150"
               :class="s <= (hoverStars || selectedStars)
                 ? 'text-gold-400 drop-shadow-[0_0_8px_rgba(212,175,55,0.6)]'
                 : 'text-charcoal-600 hover:text-charcoal-400'"
@@ -146,16 +179,37 @@
           </button>
         </div>
 
-        <!-- Star label -->
-        <p class="text-center text-xs text-charcoal-400 font-medium h-4 mb-6 transition-all duration-200">
-          {{ starLabel }}
-        </p>
+        <!-- Star status / feedback label with deselect option -->
+        <div class="flex items-center justify-center min-h-[22px] mb-6 transition-all duration-200 text-center">
+          <div
+            v-if="hoverStars || selectedStars"
+            class="inline-flex items-center gap-1.5 text-xs font-medium text-gold-400"
+          >
+            <Icon name="mdi:check-circle" class="w-3.5 h-3.5 text-gold-500 shrink-0" />
+            <span>{{ starLabel }}</span>
+            <button
+              v-if="selectedStars > 0"
+              type="button"
+              class="ml-1 text-[11px] text-charcoal-400 hover:text-rose-400 underline transition-colors cursor-pointer"
+              title="Bỏ chọn để chỉ gửi nhận xét bằng văn bản"
+              @click="selectedStars = 0"
+            >
+              (Bỏ chọn)
+            </button>
+          </div>
+          <span v-else class="text-[11px] text-charcoal-500 italic">
+            Chưa chọn số sao — Bạn có thể chọn sao hoặc chỉ nhập nhận xét bên dưới
+          </span>
+        </div>
 
         <!-- Comment textarea -->
         <div class="mb-6">
-          <label class="block text-xs font-semibold uppercase tracking-wider text-charcoal-500 mb-2">
-            Nhận xét & Góp ý (tối đa 500 ký tự)
-          </label>
+          <div class="flex items-center justify-between mb-2">
+            <label class="block text-xs font-semibold uppercase tracking-wider text-charcoal-400">
+              Nhận xét & Góp ý <span class="text-[10px] lowercase font-normal text-charcoal-500">(tùy chọn)</span>
+            </label>
+            <span class="text-[10px] text-charcoal-600 font-mono">{{ comment.length }}/500</span>
+          </div>
           <textarea
             v-model="comment"
             rows="3"
@@ -164,30 +218,19 @@
             :disabled="submitting"
             class="w-full px-4 py-3 bg-charcoal-950/60 border border-charcoal-700/60 rounded-2xl text-ivory text-sm placeholder-charcoal-600 focus:outline-none focus:border-gold-500/50 resize-none transition-colors disabled:opacity-50"
           />
-          <p class="text-right text-[10px] text-charcoal-600 mt-1">{{ comment.length }}/500</p>
         </div>
 
         <!-- Submit Button -->
-        <div class="flex justify-center">
-          <div v-if="!user" class="flex flex-col sm:flex-row items-center justify-center gap-3 w-full sm:w-auto">
+        <div class="flex flex-col items-center justify-center">
+          <div v-if="!user" class="flex items-center justify-center w-full sm:w-auto">
             <button
               class="flex items-center justify-center gap-2 px-6 py-3.5 rounded-2xl font-semibold text-xs sm:text-sm bg-ivory hover:bg-gold-100 text-charcoal-950 transition-all duration-200 hover:shadow-lg active:scale-95 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed w-full sm:w-auto"
-              :disabled="signingInProvider !== null || submitting || selectedStars === 0"
-              @click="handleSignIn('google')"
+              :disabled="signingIn || submitting || !canSubmit"
+              @click="handleSignIn"
             >
-              <Icon v-if="signingInProvider === 'google'" name="mdi:loading" class="w-4 h-4 animate-spin text-charcoal-800" />
+              <Icon v-if="signingIn" name="mdi:loading" class="w-4 h-4 animate-spin text-charcoal-800" />
               <Icon v-else name="mdi:google" class="w-4 h-4 text-[#EA4335]" />
               <span>Đăng nhập Google để gửi</span>
-            </button>
-
-            <button
-              class="flex items-center justify-center gap-2 px-6 py-3.5 rounded-2xl font-semibold text-xs sm:text-sm bg-[#1877F2] hover:bg-[#166fe5] text-white transition-all duration-200 hover:shadow-lg active:scale-95 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed w-full sm:w-auto"
-              :disabled="signingInProvider !== null || submitting || selectedStars === 0"
-              @click="handleSignIn('facebook')"
-            >
-              <Icon v-if="signingInProvider === 'facebook'" name="mdi:loading" class="w-4 h-4 animate-spin text-white" />
-              <Icon v-else name="mdi:facebook" class="w-4 h-4 text-white" />
-              <span>Đăng nhập Facebook để gửi</span>
             </button>
           </div>
 
@@ -197,7 +240,7 @@
             :class="submitted
               ? 'bg-emerald-900/40 border border-emerald-700/50 text-emerald-400 cursor-default'
               : 'bg-gold-500 hover:bg-gold-400 text-charcoal-950 hover:shadow-lg hover:shadow-gold-500/25 active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed'"
-            :disabled="submitting || selectedStars === 0"
+            :disabled="submitting || !canSubmit"
             @click="submitRating"
           >
             <Icon v-if="submitting" name="mdi:loading" class="w-4 h-4 animate-spin" />
@@ -205,6 +248,10 @@
             <Icon v-else name="mdi:send-outline" class="w-4 h-4" />
             <span>{{ submitted ? 'Đã lưu đánh giá' : (hasExistingRating ? 'Cập Nhật Đánh Giá' : 'Gửi Đánh Giá') }}</span>
           </button>
+
+          <p v-if="!canSubmit && !submitted" class="text-center text-[11px] text-charcoal-500 mt-2.5">
+            Vui lòng chọn số sao hoặc viết nhận xét để gửi đánh giá
+          </p>
         </div>
 
 
@@ -241,7 +288,7 @@
                 </div>
 
                 <div class="flex items-center gap-2 shrink-0">
-                  <div class="flex gap-0.5">
+                  <div v-if="c.stars && c.stars > 0" class="flex gap-0.5" :title="`${c.stars} sao`">
                     <Icon
                       v-for="s in 5"
                       :key="s"
@@ -250,13 +297,13 @@
                       :class="s <= c.stars ? 'text-gold-400' : 'text-charcoal-700'"
                     />
                   </div>
-                  <span class="text-[10px] text-charcoal-500 font-mono hidden sm:inline">{{ formatDate(c.created_at) }}</span>
+                  <div v-else class="text-[10px] text-charcoal-400 italic bg-charcoal-800/60 px-2 py-0.5 rounded-md border border-charcoal-700/60 flex items-center gap-1">
+                    <Icon name="mdi:comment-text-outline" class="w-3 h-3 text-gold-500/70" />
+                    <span>Góp ý</span>
+                  </div>
                 </div>
               </div>
               <p class="text-charcoal-300 text-sm leading-relaxed pl-9.5">{{ c.comment }}</p>
-              <div class="sm:hidden text-right mt-1.5">
-                <span class="text-[9px] text-charcoal-600 font-mono">{{ formatDate(c.created_at) }}</span>
-              </div>
             </div>
           </div>
         </div>
@@ -272,26 +319,40 @@ interface RatingStats {
   total: number
   breakdown: Array<{ stars: number; count: number }>
   comments: Array<{
-    stars: number
+    stars: number | null
     comment: string
     display_name?: string | null
     photo_url?: string | null
     created_at: string
   }>
-  myRating?: { stars: number; comment: string | null } | null
+  myRating?: { stars: number | null; comment: string | null } | null
 }
 
-const { user, initAuthListener, signInWithGoogle, signInWithFacebook, signOut, getIdToken } = useAuth()
+const { user, initAuthListener, signInWithGoogle, signOut, getIdToken } = useAuth()
 
 // ── State ──
 const selectedStars = ref(0)
 const hoverStars = ref(0)
 const comment = ref('')
 const submitting = ref(false)
-const signingInProvider = ref<'google' | 'facebook' | null>(null)
+const signingIn = ref(false)
 const submitted = ref(false)
 const hasExistingRating = ref(false)
 const errorMsg = ref('')
+const isInAppBrowser = ref(false)
+
+// ── Validation: allows 3 options (stars only, comment only, both) ──
+const canSubmit = computed(() => {
+  return selectedStars.value > 0 || comment.value.trim().length > 0
+})
+
+function toggleStar(s: number) {
+  if (selectedStars.value === s) {
+    selectedStars.value = 0
+  } else {
+    selectedStars.value = s
+  }
+}
 
 // ── Data ──
 const { data, refresh: refreshRatings } = await useFetch<RatingStats>('/api/ratings')
@@ -310,13 +371,17 @@ const breakdownFull = computed(() => {
 })
 
 // ── Star labels ──
-const STAR_LABELS = ['', 'Cần cải thiện', 'Tạm ổn', 'Khá tốt', 'Rất ấn tượng', 'Xuất sắc tuyệt vời!']
+const STAR_LABELS = ['', '1 sao — Cần cải thiện', '2 sao — Tạm ổn', '3 sao — Khá tốt', '4 sao — Rất ấn tượng', '5 sao — Xuất sắc tuyệt vời!']
 const starLabel = computed(() =>
   STAR_LABELS[hoverStars.value || selectedStars.value] ?? ''
 )
 
 onMounted(() => {
   initAuthListener()
+  if (import.meta.client) {
+    const ua = navigator.userAgent || navigator.vendor || ''
+    isInAppBrowser.value = /FBAN|FBAV|FB_IAB|FB4A|Instagram|Line|Kakaotalk|Twitter|ByteLocale|TikTok|Zalo|Snapchat|MicroMessenger/i.test(ua)
+  }
 })
 
 // Watch user state to load previous rating if exists
@@ -327,7 +392,7 @@ watch(
       try {
         const res = await $fetch<RatingStats>(`/api/ratings?uid=${currentUser.uid}`)
         if (res?.myRating) {
-          selectedStars.value = res.myRating.stars
+          selectedStars.value = res.myRating.stars ?? 0
           comment.value = res.myRating.comment ?? ''
           hasExistingRating.value = true
         }
@@ -342,24 +407,28 @@ watch(
 )
 
 // ── Auth handlers ──
-async function handleSignIn(provider: 'google' | 'facebook') {
-  signingInProvider.value = provider
+async function handleSignIn() {
+  signingIn.value = true
   errorMsg.value = ''
   try {
-    const res = provider === 'google' ? await signInWithGoogle() : await signInWithFacebook()
+    const res = await signInWithGoogle()
     if (!res.ok) {
-      errorMsg.value = res.error || `Đăng nhập ${provider === 'google' ? 'Google' : 'Facebook'} không thành công`
+      if (isInAppBrowser.value || res.error?.toLowerCase().includes('popup') || res.error?.toLowerCase().includes('disallowed')) {
+        errorMsg.value = 'Trình duyệt ứng dụng chặn đăng nhập Google. Vui lòng bấm dấu 3 chấm (•••) ở góc trên màn hình và chọn "Mở bằng trình duyệt" (Chrome / Safari).'
+      } else {
+        errorMsg.value = res.error || 'Đăng nhập Google không thành công'
+      }
       return
     }
-    // If user already had chosen stars before clicking sign-in, auto submit!
-    if (selectedStars.value > 0) {
+    // If user already had chosen stars OR comment before clicking sign-in, auto submit!
+    if (selectedStars.value > 0 || comment.value.trim().length > 0) {
       await submitRating()
     }
   } catch (err) {
-    console.error(`[rating] ${provider} sign-in error:`, err)
+    console.error('[rating] Google sign-in error:', err)
     errorMsg.value = 'Đã có lỗi xảy ra khi đăng nhập'
   } finally {
-    signingInProvider.value = null
+    signingIn.value = false
   }
 }
 
@@ -371,15 +440,15 @@ async function handleSignOut() {
   submitted.value = false
 }
 
-// ── Submit rating ──
+// ── Submit rating (handles stars only, comment only, or both) ──
 async function submitRating() {
-  if (selectedStars.value === 0 || submitting.value) return
+  const trimmedComment = comment.value.trim()
+  if ((selectedStars.value === 0 && !trimmedComment) || submitting.value) return
 
   // Must be authenticated
   if (!user.value) {
     return
   }
-
 
   submitting.value = true
   errorMsg.value = ''
@@ -393,8 +462,8 @@ async function submitRating() {
     await $fetch('/api/ratings', {
       method: 'POST',
       body: {
-        stars: selectedStars.value,
-        comment: comment.value.trim() || undefined,
+        stars: selectedStars.value > 0 ? selectedStars.value : null,
+        comment: trimmedComment || undefined,
         idToken: token,
       },
     })

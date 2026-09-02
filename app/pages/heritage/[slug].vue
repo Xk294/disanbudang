@@ -3,7 +3,7 @@
     <!-- =========================================================
          1. IDENTITY — HERO BANNER
     ========================================================= -->
-    <section class="relative min-h-[75vh] lg:min-h-[82vh] flex items-end overflow-hidden border-b border-charcoal-850">
+    <section class="relative min-h-[70vh] lg:min-h-[78vh] flex items-center overflow-hidden border-b border-charcoal-850">
       <!-- Background Cover Image with Ken Burns effect -->
       <NuxtImg
         :src="heritage.coverImage"
@@ -58,7 +58,7 @@
       </div>
 
       <!-- Hero Main Content -->
-      <div class="relative z-10 container-heritage pb-12 pt-36 lg:pb-16">
+      <div class="relative z-10 container-heritage w-full pt-32 pb-16 lg:pt-36 lg:pb-20">
         <div class="max-w-4xl">
           <!-- Badges strip -->
           <div class="flex flex-wrap items-center gap-2.5 mb-4">

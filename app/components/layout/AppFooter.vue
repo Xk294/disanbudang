@@ -66,6 +66,11 @@
               <span class="sr-only">Email:</span>
               <a href="mailto:nguyenxuankiet294@gmail.com" class="hover:text-white transition-colors">nguyenxuankiet294@gmail.com</a>
             </p>
+            <p class="flex items-center gap-2">
+              <Icon name="mdi:facebook" class="w-4 h-4 text-gold-400 shrink-0" />
+              <span class="sr-only">Facebook:</span>
+              <a href="https://www.facebook.com/ngxkiet" target="_blank" rel="noopener noreferrer" class="hover:text-white transition-colors">Nguyễn Xuân Kiệt</a>
+            </p>
           </div>
 
 
@@ -83,7 +88,7 @@
           </div>
           <div class="flex items-center gap-1">
             <span>Người thực hiện:</span>
-            <span class="text-gold-300 font-medium mx-1">Nguyễn Xuân Kiệt</span>
+            <a href="https://www.facebook.com/ngxkiet" target="_blank" rel="noopener noreferrer" class="text-gold-300 hover:text-gold-200 hover:underline transition-colors font-medium mx-1">Nguyễn Xuân Kiệt</a>
             <span>• Cổng di sản số Thành Phố Đồng Nai</span>
           </div>
         </div>

@@ -46,13 +46,17 @@ export default defineEventHandler(async (event) => {
     getHeader(event, 'x-forwarded-for')?.split(',')[0]?.trim() ??
     '0.0.0.0'
 
-  // 4. Validate stars
-  const starsNum = Number(stars)
-  if (!Number.isInteger(starsNum) || starsNum < 1 || starsNum > 5) {
-    throw createError({ statusCode: 400, statusMessage: 'Số sao đánh giá phải từ 1 đến 5' })
+  // 4. Validate stars (optional: 1-5, or null if only commenting)
+  let sanitizedStars: number | null = null
+  if (stars !== undefined && stars !== null && stars !== 0 && stars !== '') {
+    const starsNum = Number(stars)
+    if (!Number.isInteger(starsNum) || starsNum < 1 || starsNum > 5) {
+      throw createError({ statusCode: 400, statusMessage: 'Số sao đánh giá phải từ 1 đến 5' })
+    }
+    sanitizedStars = starsNum
   }
 
-  // 5. Validate comment (optional)
+  // 5. Validate comment (optional: max 500 chars)
   let sanitizedComment: string | null = null
   if (comment && typeof comment === 'string') {
     const trimmed = comment.trim()
@@ -60,6 +64,11 @@ export default defineEventHandler(async (event) => {
       throw createError({ statusCode: 400, statusMessage: 'Nhận xét không được vượt quá 500 ký tự' })
     }
     sanitizedComment = trimmed || null
+  }
+
+  // Must provide at least one: stars or comment
+  if (sanitizedStars === null && !sanitizedComment) {
+    throw createError({ statusCode: 400, statusMessage: 'Vui lòng chọn số sao hoặc nhập nhận xét góp ý' })
   }
 
   // 6. DB operations
@@ -81,18 +90,57 @@ export default defineEventHandler(async (event) => {
     `).bind(uid, email, displayName, photoUrl, claims.email_verified ? 1 : 0, provider).run()
 
     // 6b. Upsert review (1 per Google UID)
-    await db.prepare(`
-      INSERT INTO ratings (uid, email, display_name, photo_url, ip, stars, comment, created_at, updated_at)
-      VALUES (?, ?, ?, ?, ?, ?, ?, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP)
-      ON CONFLICT(uid) DO UPDATE SET
-        stars        = excluded.stars,
-        comment      = excluded.comment,
-        ip           = excluded.ip,
-        display_name = COALESCE(excluded.display_name, ratings.display_name),
-        photo_url    = COALESCE(excluded.photo_url, ratings.photo_url),
-        email        = COALESCE(excluded.email, ratings.email),
-        updated_at   = CURRENT_TIMESTAMP
-    `).bind(uid, email, displayName, photoUrl, ip, starsNum, sanitizedComment).run()
+    const runUpsert = async () => {
+      return await db.prepare(`
+        INSERT INTO ratings (uid, email, display_name, photo_url, ip, stars, comment, created_at, updated_at)
+        VALUES (?, ?, ?, ?, ?, ?, ?, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP)
+        ON CONFLICT(uid) DO UPDATE SET
+          stars        = excluded.stars,
+          comment      = excluded.comment,
+          ip           = excluded.ip,
+          display_name = COALESCE(excluded.display_name, ratings.display_name),
+          photo_url    = COALESCE(excluded.photo_url, ratings.photo_url),
+          email        = COALESCE(excluded.email, ratings.email),
+          updated_at   = CURRENT_TIMESTAMP
+      `).bind(uid, email, displayName, photoUrl, ip, sanitizedStars, sanitizedComment).run()
+    }
+
+    try {
+      await runUpsert()
+    } catch (upsertErr: any) {
+      const msg = String(upsertErr?.message || upsertErr || '')
+      // Auto-migrate if table has older constraint (NOT NULL or CHECK without NULL)
+      if (msg.includes('NOT NULL') || msg.includes('CHECK constraint') || msg.includes('no such column')) {
+        await db.batch([
+          db.prepare(`
+            CREATE TABLE IF NOT EXISTS ratings_new (
+              id            INTEGER PRIMARY KEY AUTOINCREMENT,
+              uid           TEXT NOT NULL DEFAULT '',
+              email         TEXT,
+              display_name  TEXT,
+              photo_url     TEXT,
+              ip            TEXT,
+              stars         INTEGER CHECK(stars IS NULL OR (stars BETWEEN 1 AND 5)),
+              comment       TEXT CHECK(length(comment) <= 500),
+              created_at    DATETIME DEFAULT CURRENT_TIMESTAMP,
+              updated_at    DATETIME DEFAULT CURRENT_TIMESTAMP,
+              UNIQUE(uid)
+            );
+          `),
+          db.prepare(`
+            INSERT OR IGNORE INTO ratings_new (id, uid, email, display_name, photo_url, ip, stars, comment, created_at, updated_at)
+            SELECT id, COALESCE(uid, ''), email, display_name, photo_url, ip, stars, comment, created_at, COALESCE(updated_at, created_at) FROM ratings;
+          `),
+          db.prepare(`DROP TABLE ratings;`),
+          db.prepare(`ALTER TABLE ratings_new RENAME TO ratings;`),
+          db.prepare(`CREATE INDEX IF NOT EXISTS idx_ratings_stars ON ratings(stars);`),
+          db.prepare(`CREATE INDEX IF NOT EXISTS idx_ratings_uid ON ratings(uid);`),
+        ])
+        await runUpsert()
+      } else {
+        throw upsertErr
+      }
+    }
   } catch (err) {
     console.error('[ratings.post] DB error:', err)
     throw createError({ statusCode: 500, statusMessage: 'Không thể lưu đánh giá vào hệ thống' })

@@ -83,7 +83,7 @@ function onScrollComplete() {
 useMuseumSeo({
   title: 'Bảo Tàng Số Di Sản Bù Đăng · TP. Đồng Nai',
   description: 'Nền tảng bảo tồn và số hóa 16 di sản văn hóa phi vật thể, di tích lịch sử và danh lam thắng cảnh tại Bù Đăng, Thành phố Đồng Nai. Bản đồ tương tác GIS, Audio Guide và góc học tập.',
-  image: '/images/og-default.jpg',
+  image: '/ogdisanbudang.png',
 })
 
 definePageMeta({ layout: 'default' })

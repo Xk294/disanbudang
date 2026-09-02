@@ -2,7 +2,7 @@
   <aside class="w-64 h-full min-h-screen flex flex-col bg-stone-900 border-r border-stone-800 shrink-0 select-none">
     <!-- Brand & Mobile Close -->
     <div class="px-5 py-4 border-b border-stone-800 flex items-center justify-between">
-      <NuxtLink to="/admin/contributions" class="flex items-center gap-2.5 group" @click="$emit('close')">
+      <NuxtLink to="/admin/overview" class="flex items-center gap-2.5 group" @click="$emit('close')">
         <div class="w-8 h-8 rounded-xl bg-amber-500/20 border border-amber-500/30 flex items-center justify-center text-amber-400 group-hover:scale-105 transition-transform">
           <Icon name="mdi:shield-crown" class="w-4 h-4" />
         </div>
@@ -27,7 +27,7 @@
     <!-- Nav -->
     <nav class="flex-1 p-3 space-y-1 overflow-y-auto">
       <p class="px-3 pt-2 pb-1 text-[10px] font-bold uppercase tracking-wider text-stone-500">
-        Quản lý nội dung
+        Vận hành & Phân tích
       </p>
 
       <NuxtLink
@@ -121,6 +121,12 @@ const { user, isAdmin, getIdToken, signOut } = useAuth()
 const pendingCount = useState<number>('admin.pending_count', () => 0)
 
 const navLinks = computed(() => [
+  {
+    to: '/admin/overview',
+    label: 'Tổng Quan Hệ Thống',
+    icon: 'mdi:view-dashboard-outline',
+    badge: 0,
+  },
   {
     to: '/admin/contributions',
     label: 'Duyệt Đóng Góp',

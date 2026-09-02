@@ -587,9 +587,20 @@
                         <span class="flex items-center gap-1.5"><Icon name="mdi:download-outline" class="w-4 h-4" />{{ featuredResource.downloadCount }} lượt tải</span>
                         <span class="flex items-center gap-1.5"><Icon name="mdi:clock-outline" class="w-4 h-4" />~15 phút đọc</span>
                       </div>
-                      <span class="text-gold-400 text-sm font-bold flex items-center gap-1.5 group-hover:translate-x-1 transition-transform">
-                        Đọc & Nghiên Cứu <Icon name="mdi:arrow-right" class="w-4 h-4" />
-                      </span>
+                      <div class="flex items-center gap-3">
+                        <button
+                          type="button"
+                          class="px-4 py-2 rounded-xl bg-gold-500/20 hover:bg-gold-500 hover:text-charcoal-950 text-gold-400 border border-gold-500/40 text-xs font-bold flex items-center gap-2 transition-all cursor-pointer shadow-md"
+                          @click.stop="downloadFile(featuredResource)"
+                          :title="`Tải về: ${featuredResource.title}`"
+                        >
+                          <Icon name="mdi:download" class="w-4 h-4" />
+                          <span>Tải Tài Liệu</span>
+                        </button>
+                        <span class="text-gold-400 text-sm font-bold flex items-center gap-1.5 group-hover:translate-x-1 transition-transform">
+                          Đọc & Nghiên Cứu <Icon name="mdi:arrow-right" class="w-4 h-4" />
+                        </span>
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -633,6 +644,14 @@
                     </div>
                     <div class="absolute top-3 right-3 flex items-center gap-1.5">
                       <button
+                        class="w-7 h-7 rounded-full bg-charcoal-900/80 border border-charcoal-850 text-charcoal-300 hover:text-gold-400 flex items-center justify-center transition-colors shadow-inner backdrop-blur-sm cursor-pointer"
+                        @click.stop="downloadFile(res)"
+                        :title="`Tải về: ${res.title}`"
+                        :aria-label="`Tải về: ${res.title}`"
+                      >
+                        <Icon name="mdi:download" class="w-4 h-4" />
+                      </button>
+                      <button
                         class="w-7 h-7 rounded-full bg-charcoal-900/80 border border-charcoal-850 text-charcoal-300 hover:text-gold-400 flex items-center justify-center transition-colors shadow-inner backdrop-blur-sm"
                         @click.stop="addToCollectionPrompt(res.id)"
                         aria-label="Thêm vào bộ sưu tập"
@@ -665,10 +684,21 @@
                         <span v-if="res.quizId" class="ml-auto text-3xs px-2 py-0.5 bg-gold-500/10 border border-gold-500/30 text-gold-400 rounded font-bold">Quiz</span>
                       </div>
                       <div class="flex items-center justify-between pt-2.5 border-t border-charcoal-850/60">
-                        <span class="text-charcoal-500 text-3xs font-semibold truncate max-w-[130px]">{{ res.school }} · Lớp {{ res.grade }}</span>
-                        <span class="text-gold-400 text-2xs font-bold flex items-center gap-1 group-hover:translate-x-1 transition-transform shrink-0">
-                          Đọc & Nghiên Cứu <Icon name="mdi:arrow-right" class="w-3.5 h-3.5" />
-                        </span>
+                        <span class="text-charcoal-500 text-3xs font-semibold truncate max-w-[110px]">{{ res.school }} · Lớp {{ res.grade }}</span>
+                        <div class="flex items-center gap-2 shrink-0">
+                          <button
+                            type="button"
+                            class="px-2.5 py-1 rounded-lg bg-gold-500/15 hover:bg-gold-500 hover:text-charcoal-950 text-gold-400 text-3xs font-bold flex items-center gap-1 border border-gold-500/30 transition-all cursor-pointer shadow-sm"
+                            @click.stop="downloadFile(res)"
+                            :title="`Tải về ${res.title}`"
+                          >
+                            <Icon name="mdi:download" class="w-3.5 h-3.5" />
+                            <span>Tải về</span>
+                          </button>
+                          <span class="text-gold-400 text-2xs font-bold flex items-center gap-1 group-hover:translate-x-1 transition-transform shrink-0">
+                            Đọc <Icon name="mdi:arrow-right" class="w-3.5 h-3.5" />
+                          </span>
+                        </div>
                       </div>
                     </div>
                   </div>
@@ -692,7 +722,17 @@
                     <h4 class="font-heading font-bold text-sm text-ivory truncate group-hover:text-gold-300 transition-colors">{{ res.title }}</h4>
                     <p class="text-charcoal-400 text-xs mt-0.5 truncate">{{ res.author }} · {{ res.downloadCount }} lượt tải · {{ res.fileSize }}</p>
                   </div>
-                  <div class="flex items-center gap-3 shrink-0">
+                  <div class="flex items-center gap-2.5 shrink-0">
+                    <button
+                      type="button"
+                      class="px-3 py-1.5 rounded-xl bg-gold-500/15 hover:bg-gold-500 hover:text-charcoal-950 text-gold-400 border border-gold-500/30 text-3xs font-bold flex items-center gap-1.5 transition-all cursor-pointer shadow-sm"
+                      @click.stop="downloadFile(res)"
+                      :title="`Tải về ${res.title}`"
+                      :aria-label="`Tải về ${res.title}`"
+                    >
+                      <Icon name="mdi:download" class="w-3.5 h-3.5" />
+                      <span class="hidden sm:inline">Tải về</span>
+                    </button>
                     <button
                       class="w-7 h-7 rounded-full bg-charcoal-900/80 border border-charcoal-850 text-charcoal-500 hover:text-gold-400 flex items-center justify-center transition-colors"
                       @click.stop="addToCollectionPrompt(res.id)"
@@ -1806,8 +1846,9 @@
               <button v-if="selectedResource.quizId" class="text-xs py-2.5 px-4 border border-gold-500/40 text-gold-400 hover:bg-gold-500 hover:text-charcoal-950 transition-all rounded-xl font-bold flex items-center gap-1.5" @click="startResourceQuiz(selectedResource)">
                 <Icon name="mdi:play-circle-outline" class="w-4 h-4" />Làm Quiz Ôn Tập
               </button>
-              <button class="btn-primary text-xs py-2.5 flex items-center gap-1.5" @click="downloadFile(selectedResource)">
-                <Icon name="mdi:download" class="w-4 h-4" />Tải PDF
+              <button class="btn-primary text-xs py-2.5 flex items-center gap-1.5 cursor-pointer" @click="downloadFile(selectedResource)">
+                <Icon name="mdi:download" class="w-4 h-4" />
+                <span>{{ selectedResource?.fileUrl?.endsWith('.docx') ? 'Tải Hồ Sơ (.docx)' : 'Tải File PDF' }}</span>
               </button>
             </div>
           </div>
@@ -2385,9 +2426,9 @@ const { data: resourcesContent, pending, error, refresh } = await useAsyncData('
 })
 
 const resources = computed<SchoolResourceExtended[]>(() => {
-  // Use CMS data when available, fall back to static resources
-  if (resourcesContent.value && resourcesContent.value.length >= 8) {
-    return resourcesContent.value.map(item => {
+  // Use CMS data when available, and seamlessly merge any static resources
+  if (resourcesContent.value && resourcesContent.value.length > 0) {
+    const cmsList = resourcesContent.value.map(item => {
       const raw = item as any
       const meta = raw.meta ?? {}
       const id = raw.stem?.split('/').pop() ?? raw.id
@@ -2395,23 +2436,27 @@ const resources = computed<SchoolResourceExtended[]>(() => {
         id,
         title: item.title,
         description: item.description,
-        type: meta.type,
-        subject: meta.subject,
-        grade: meta.grade,
-        school: meta.school,
-        author: meta.author,
-        coverImage: meta.coverImage,
-        publishedAt: meta.publishedAt,
-        featured: meta.featured,
-        downloadCount: meta.downloadCount,
-        fileSize: meta.fileSize,
-        difficulty: meta.difficulty,
-        motivation: meta.motivation,
-        keyFindings: meta.keyFindings || [],
-        quizId: meta.quizId,
-        pages: meta.pages || []
+        type: meta.type || raw.type || 'document',
+        subject: meta.subject || raw.subject || '',
+        grade: meta.grade || raw.grade || '',
+        school: meta.school || raw.school || '',
+        author: meta.author || raw.author || '',
+        coverImage: meta.coverImage || raw.coverImage,
+        publishedAt: meta.publishedAt || raw.publishedAt || '',
+        featured: Boolean(meta.featured ?? raw.featured),
+        downloadCount: Number(meta.downloadCount ?? raw.downloadCount ?? 0),
+        fileSize: meta.fileSize || raw.fileSize,
+        fileUrl: meta.fileUrl || raw.fileUrl,
+        difficulty: meta.difficulty ?? raw.difficulty ?? 1,
+        motivation: meta.motivation || raw.motivation,
+        keyFindings: meta.keyFindings || raw.keyFindings || [],
+        quizId: meta.quizId || raw.quizId,
+        pages: meta.pages || raw.pages || []
       }
     })
+    const cmsIds = new Set(cmsList.map(r => r.id))
+    const extraStatic = staticResources.filter(r => !cmsIds.has(r.id))
+    return [...cmsList, ...extraStatic]
   }
   return staticResources
 })
@@ -2581,7 +2626,7 @@ function downloadFile(resource: SchoolResourceExtended | null) {
   resource.downloadCount++
 
   if (resource.fileUrl) {
-    // Direct file download for existing PDFs
+    // Direct file download for existing PDFs or Word docs
     const a = document.createElement('a')
     a.href = resource.fileUrl
     const filename = resource.fileUrl.split('/').pop() || `${resource.id}.pdf`
@@ -2590,9 +2635,10 @@ function downloadFile(resource: SchoolResourceExtended | null) {
     a.click()
     document.body.removeChild(a)
 
+    const isDocx = resource.fileUrl.endsWith('.docx')
     swal.fire({
       title: 'Tải tài liệu thành công!',
-      html: `Đã khởi chạy tải file PDF <strong>"${resource.title}"</strong> (${resource.fileSize ?? 'PDF'}). Vui lòng kiểm tra thư mục Downloads trên máy tính của bạn.`,
+      html: `Đã khởi chạy tải file ${isDocx ? 'Word (.docx)' : 'PDF'} <strong>"${resource.title}"</strong> (${resource.fileSize ?? 'Tài liệu'}). Vui lòng kiểm tra thư mục Downloads trên máy tính của bạn.`,
       icon: 'success',
       toast: true,
       position: 'top-end',

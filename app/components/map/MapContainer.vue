@@ -41,6 +41,22 @@
       </div>
     </Transition>
 
+    <!-- Map Style Switcher (Vệ Tinh / Tối Giản) -->
+    <button
+      class="absolute bottom-24 right-6 z-[400] h-12 px-3.5 flex items-center gap-2 rounded-2xl transition-all duration-300 bg-charcoal-900/90 backdrop-blur-md border border-charcoal-700 hover:border-gold-500/70 hover:bg-charcoal-800 shadow-xl shadow-charcoal-950/60 group cursor-pointer"
+      @click="toggleMapStyle"
+      :title="mapStyle === 'satellite' ? 'Chuyển sang Bản đồ Tối' : 'Chuyển sang ảnh Vệ Tinh'"
+      :aria-label="mapStyle === 'satellite' ? 'Chuyển sang Bản đồ Tối' : 'Chuyển sang ảnh Vệ Tinh'"
+    >
+      <Icon
+        :name="mapStyle === 'satellite' ? 'mdi:map-outline' : 'mdi:satellite-variant'"
+        class="w-5 h-5 text-gold-400 group-hover:text-gold-300 group-hover:scale-110 transition-transform"
+      />
+      <span class="text-xs font-semibold text-ivory/90 group-hover:text-gold-300 hidden sm:inline">
+        {{ mapStyle === 'satellite' ? 'Bản Đồ Số' : 'Vệ Tinh' }}
+      </span>
+    </button>
+
     <!-- Locate button — premium -->
     <button
       class="absolute bottom-6 right-6 z-[400] w-14 h-14 flex items-center justify-center rounded-2xl transition-all duration-300 group"
@@ -93,6 +109,8 @@ let routeGlowPolyline: any = null
 const isLocating = ref(false)
 const nearbyHeritage = ref<Heritage | null>(null)
 const nearbyDistance = ref(0)
+const mapStyle = ref<'dark' | 'satellite'>('satellite')
+let currentBaseLayers: any[] = []
 
 // Brighter, more vivid colors that pop on dark map tile
 const categoryColors: Record<string, string> = {
@@ -249,24 +267,8 @@ onMounted(async () => {
     wheelPxPerZoomLevel: 120,
   })
 
-  // CartoDB Dark Matter Tile Layer — Bản địa Dark Mode, siêu mượt, không cần CSS filter CPU
-  const baseTileLayer = L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/dark_all/{z}/{x}/{y}{r}.png', {
-    attribution: '&copy; <a href="https://carto.com/" style="color:#C7A664" target="_blank" rel="noopener">CARTO</a> &copy; <a href="https://www.openstreetmap.org/copyright" style="color:#C7A664" target="_blank" rel="noopener">OpenStreetMap</a>',
-    subdomains: ['a', 'b', 'c', 'd'],
-    maxZoom: 19,
-    minZoom: 7,
-    keepBuffer: 4,
-    updateWhenZooming: false,
-    updateWhenIdle: true,
-    updateInterval: 80,
-    crossOrigin: true,
-  })
-
-  baseTileLayer.on('tileerror', (error: any) => {
-    console.warn('[MapContainer] Tile load notice...', error)
-  })
-
-  baseTileLayer.addTo(map)
+  // Apply default Satellite map style (vibrant natural green forests, blue waters, basalt terrain)
+  applyMapStyle('satellite')
 
   // Listen to zoom changes to update clusters dynamically
   map.on('zoomend', () => {
@@ -579,9 +581,88 @@ watch(() => props.selectedRoute, () => {
   updateRouteLine()
 }, { deep: true })
 
+function applyMapStyle(style: 'dark' | 'satellite') {
+  if (!map || !LInstance) return
+
+  // Remove existing tile layers
+  currentBaseLayers.forEach((layer) => {
+    if (map.hasLayer(layer)) {
+      map.removeLayer(layer)
+    }
+  })
+  currentBaseLayers = []
+
+  const tileOptions = {
+    maxZoom: 18,
+    minZoom: 7,
+    keepBuffer: 8,
+    updateWhenZooming: false,
+    updateWhenIdle: true,
+    updateInterval: 80,
+    crossOrigin: true,
+  }
+
+  if (style === 'dark') {
+    // Esri Dark Gray Canvas — Base Layer (Ultra-clean dark slate roads & boundaries)
+    const base = LInstance.tileLayer(
+      'https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Dark_Gray_Base/MapServer/tile/{z}/{y}/{x}',
+      {
+        ...tileOptions,
+        attribution:
+          '&copy; <a href="https://www.esri.com/" style="color:#C7A664" target="_blank" rel="noopener">Esri</a> &copy; <a href="https://www.openstreetmap.org/copyright" style="color:#C7A664" target="_blank" rel="noopener">OpenStreetMap</a>',
+      }
+    )
+
+    // Esri Dark Gray Canvas — Reference Labels (sharp, readable place names)
+    const refLayer = LInstance.tileLayer(
+      'https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Dark_Gray_Reference/MapServer/tile/{z}/{y}/{x}',
+      {
+        ...tileOptions,
+        opacity: 0.95,
+      }
+    )
+
+    base.addTo(map)
+    refLayer.addTo(map)
+    currentBaseLayers = [base, refLayer]
+  } else {
+    // Esri World Imagery (Satellite view of forests, rivers, terrain)
+    const sat = LInstance.tileLayer(
+      'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',
+      {
+        ...tileOptions,
+        attribution:
+          '&copy; <a href="https://www.esri.com/" style="color:#C7A664" target="_blank" rel="noopener">Esri</a>, Maxar, Earthstar Geographics',
+      }
+    )
+
+    // Reference labels on satellite
+    const labels = LInstance.tileLayer(
+      'https://server.arcgisonline.com/ArcGIS/rest/services/Reference/World_Boundaries_and_Places/MapServer/tile/{z}/{y}/{x}',
+      {
+        ...tileOptions,
+        opacity: 0.85,
+      }
+    )
+
+    sat.addTo(map)
+    labels.addTo(map)
+    currentBaseLayers = [sat, labels]
+  }
+}
+
+function toggleMapStyle() {
+  mapStyle.value = mapStyle.value === 'dark' ? 'satellite' : 'dark'
+  applyMapStyle(mapStyle.value)
+}
+
 onUnmounted(() => {
   resizeObserver?.disconnect()
   resizeObserver = null
+  currentBaseLayers.forEach((l) => {
+    if (map && map.hasLayer(l)) map.removeLayer(l)
+  })
+  currentBaseLayers = []
   if (routePolyline) {
     routePolyline.remove()
     routePolyline = null
@@ -680,8 +761,16 @@ onUnmounted(() => {
   height: 34px !important;
   line-height: 34px !important;
 }
+/* Leaflet tile hardware acceleration & dark theme optimization */
+:deep(.leaflet-tile-container) {
+  will-change: transform;
+  transform: translateZ(0);
+}
+:deep(.leaflet-tile) {
+  filter: contrast(1.05) saturate(1.1);
+}
 :deep(.leaflet-container) {
-  background: #0d0f12 !important;
+  background: #0f0d0b !important;
   font-family: inherit;
 }
 </style>

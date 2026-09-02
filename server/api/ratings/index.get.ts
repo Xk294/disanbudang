@@ -18,7 +18,7 @@ export default defineEventHandler(async (event) => {
 
     // Count per star level (1–5)
     db.prepare(
-      `SELECT stars, COUNT(*) as count FROM ratings GROUP BY stars ORDER BY stars DESC`,
+      `SELECT stars, COUNT(*) as count FROM ratings WHERE stars IS NOT NULL GROUP BY stars ORDER BY stars DESC`,
     ).all(),
 
     // Latest 20 comments (non-null)

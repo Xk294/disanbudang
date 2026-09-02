@@ -101,19 +101,19 @@
 <script setup lang="ts">
 const schools = [
   {
-    name: 'THPT Lê Quý Đôn — Bù Đăng',
+    name: 'THPT Lê Quý Đôn — Nghĩa Trung',
     type: 'Khối THPT',
     activity: 'Ứng dụng dạy tiết Lịch sử địa phương & Câu lạc bộ Di sản trẻ'
   },
   {
-    name: 'THCS Phan Bội Châu — Bom Bo',
-    type: 'Khối THCS',
-    activity: 'Sử dụng bài học số hóa và Quiz trải nghiệm tại di tích Sóc Bom Bo'
+    name: 'THPT Thống Nhất — Phước Sơn',
+    type: 'Khối THPT',
+    activity: 'Sử dụng bài học số hóa và Quiz trải nghiệm tại di tích lịch sử'
   },
   {
-    name: 'Trường PTDT Nội Trú Điểu Ong',
-    type: 'Dân Tộc Nội Trú',
-    activity: 'Bảo tồn tiếng S\'Tiêng và giới thiệu cồng chiêng cho học sinh nội trú'
+    name: 'THPT Bù Đăng — Bù Đăng',
+    type: 'Khối THPT',
+    activity: 'Triển khai chuyên đề Giáo dục địa phương & bảo tồn văn hóa bản địa'
   }
 ]
 </script>

@@ -149,7 +149,7 @@
             >
               <!-- Stars -->
               <td class="px-5 py-3.5 whitespace-nowrap">
-                <div class="flex items-center gap-1 text-amber-400">
+                <div v-if="r.stars && r.stars > 0" class="flex items-center gap-1 text-amber-400">
                   <Icon
                     v-for="i in 5"
                     :key="i"
@@ -157,6 +157,10 @@
                     class="w-4 h-4"
                   />
                   <span class="font-bold text-stone-200 ml-1.5 tabular-nums">{{ r.stars }}/5</span>
+                </div>
+                <div v-else class="text-stone-400 text-xs italic flex items-center gap-1">
+                  <Icon name="mdi:comment-text-outline" class="w-3.5 h-3.5 text-stone-500" />
+                  <span>Chỉ nhận xét</span>
                 </div>
               </td>
 
@@ -295,7 +299,7 @@ interface RatingRow {
   display_name?: string | null
   photo_url?: string | null
   ip: string
-  stars: number
+  stars: number | null
   comment: string | null
   created_at: string
 }
@@ -331,6 +335,7 @@ const starFilters = [
   { label: '3 ★', value: 3 },
   { label: '2 ★', value: 2 },
   { label: '1 ★', value: 1 },
+  { label: 'Chỉ nhận xét', value: 0 },
 ]
 
 onMounted(() => {

@@ -6,6 +6,11 @@
  */
 import { verifyFirebaseToken } from '../../utils/auth'
 
+// Module-level cache to reduce full table scans under high concurrent traffic
+let cachedTotal: number | null = null
+let lastTotalFetch = 0
+const TOTAL_CACHE_TTL_MS = 30 * 1000
+
 export default defineEventHandler(async (event) => {
   const body = await readBody(event)
   const { path, idToken } = body ?? {}
@@ -52,14 +57,25 @@ export default defineEventHandler(async (event) => {
   } catch (err) {
     console.error('[analytics/visit] DB error:', err)
     // Non-critical — don't break page load over analytics failure
-    return { ok: false, totalVisits: 0 }
+    return { ok: false, totalVisits: cachedTotal ?? 0 }
   }
 
-  // Return aggregate total so the frontend can display a live counter
-  // without a separate public API call — cheap: 1 extra query piggybacked.
-  const agg = (await db.prepare(
-    `SELECT SUM(visit_count) as total FROM visitor_logs`,
-  ).first()) as { total: number | null } | null
+  // Return aggregate total so the frontend can display a live counter.
+  // Cached for 30 seconds to prevent table scan contention during traffic surges.
+  const now = Date.now()
+  if (cachedTotal === null || now - lastTotalFetch > TOTAL_CACHE_TTL_MS) {
+    try {
+      const agg = (await db.prepare(
+        `SELECT SUM(visit_count) as total FROM visitor_logs`,
+      ).first()) as { total: number | null } | null
+      if (agg?.total != null) {
+        cachedTotal = agg.total
+        lastTotalFetch = now
+      }
+    } catch {
+      // Retain existing cachedTotal on transient read error
+    }
+  }
 
-  return { ok: true, totalVisits: agg?.total ?? 0 }
+  return { ok: true, totalVisits: cachedTotal ?? 0 }
 })

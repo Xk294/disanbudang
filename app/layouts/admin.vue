@@ -2,7 +2,7 @@
   <div class="min-h-screen flex flex-col lg:flex-row bg-stone-950 text-stone-100 font-sans antialiased selection:bg-amber-500/30 selection:text-amber-200">
     <!-- Mobile Top Navigation Bar (< lg) -->
     <header class="lg:hidden sticky top-0 z-40 flex items-center justify-between px-4 py-3 bg-stone-900/95 border-b border-stone-800 backdrop-blur-md">
-      <NuxtLink to="/admin/contributions" class="flex items-center gap-2">
+      <NuxtLink to="/admin/overview" class="flex items-center gap-2">
         <div class="w-7 h-7 rounded-lg bg-amber-500/20 border border-amber-500/30 flex items-center justify-center text-amber-400">
           <Icon name="mdi:shield-crown" class="w-4 h-4" />
         </div>

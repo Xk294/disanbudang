@@ -10,8 +10,8 @@ definePageMeta({
   middleware: 'admin',
 })
 
-// /admin always redirects to /admin/contributions
+// /admin always redirects to /admin/overview
 onMounted(() => {
-  navigateTo('/admin/contributions')
+  navigateTo('/admin/overview')
 })
 </script>

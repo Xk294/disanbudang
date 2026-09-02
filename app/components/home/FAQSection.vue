@@ -72,7 +72,7 @@ const faqs = [
   },
   {
     question: "Ai làm ra website này?",
-    answer: "Di Sản Bù Đăng là dự án cá nhân của Nguyễn Xuân Kiệt — học sinh nghiên cứu khoa học, thực hiện từ năm 2025. Dự án ra đời từ 7 tháng khảo sát thực địa tại các buôn sóc S'tiêng và M'nông vùng Bù Đăng. Liên hệ qua email nguyenxuankiet294@gmail.com hoặc số 0355 356 294."
+    answer: "Di Sản Bù Đăng là dự án cá nhân của Nguyễn Xuân Kiệt — học sinh nghiên cứu khoa học, thực hiện từ năm 2025. Dự án ra đời từ 7 tháng khảo sát thực địa tại các buôn sóc S'tiêng và M'nông vùng Bù Đăng. Liên hệ qua Facebook fb.com/ngxkiet, email nguyenxuankiet294@gmail.com hoặc số 0355 356 294."
   }
 ]
 

@@ -257,6 +257,9 @@ export default defineNuxtConfig({
           'https://tile.openstreetmap.org',
           'https://*.basemaps.cartocdn.com',
           'https://basemaps.cartocdn.com',
+          'https://*.arcgisonline.com',
+          'https://server.arcgisonline.com',
+          'https://services.arcgisonline.com',
           'https://lh3.googleusercontent.com',  // Firebase Auth Google avatars
         ],
         // Allow Turnstile challenge scripts, Firebase/Google Auth scripts, and WebAssembly compilation
@@ -286,7 +289,7 @@ export default defineNuxtConfig({
       },
     },
     rateLimiter: {
-      tokensPerInterval: 150,
+      tokensPerInterval: 3000,
       interval: 'hour',
     },
     corsHandler: {
@@ -342,14 +345,20 @@ export default defineNuxtConfig({
           property: 'og:site_name',
           content: 'Di Sản Bù Đăng',
         },
+        { property: 'og:image', content: 'https://disanbudang.com/ogdisanbudang.png' },
+        { property: 'og:image:width', content: '1200' },
+        { property: 'og:image:height', content: '630' },
+        { property: 'og:image:alt', content: 'Bảo Tàng Số Di Sản Bù Đăng' },
+        { name: 'twitter:card', content: 'summary_large_image' },
+        { name: 'twitter:image', content: 'https://disanbudang.com/ogdisanbudang.png' },
       ],
       link: [
-        { rel: 'icon', href: '/favicon.ico', sizes: 'any' },
+        { rel: 'icon', href: '/favicon/favicon.ico', sizes: 'any' },
         { rel: 'icon', type: 'image/png', sizes: '48x48', href: '/favicon/icon-48.png' },
         { rel: 'icon', type: 'image/png', sizes: '96x96', href: '/favicon/icon-96.png' },
         { rel: 'icon', type: 'image/png', sizes: '192x192', href: '/favicon/icon-192.png' },
-        { rel: 'apple-touch-icon', sizes: '180x180', href: '/apple-touch-icon.png' },
-        { rel: 'manifest', href: '/manifest.json' },
+        { rel: 'apple-touch-icon', sizes: '180x180', href: '/favicon/apple-touch-icon.png' },
+        { rel: 'manifest', href: '/site.webmanifest' },
         { rel: 'preconnect', href: 'https://fonts.googleapis.com' },
         {
           rel: 'preconnect',

@@ -136,7 +136,7 @@ function formatFirebaseError(rawError: string): FriendlyError {
 watch([authReady, user], ([ready, u]) => {
   if (!ready) return
   if (u && isAdmin.value) {
-    navigateTo('/admin/contributions')
+    navigateTo('/admin/overview')
   } else if (u && !isAdmin.value) {
     // Signed in but not admin — sign out and show error
     const signedInEmail = u.email || 'tài khoản này'
@@ -159,7 +159,7 @@ async function handleSignIn() {
     return
   }
   if (user.value && isAdmin.value) {
-    await navigateTo('/admin/contributions')
+    await navigateTo('/admin/overview')
   }
   loading.value = false
 }

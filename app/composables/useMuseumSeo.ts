@@ -5,7 +5,7 @@ export const SITE_NAME = 'Di Sản Bù Đăng'
 export const SITE_HOMEPAGE_TITLE = 'Di Sản Bù Đăng | Bảo tàng số xã Bù Đăng, TP Đồng Nai'
 export const SITE_DESCRIPTION = 'Bảo tàng số di sản văn hóa, lịch sử và thiên nhiên Thành Phố Đồng Nai. 16 di sản số hóa, audio guide thuyết minh, bản đồ tương tác và góc học tập.'
 export const SITE_URL = 'https://disanbudang.com'
-export const DEFAULT_IMAGE = '/images/og-default.jpg'
+export const DEFAULT_IMAGE = '/ogdisanbudang.png'
 
 interface MuseumSeoInput {
   title?: string
@@ -195,6 +195,9 @@ export function useMuseumSeo(input: MuseumSeoInput = {}) {
               '@id': `${SITE_URL}/#author`,
               name: 'Nguyễn Xuân Kiệt',
               jobTitle: 'Học sinh, tác giả dự án',
+              sameAs: [
+                'https://www.facebook.com/ngxkiet',
+              ],
               affiliation: {
                 '@type': 'EducationalOrganization',
                 name: 'THPT Lê Quý Đôn, Thành Phố Đồng Nai',

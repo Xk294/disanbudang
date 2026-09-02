@@ -306,7 +306,7 @@
 
         <!-- Empty state -->
         <div
-          v-else-if="!approvedPending && (!approvedData?.contributions || approvedData.contributions.length === 0)"
+          v-else-if="!approvedPending && displayContributions.length === 0"
           class="text-center py-16"
         >
           <div class="w-16 h-16 rounded-2xl bg-gold-500/10 border border-gold-500/20 flex items-center justify-center mx-auto mb-4">
@@ -318,42 +318,60 @@
         <!-- Contribution cards -->
         <div v-else class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           <article
-            v-for="item in approvedData!.contributions"
-            :key="(item as ApprovedContribution).id"
+            v-for="item in displayContributions"
+            :key="item.id"
             class="group bg-charcoal-950/40 border border-charcoal-850 rounded-2xl p-6 flex flex-col gap-4 hover:border-gold-500/30 transition-all duration-300"
           >
             <div class="flex items-start justify-between gap-3">
               <span
                 class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[10px] font-semibold uppercase tracking-wider border"
-                :class="typeStyle((item as ApprovedContribution).type)"
+                :class="typeStyle(item.type)"
               >
-                <Icon :name="typeIcon((item as ApprovedContribution).type)" class="w-3 h-3" />
-                {{ typeLabel((item as ApprovedContribution).type) }}
+                <Icon :name="typeIcon(item.type)" class="w-3 h-3" />
+                {{ typeLabel(item.type) }}
               </span>
               <time
                 class="text-charcoal-500 text-[10px] shrink-0 mt-0.5"
-                :datetime="(item as ApprovedContribution).created_at"
+                :datetime="item.created_at"
               >
-                {{ formatDate((item as ApprovedContribution).created_at) }}
+                {{ formatDate(item.created_at) }}
               </time>
             </div>
 
             <h3 class="font-heading font-bold text-ivory text-base leading-snug group-hover:text-gold-300 transition-colors duration-200 line-clamp-2">
-              {{ (item as ApprovedContribution).title }}
+              {{ item.title }}
             </h3>
 
             <p class="text-charcoal-400 text-xs leading-relaxed line-clamp-4 flex-1">
-              {{ (item as ApprovedContribution).excerpt }}
+              {{ item.excerpt }}
             </p>
+
+            <!-- PDF Document Attachment Link -->
+            <div v-if="item.file_url" class="pt-1">
+              <a
+                :href="item.file_url"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="inline-flex items-center gap-2 px-3 py-2 rounded-xl bg-amber-500/10 hover:bg-amber-500/20 border border-amber-500/25 hover:border-amber-500/50 text-amber-300 text-xs font-medium transition-all duration-200 group/pdf w-full"
+                :title="`Xem / Tải tài liệu: ${item.file_name || 'PDF'}`"
+              >
+                <Icon name="mdi:file-pdf-box" class="w-4 h-4 text-red-400 shrink-0 group-hover/pdf:scale-110 transition-transform" />
+                <span class="truncate text-[11px] font-mono">{{ item.file_name || 'Tài liệu số hóa (PDF)' }}</span>
+                <span v-if="item.file_size" class="text-[10px] text-charcoal-400 ml-auto shrink-0">
+                  {{ item.file_size }}
+                </span>
+                <Icon name="mdi:download" class="w-3.5 h-3.5 text-amber-400/80 shrink-0 ml-1" />
+              </a>
+            </div>
 
             <div class="flex items-center gap-2 pt-2 border-t border-charcoal-850">
               <div class="w-6 h-6 rounded-full bg-gold-500/15 border border-gold-500/25 flex items-center justify-center shrink-0">
                 <Icon name="mdi:account" class="w-3.5 h-3.5 text-gold-400" />
               </div>
               <span class="text-charcoal-400 text-xs truncate">
-                {{ (item as ApprovedContribution).author_name }}
+                {{ item.author_name }}
                 <span class="text-charcoal-600 mx-1">·</span>
-                {{ roleLabel((item as ApprovedContribution).author_role) }}
+                {{ roleLabel(item.author_role) }}
               </span>
             </div>
           </article>
@@ -361,12 +379,12 @@
 
         <!-- "Xem thêm" footer -->
         <div
-          v-if="approvedData && approvedData.total > approvedData.contributions.length"
+          v-if="totalContributions > displayContributions.length"
           class="text-center mt-10"
         >
           <p class="text-charcoal-500 text-xs">
-            Đang hiển thị {{ approvedData.contributions.length }}
-            trong tổng số {{ approvedData.total }} tư liệu được lưu giữ.
+            Đang hiển thị {{ displayContributions.length }}
+            trong tổng số {{ totalContributions }} tư liệu được lưu giữ.
           </p>
         </div>
       </div>
@@ -391,7 +409,52 @@ interface ApprovedContribution {
   heritage_id: string | null
   created_at: string
   excerpt: string
+  file_url?: string | null
+  file_name?: string | null
+  file_size?: string | null
 }
+
+const FALLBACK_CONTRIBUTIONS: ApprovedContribution[] = [
+  {
+    id: 'contrib-seed-001',
+    type: 'document',
+    title: 'Tài Liệu Ghi Chép Điền Dã & Lịch Sử Truyền Khẩu Sóc Bom Bo',
+    author_name: 'Điểu K\'Rốt',
+    author_role: 'resident',
+    heritage_id: 'hrt-011',
+    created_at: '2024-04-18T08:30:00.000Z',
+    excerpt: 'Tập ghi chép chi tiết về các thế hệ già làng Sóc Bom Bo, tư liệu truyền khẩu về phong trào giã gạo nuôi quân trong chiến dịch Đồng Xoài 1965 cùng danh sách các hiện vật cối chày truyền thống.',
+    file_url: '/tai-lieu/soc-bom-bo-dong-nai.pdf',
+    file_name: 'soc-bom-bo-dong-nai.pdf',
+    file_size: '900 KB',
+  },
+  {
+    id: 'contrib-seed-002',
+    type: 'research',
+    title: 'Hồ Sơ Tư Liệu Khảo Sát & Sơ Đồ Di Tích Căn Cứ Kháng Chiến U1',
+    author_name: 'Nguyễn Hoàng Mai',
+    author_role: 'student',
+    heritage_id: 'hrt-001',
+    created_at: '2024-05-02T14:15:00.000Z',
+    excerpt: 'Bản khảo cứu khoa học sinh viên kèm sơ đồ tọa độ các hầm chỉ huy, hệ thống địa đạo ngầm và hiện vật thời kháng chiến chống Mỹ tại vùng căn cứ cách mạng U1 Biên Hòa - Đồng Nai.',
+    file_url: '/tai-lieu/can-cu-u1.pdf',
+    file_name: 'can-cu-u1.pdf',
+    file_size: '901 KB',
+  },
+  {
+    id: 'contrib-seed-003',
+    type: 'document',
+    title: 'Ký Ức Hào Hùng & Sử Liệu Kháng Chiến Rừng Chiến Khu Đ',
+    author_name: 'Trần Văn Thành',
+    author_role: 'teacher',
+    heritage_id: null,
+    created_at: '2024-05-19T09:45:00.000Z',
+    excerpt: 'Tổng hợp hồi ký cựu chiến binh và tư liệu số hóa về căn cứ địa Chiến khu Đ miền Đông gian lao mà anh dũng, phục vụ giáo dục truyền thống lịch sử cho thế hệ trẻ học sinh.',
+    file_url: '/tai-lieu/chien-khu-d.pdf',
+    file_name: 'chien-khu-d.pdf',
+    file_size: '505 KB',
+  },
+]
 
 definePageMeta({ layout: 'default' })
 useMuseumSeo({
@@ -405,6 +468,17 @@ const { data: approvedData, pending: approvedPending } = await useFetch<{
   contributions: ApprovedContribution[]
   total: number
 }>('/api/contributions/approved', { default: () => ({ ok: false, contributions: [], total: 0 }) })
+
+const displayContributions = computed<ApprovedContribution[]>(() => {
+  if (approvedData.value?.contributions && approvedData.value.contributions.length > 0) {
+    return approvedData.value.contributions
+  }
+  return FALLBACK_CONTRIBUTIONS
+})
+
+const totalContributions = computed(() => {
+  return Math.max(approvedData.value?.total ?? 0, displayContributions.value.length)
+})
 
 // ── Type/role display helpers ────────────────────────────────────────────────
 const TYPE_META: Record<string, { label: string; icon: string; style: string }> = {

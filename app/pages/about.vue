@@ -513,6 +513,27 @@
                   {{ tag.label }}
                 </span>
               </div>
+
+              <!-- Social links -->
+              <div class="mt-6 pt-5 border-t border-charcoal-800/80 flex flex-wrap items-center gap-3">
+                <a
+                  href="https://www.facebook.com/ngxkiet"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-[#1877F2]/40 bg-[#1877F2]/10 hover:bg-[#1877F2]/20 text-[#1877F2] hover:text-white text-xs font-semibold transition-all duration-200 shadow-sm group"
+                >
+                  <Icon name="mdi:facebook" class="w-4 h-4 text-[#1877F2] group-hover:scale-110 transition-transform" />
+                  <span>Facebook: Nguyễn Xuân Kiệt</span>
+                  <Icon name="mdi:arrow-top-right" class="w-3.5 h-3.5 opacity-60 group-hover:opacity-100 transition-opacity" />
+                </a>
+                <a
+                  href="mailto:nguyenxuankiet294@gmail.com"
+                  class="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-charcoal-700 bg-charcoal-800/60 hover:bg-charcoal-800 hover:border-gold-500/40 text-charcoal-300 hover:text-gold-300 text-xs font-medium transition-all duration-200"
+                >
+                  <Icon name="mdi:email-outline" class="w-4 h-4 text-gold-400" />
+                  <span>nguyenxuankiet294@gmail.com</span>
+                </a>
+              </div>
             </div>
           </div>
         </div>
@@ -629,6 +650,9 @@ useHead({
           '@id': 'https://disanbudang.com/#author',
           name: 'Nguyễn Xuân Kiệt',
           jobTitle: 'Học sinh - Tác giả dự án',
+          sameAs: [
+            'https://www.facebook.com/ngxkiet',
+          ],
         },
       }),
     },

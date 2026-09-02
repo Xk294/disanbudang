@@ -1,7 +1,7 @@
 <template>
   <div v-if="post" class="bg-charcoal-900 min-h-screen text-ivory pb-20">
     <!-- Header/Hero -->
-    <div class="relative h-[55vh] min-h-[400px] flex items-end border-b border-charcoal-850 overflow-hidden">
+    <div class="relative min-h-[420px] lg:h-[55vh] flex items-center border-b border-charcoal-850 overflow-hidden">
       <img
         :src="post.coverImage"
         :alt="post.title"
@@ -10,7 +10,7 @@
       <div class="absolute inset-0 bg-gradient-to-t from-charcoal-900 via-charcoal-900/60 to-transparent" />
       <div class="absolute inset-0 bg-gradient-to-r from-charcoal-950/80 to-transparent" />
 
-      <div class="relative z-10 container-heritage pb-12">
+      <div class="relative z-10 container-heritage w-full py-16 md:py-20">
         <div class="max-w-3xl">
           <BaseBadge variant="gold" class="mb-4">{{ typeLabels[post.type] }}</BaseBadge>
           <h1 class="font-heading font-bold text-ivory text-3xl md:text-4xl lg:text-5xl leading-[1.35] md:leading-[1.3] lg:leading-[1.25] mb-6 md:mb-8 text-shadow-hero text-balance tracking-normal">

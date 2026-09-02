@@ -22,6 +22,8 @@
     <ScrollToTop />
     <!-- Global Zero-API Heritage Docent Chat -->
     <HeritageDocentChat />
+    <!-- Global Floating Auth Button (Bottom Left, symmetrical to HeritageDocentChat) -->
+    <FloatingAuthButton />
   </div>
 </template>
 

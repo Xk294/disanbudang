@@ -20,9 +20,13 @@ export default defineEventHandler(async (event) => {
   const conditions: string[] = []
   const bindings: unknown[] = []
 
-  if (starsFilter && starsFilter >= 1 && starsFilter <= 5) {
-    conditions.push('stars = ?')
-    bindings.push(starsFilter)
+  if (starsFilter !== null && !isNaN(starsFilter)) {
+    if (starsFilter >= 1 && starsFilter <= 5) {
+      conditions.push('stars = ?')
+      bindings.push(starsFilter)
+    } else if (starsFilter === 0) {
+      conditions.push('(stars IS NULL OR stars = 0)')
+    }
   }
 
   if (search) {

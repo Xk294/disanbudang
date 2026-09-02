@@ -170,7 +170,7 @@ Nguồn dữ liệu: `app/data/clusters.ts`.
 ### 4.1 Bản đồ Di sản Tương tác (`/map`)
 
 - **Thư viện:** Leaflet.js (trực tiếp, không qua vue-leaflet wrapper)
-- **Tile layer:** CartoDB Dark Matter (đã whitelist trong CSP)
+- **Tile layer:** Esri Dark Gray Canvas + Satellite View (Akamai Edge CDN, không cần API Key, đã whitelist trong CSP)
 - **Tính năng:**
   - Marker phân màu theo `HeritageCategory`, clustering khi thu nhỏ
   - Custom Popup: ảnh + tên + tóm tắt di sản
@@ -261,7 +261,7 @@ Nguồn dữ liệu: `app/data/clusters.ts`.
 
 ### 6.1 Security (nuxt-security + custom guards)
 
-- **CSP img-src whitelist:** `self`, `data:`, `images.unsplash.com`, `*.tile.openstreetmap.org`, `*.basemaps.cartocdn.com`
+- **CSP img-src whitelist:** `self`, `data:`, `images.unsplash.com`, `*.tile.openstreetmap.org`, `*.basemaps.cartocdn.com`, `*.arcgisonline.com`, `server.arcgisonline.com`
 - **Rate Limiter:** 150 tokens/hour
 - **Write endpoints:** `requireClient()` — Origin check + Cloudflare Turnstile
 - **Admin endpoints:** `requireAdmin()` — Firebase ID Token verify (RSA256 via `crypto.subtle`, offline, không gọi Firebase)
