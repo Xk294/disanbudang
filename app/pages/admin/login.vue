@@ -20,7 +20,7 @@
         <div class="leading-relaxed">
           <p class="font-semibold text-amber-200">Quyền truy cập giới hạn</p>
           <p class="text-amber-300/80 text-[11px] mt-0.5">
-            Chỉ tài khoản Google quản trị (<strong class="text-amber-200">nguyenxuankiet294@gmail.com</strong>) mới có quyền truy cập.
+            Chỉ tài khoản Google quản trị (<strong class="text-amber-200">nguyenxuankiet294@gmail.com</strong>, <strong class="text-amber-200">vuthanhtnk32@gmail.com</strong>) mới có quyền truy cập.
           </p>
         </div>
       </div>
@@ -143,7 +143,7 @@ watch([authReady, user], ([ready, u]) => {
     signOut().then(() => {
       error.value = {
         title: 'Tài khoản không có quyền quản trị',
-        description: `Tài khoản Google (${signedInEmail}) không được cấp quyền Admin. Vui lòng đăng nhập bằng nguyenxuankiet294@gmail.com.`,
+        description: `Tài khoản Google (${signedInEmail}) không được cấp quyền Admin. Vui lòng đăng nhập bằng tài khoản quản trị được cấp phép.`,
       }
     })
   }

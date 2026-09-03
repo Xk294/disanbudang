@@ -123,8 +123,9 @@ export default defineNuxtConfig({
     // Server-only secrets — populated from NUXT_* env vars
     turnstileSecretKey: '',      // NUXT_TURNSTILE_SECRET_KEY
     public: {
-      // Admin email — used by FE to show admin button and by server to guard admin routes
-      adminEmail: 'nguyenxuankiet294@gmail.com',
+      // Admin emails — used by FE to show admin button and by server to guard admin routes
+      adminEmail: 'nguyenxuankiet294@gmail.com,vuthanhtnk32@gmail.com',
+      adminEmails: ['nguyenxuankiet294@gmail.com', 'vuthanhtnk32@gmail.com'],
       // Turnstile public site key — populated from NUXT_PUBLIC_TURNSTILE_SITE_KEY
       turnstileSiteKey: '',
       firebase: {

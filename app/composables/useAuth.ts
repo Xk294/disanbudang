@@ -15,14 +15,18 @@ type Result<T> = { ok: true; data: T } | { ok: false; error: string }
 
 export function useAuth() {
   const config = useRuntimeConfig()
-  const ADMIN_EMAIL = config.public.adminEmail as string
+  const adminEmails = computed<string[]>(() => {
+    const raw = ((config.public.adminEmails as string[] | undefined) || (config.public.adminEmail as string | undefined) || '')
+    if (Array.isArray(raw)) return raw.map(e => e.trim().toLowerCase())
+    return String(raw).split(',').map(e => e.trim().toLowerCase()).filter(Boolean)
+  })
 
   // Shared state across all composable instances (SSR-safe)
   const user = useState<User | null>('auth.user', () => null)
   const authReady = useState<boolean>('auth.ready', () => false)
   const isAdmin = computed(() => {
     const email = user.value?.email?.trim().toLowerCase()
-    return Boolean(email && email === ADMIN_EMAIL.trim().toLowerCase())
+    return Boolean(email && adminEmails.value.includes(email))
   })
 
   /** Set up onAuthStateChanged listener. Must be called inside onMounted (client-only). */

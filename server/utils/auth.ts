@@ -15,8 +15,11 @@ import type { H3Event } from 'h3'
 const FIREBASE_PROJECT_ID = 'disanbudang'
 const JWKS_URL = 'https://www.googleapis.com/service_accounts/v1/jwk/securetoken@system.gserviceaccount.com'
 
-// Admin emails — hardcoded per design decision (single admin, public repo)
-const ADMIN_EMAILS = ['nguyenxuankiet294@gmail.com']
+// Admin emails — hardcoded per design decision
+const ADMIN_EMAILS = [
+  'nguyenxuankiet294@gmail.com',
+  'vuthanhtnk32@gmail.com',
+]
 
 export interface FirebaseClaims {
   uid: string

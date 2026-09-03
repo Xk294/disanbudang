@@ -40,7 +40,7 @@ Before any new backend/server-side endpoint is shipped (merged, not just written
 - **SPA routes**: `/admin/**` và `/me/**` là `ssr: false` (routeRules).
 - **Không dùng `firebase-admin`**: Verify Firebase ID token phía server bằng `crypto.subtle` (RS256). Xem `server/utils/auth.ts`.
 - **Không dùng KV**: Chỉ D1 cho toàn bộ persistence.
-- **Admin email**: `nguyenxuankiet294@gmail.com` — hardcoded trong `server/utils/auth.ts` (BE) và `runtimeConfig.public.adminEmail` (FE).
+- **Admin email**: `nguyenxuankiet294@gmail.com`, `vuthanhtnk32@gmail.com` — hardcoded trong `server/utils/auth.ts` (BE) và `runtimeConfig.public.adminEmails` (FE).
 - **Client guard**: Mọi write endpoint public phải qua `requireClient()` (Origin check + Cloudflare Turnstile).
 - **Mọi admin API**: Phải gọi `requireAdmin(event)` trước bất kỳ thao tác nào.
 - **Visitor tracking**: Upsert D1 `visitor_logs` theo `(ip, path)` — gọi từ `default.vue` layout qua `useVisitorTrack()`.
