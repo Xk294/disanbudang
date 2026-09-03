@@ -10,10 +10,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 
 - `docs/biz/` business backbone (`docs/biz/overview.md`): consolidates brand identity, USP, and the Invest/Tourism monetization model previously scattered across `feat/invest.md`/`feat/tourism.md` with no single anchor doc, per `RULE-docs` §A2 (mandatory business backbone for any project with a business dimension).
+- Auth: Support multiple admin accounts (`nguyenxuankiet294@gmail.com`, `vuthanhtnk32@gmail.com`) across backend token verification, runtime config, and client-side guards.
 
 ### Fixed
 
 - `docs/index.md` linked to `PROJECT_MASTER.md`, a file already deleted from the repo — the master-doc pointer was dead. Repointed to `docs/arch/system.md` (architecture/tech stack) and the new `docs/biz/overview.md` (business), and renumbered the mục lục to include the Business Backbone section.
+- Typography: Fix dark text on dark background in `.prose-heritage` and lesson study core knowledge block by applying `prose-invert` and high-contrast light colors (`text-charcoal-200` / `#E8E1D3`).
 
 ## [0.3.2] - 2026-07-09
 

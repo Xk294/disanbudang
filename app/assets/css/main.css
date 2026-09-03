@@ -514,7 +514,7 @@
 
   /* ——— Prose heritage ——— */
   .prose-heritage {
-    @apply prose prose-lg max-w-none;
+    @apply prose prose-invert prose-lg max-w-none;
     @apply prose-headings:font-heading;
     @apply prose-a:no-underline hover:prose-a:underline;
   }
@@ -523,42 +523,57 @@
   .prose-heritage h2,
   .prose-heritage h3,
   .prose-heritage h4 {
-    color: #221D17;
+    color: #F2EDE6;
   }
 
   .prose-heritage p {
-    color: #6B6152;
+    color: #E8E1D3;
   }
 
   .prose-heritage a {
-    color: #8C723F;
+    color: #C7A664;
   }
 
   .prose-heritage strong {
-    color: #221D17;
+    color: #DEC89D;
   }
 
   .prose-heritage em {
     font-family: '"Playfair Display"', Georgia, serif;
-    color: #8C723F;
+    color: #D1B27D;
   }
 
   .prose-heritage blockquote {
     border-left-color: #C7A664;
-    background-color: #FBF8F2;
+    background-color: rgba(34, 29, 23, 0.5);
     padding: 1rem 1.5rem;
     border-radius: 0 0.75rem 0.75rem 0;
-    color: #6B6152;
+    color: #E8E1D3;
   }
 
   /* Light background overrides for readability and accessibility */
   .bg-ivory .prose-heritage p,
-  .bg-white .prose-heritage p {
+  .bg-white .prose-heritage p,
+  .bg-warm-paper .prose-heritage p,
+  .bg-beige-200 .prose-heritage p {
     color: #6B6152 !important;
   }
 
   .bg-ivory .prose-heritage strong,
-  .bg-white .prose-heritage strong {
+  .bg-white .prose-heritage strong,
+  .bg-warm-paper .prose-heritage strong,
+  .bg-beige-200 .prose-heritage strong {
+    color: #221D17 !important;
+  }
+
+  .bg-ivory .prose-heritage h1,
+  .bg-ivory .prose-heritage h2,
+  .bg-ivory .prose-heritage h3,
+  .bg-ivory .prose-heritage h4,
+  .bg-white .prose-heritage h1,
+  .bg-white .prose-heritage h2,
+  .bg-white .prose-heritage h3,
+  .bg-white .prose-heritage h4 {
     color: #221D17 !important;
   }
 

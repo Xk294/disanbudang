@@ -37,7 +37,8 @@
         Kiến thức trọng tâm
       </h2>
       <div
-        class="prose prose-sm max-w-none text-charcoal-200 leading-relaxed
+        class="prose prose-sm prose-invert max-w-none leading-relaxed
+               prose-p:text-charcoal-200 prose-blockquote:text-charcoal-200
                prose-headings:text-ivory prose-headings:font-heading
                prose-strong:text-gold-300 prose-strong:font-semibold prose-em:text-gold-300
                prose-blockquote:border-gold-500 prose-blockquote:bg-charcoal-900/50
