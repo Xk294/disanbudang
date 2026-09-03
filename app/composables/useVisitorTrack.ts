@@ -10,26 +10,78 @@
 // Global state — shared across all components in the same Nuxt app instance
 const siteVisitCount = () => useState<number | null>('siteVisitCount', () => null)
 
+function getSessionInboundInfo(): { referrer?: string; utmSource?: string } {
+  if (typeof window === 'undefined') return {}
+
+  const SESSION_KEY = 'dsbd_session_traffic_v1'
+  try {
+    const raw = sessionStorage.getItem(SESSION_KEY)
+    if (raw) {
+      const parsed = JSON.parse(raw)
+      return {
+        referrer: parsed.referrer || undefined,
+        utmSource: parsed.utmSource || undefined,
+      }
+    }
+  } catch {}
+
+  let utmSource: string | undefined
+  let referrer: string | undefined
+
+  try {
+    const params = new URLSearchParams(window.location.search)
+    const utm = params.get('utm_source') || params.get('ref') || params.get('source')
+    if (utm) {
+      utmSource = utm.slice(0, 100)
+    }
+
+    const rawRef = typeof document !== 'undefined' ? document.referrer : ''
+    if (rawRef) {
+      try {
+        const refUrl = new URL(rawRef)
+        const currentHost = window.location.hostname
+        if (
+          refUrl.hostname !== currentHost &&
+          !refUrl.hostname.endsWith('.disanbudang.pages.dev') &&
+          !refUrl.hostname.includes('disanbudang.com') &&
+          refUrl.hostname !== 'localhost' &&
+          refUrl.hostname !== '127.0.0.1'
+        ) {
+          referrer = rawRef.slice(0, 500)
+        }
+      } catch {
+        if (!rawRef.includes(window.location.hostname)) {
+          referrer = rawRef.slice(0, 500)
+        }
+      }
+    }
+
+    sessionStorage.setItem(
+      SESSION_KEY,
+      JSON.stringify({
+        utmSource: utmSource || null,
+        referrer: referrer || null,
+        capturedAt: Date.now(),
+      })
+    )
+  } catch {}
+
+  return { referrer, utmSource }
+}
+
 export function useVisitorTrack() {
   if (import.meta.server) return
 
   const route = useRoute()
   const { getIdToken } = useAuth()
   const visitCount = siteVisitCount()
-  let isInitialLanding = true
 
   async function track(path: string) {
+    if (!path || path.startsWith('/admin')) return
+
     try {
       const idToken = await getIdToken()
-      // Only attach document.referrer on initial landing to avoid polluting internal SPA transitions
-      const referrer = isInitialLanding && typeof document !== 'undefined'
-        ? (document.referrer?.slice(0, 500) || undefined)
-        : undefined
-      const utmSource = typeof window !== 'undefined'
-        ? (new URLSearchParams(window.location.search).get('utm_source') || undefined)
-        : undefined
-
-      isInitialLanding = false
+      const { referrer, utmSource } = getSessionInboundInfo()
 
       const res = await $fetch<{ ok: boolean; totalVisits?: number }>('/api/analytics/visit', {
         method: 'POST',

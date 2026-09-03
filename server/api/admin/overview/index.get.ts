@@ -17,6 +17,23 @@ function classifyUserAgent(ua: string | null): 'mobile' | 'desktop' | 'bot' {
   return 'desktop'
 }
 
+function cleanReferrerDomain(source: string): string {
+  if (!source || source === 'direct' || source.startsWith('UTM ·') || source.startsWith('UTM -')) {
+    return source
+  }
+  if (!source.includes('/') && !source.includes(':')) {
+    return source
+  }
+  try {
+    const url = new URL(source.startsWith('http') ? source : `https://${source}`)
+    let host = url.hostname.toLowerCase()
+    if (host.startsWith('www.')) host = host.slice(4)
+    return host
+  } catch {
+    return source.replace(/^https?:\/\//, '').split('/')[0] || source
+  }
+}
+
 async function safeRun<T>(promise: Promise<T>, fallback: T): Promise<T> {
   try {
     return await promise
@@ -99,7 +116,9 @@ export default defineEventHandler(async (event) => {
   if (range === '7') timeFilter = "last_seen_at >= datetime('now', '-7 days')"
   else if (range === '14') timeFilter = "last_seen_at >= datetime('now', '-14 days')"
   else if (range === '30') timeFilter = "last_seen_at >= datetime('now', '-30 days')"
-  const whereTime = timeFilter ? `WHERE ${timeFilter}` : ''
+  // Base filter for visitor_logs: never count admin panel pages in visitor metrics
+  const baseVisitorFilter = "path NOT LIKE '/admin%'"
+  const whereVisitor = timeFilter ? `WHERE ${baseVisitorFilter} AND ${timeFilter}` : `WHERE ${baseVisitorFilter}`
 
   // Time filter for events table (uses created_at)
   let eventsTimeFilter = ''
@@ -137,7 +156,7 @@ export default defineEventHandler(async (event) => {
         db.prepare(`
           SELECT COUNT(DISTINCT ip) as total
           FROM visitor_logs
-          WHERE email IS NULL ${timeFilter ? `AND ${timeFilter}` : ''}
+          ${whereVisitor} AND email IS NULL
         `).first() as Promise<{ total: number } | null>,
         { total: 0 }
       ),
@@ -147,7 +166,7 @@ export default defineEventHandler(async (event) => {
         db.prepare(`
           SELECT COUNT(*) as count FROM (
             SELECT ip FROM visitor_logs
-            ${whereTime}
+            ${whereVisitor}
             GROUP BY ip
             HAVING SUM(visit_count) > 100
           )
@@ -162,7 +181,7 @@ export default defineEventHandler(async (event) => {
             COUNT(DISTINCT ip) as unique_ips,
             SUM(visit_count) as total_visits
           FROM visitor_logs
-          ${whereTime}
+          ${whereVisitor}
         `).first() as Promise<{ unique_ips: number | null; total_visits: number | null } | null>,
         { unique_ips: 0, total_visits: 0 }
       ),
@@ -172,7 +191,7 @@ export default defineEventHandler(async (event) => {
         db.prepare(`
           SELECT path, SUM(visit_count) as views
           FROM visitor_logs
-          ${whereTime}
+          ${whereVisitor}
           GROUP BY path
           ORDER BY views DESC
           LIMIT 10
@@ -185,7 +204,7 @@ export default defineEventHandler(async (event) => {
         db.prepare(`
           SELECT strftime('%H', datetime(last_seen_at, '+7 hours')) as hour, SUM(visit_count) as count
           FROM visitor_logs
-          ${whereTime}
+          ${whereVisitor}
           GROUP BY hour
           ORDER BY hour ASC
         `).all() as Promise<{ results?: Array<{ hour: string; count: number }> }>,
@@ -197,7 +216,7 @@ export default defineEventHandler(async (event) => {
         db.prepare(`
           SELECT user_agent, SUM(visit_count) as count
           FROM visitor_logs
-          ${whereTime}
+          ${whereVisitor}
           GROUP BY user_agent
         `).all() as Promise<{ results?: Array<{ user_agent: string | null; count: number }> }>,
         { results: [] }
@@ -233,14 +252,45 @@ export default defineEventHandler(async (event) => {
         { total: 0 }
       ),
 
-      // 12. Traffic sources from referrer / utm_source
+      // 12. Traffic sources from IP-level attribution CTE
       safeRun(
         db.prepare(`
+          WITH ip_channel AS (
+            SELECT
+              ip,
+              MAX(CASE WHEN utm_source IS NOT NULL AND utm_source != '' THEN 'UTM · ' || utm_source ELSE NULL END) as utm_ch,
+              MAX(CASE
+                WHEN referrer LIKE '%google%' THEN 'google'
+                WHEN referrer LIKE '%threads%' THEN 'l.threads.com'
+                WHEN referrer LIKE '%coccoc%' THEN 'coccoc.com'
+                WHEN referrer LIKE '%facebook%' OR referrer LIKE '%fb.com%' THEN 'facebook'
+                WHEN referrer LIKE '%bing%' THEN 'bing'
+                WHEN referrer LIKE '%vn.search.yahoo%' THEN 'vn.search.yahoo.com'
+                WHEN referrer LIKE '%search.yahoo%' OR referrer LIKE '%yahoo%' THEN 'search.yahoo.com'
+                WHEN referrer LIKE '%duckduckgo%' THEN 'duckduckgo.com'
+                WHEN referrer LIKE '%zalo%' THEN 'zalo'
+                WHEN referrer LIKE '%twitter.android%' THEN 'com.twitter.android'
+                WHEN referrer LIKE '%twitter%' OR referrer LIKE '%t.co%' OR referrer LIKE '%x.com%' THEN 'twitter'
+                WHEN referrer LIKE '%tiktok%' THEN 'tiktok'
+                WHEN referrer LIKE '%perplexity%' THEN 'perplexity'
+                WHEN referrer LIKE '%chatgpt%' OR referrer LIKE '%chat.openai%' THEN 'chatgpt'
+                WHEN referrer LIKE '%tool.akivn.net%' THEN 'tool.akivn.net'
+                WHEN referrer IS NOT NULL AND referrer != ''
+                     AND referrer NOT LIKE '%disanbudang.com%'
+                     AND referrer NOT LIKE '%.pages.dev%'
+                     AND referrer NOT LIKE '%localhost%'
+                     AND referrer NOT LIKE '%127.0.0.1%' THEN referrer
+                ELSE NULL
+              END) as ref_ch,
+              SUM(visit_count) as visits
+            FROM visitor_logs
+            ${whereVisitor}
+            GROUP BY ip
+          )
           SELECT
-            COALESCE(utm_source, referrer, 'direct') as source,
-            SUM(visit_count) as count
-          FROM visitor_logs
-          ${whereTime}
+            COALESCE(utm_ch, ref_ch, 'direct') as source,
+            SUM(visits) as count
+          FROM ip_channel
           GROUP BY source
           ORDER BY count DESC
           LIMIT 20
@@ -253,8 +303,7 @@ export default defineEventHandler(async (event) => {
         db.prepare(`
           SELECT COUNT(DISTINCT ip) as total
           FROM visitor_logs
-          WHERE (${featurePaths.map(() => 'path LIKE ?').join(' OR ')})
-          ${timeFilter ? `AND ${timeFilter}` : ''}
+          ${whereVisitor} AND (${featurePaths.map(() => 'path LIKE ?').join(' OR ')})
         `).bind(...featurePaths.map(p => `${p}%`)).first() as Promise<{ total: number } | null>,
         { total: 0 }
       ),
@@ -332,17 +381,26 @@ export default defineEventHandler(async (event) => {
 
     // ─── Traffic sources ─────────────────────────────────────────────────────
     const srcRows = trafficSourcesRes?.results ?? []
-    const srcTotal = srcRows.reduce((s, r) => s + (r.count || 0), 0)
-    let traffic_sources = srcRows.map(r => ({
-      source: r.source || 'direct',
-      count: r.count || 0,
-      percentage: srcTotal > 0 ? Math.round(((r.count || 0) / srcTotal) * 100) : 0,
+    const mergedSources = new Map<string, number>()
+    for (const r of srcRows) {
+      const s = cleanReferrerDomain(r.source || 'direct')
+      mergedSources.set(s, (mergedSources.get(s) ?? 0) + (r.count || 0))
+    }
+    const sortedSources = Array.from(mergedSources.entries())
+      .filter(([_, count]) => count > 0)
+      .sort((a, b) => b[1] - a[1])
+    const srcTotal = sortedSources.reduce((s, r) => s + r[1], 0)
+
+    let traffic_sources = sortedSources.map(([source, count]) => ({
+      source,
+      count,
+      percentage: srcTotal > 0 ? Math.round((count / srcTotal) * 100) : 0,
     }))
 
     if (traffic_sources.length === 0 && totalVisits > 0) {
       traffic_sources = [
         {
-          source: 'direct (truy cập trực tiếp)',
+          source: 'direct',
           count: totalVisits,
           percentage: 100,
         },

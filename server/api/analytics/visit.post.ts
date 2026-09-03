@@ -37,6 +37,11 @@ export default defineEventHandler(async (event) => {
     throw createError({ statusCode: 400, statusMessage: 'Missing path' })
   }
 
+  // Never log admin dashboard routes in visitor analytics
+  if (path.startsWith('/admin')) {
+    return { ok: true, totalVisits: cachedTotal ?? 0 }
+  }
+
   // Get real IP from Cloudflare header
   const ip =
     getHeader(event, 'cf-connecting-ip') ??
@@ -44,8 +49,39 @@ export default defineEventHandler(async (event) => {
     '0.0.0.0'
 
   const userAgent = getHeader(event, 'user-agent') ?? null
-  const ref = typeof referrer === 'string' ? referrer.slice(0, 500) : null
-  const utmSrc = typeof utm_source === 'string' ? utm_source.slice(0, 100) : null
+  const utmSrc = typeof utm_source === 'string' && utm_source.trim() ? utm_source.trim().slice(0, 100) : null
+
+  // Sanitize referrer: filter out internal domains
+  let ref: string | null = null
+  if (typeof referrer === 'string' && referrer.trim()) {
+    const trimmed = referrer.trim().slice(0, 500)
+    if (
+      !trimmed.includes('disanbudang.com') &&
+      !trimmed.includes('.pages.dev') &&
+      !trimmed.includes('localhost') &&
+      !trimmed.includes('127.0.0.1')
+    ) {
+      ref = trimmed
+    }
+  }
+
+  // Fallback: If no client referrer or UTM passed, check HTTP referer header if external
+  if (!ref && !utmSrc) {
+    const rawHttpReferer = getHeader(event, 'referer')
+    if (rawHttpReferer) {
+      try {
+        const u = new URL(rawHttpReferer)
+        if (
+          !u.hostname.includes('disanbudang.com') &&
+          !u.hostname.endsWith('.pages.dev') &&
+          u.hostname !== 'localhost' &&
+          u.hostname !== '127.0.0.1'
+        ) {
+          ref = rawHttpReferer.slice(0, 500)
+        }
+      } catch {}
+    }
+  }
 
   // Resolve user identity if token provided (optional — never block on failure)
   let email: string | null = null

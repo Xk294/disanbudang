@@ -110,7 +110,7 @@
             :title="item.source"
           >
             <span
-              v-if="item.source.startsWith('UTM -')"
+              v-if="item.source.startsWith('UTM ·') || item.source.startsWith('UTM -')"
               class="text-indigo-300 font-semibold"
             >
               {{ item.source }}

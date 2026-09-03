@@ -273,11 +273,16 @@
       <!-- Latest comments -->
       <Transition name="fade-up">
         <div v-if="comments.length > 0">
-          <h3 class="font-heading font-semibold text-ivory/80 text-base mb-5 flex items-center gap-2">
-            <Icon name="mdi:comment-multiple-outline" class="w-4.5 h-4.5 text-gold-500/60" />
-            Nhận xét từ cộng đồng
-          </h3>
-          <div class="space-y-3">
+          <div class="flex items-center justify-between mb-4">
+            <h3 class="font-heading font-semibold text-ivory/80 text-base flex items-center gap-2">
+              <Icon name="mdi:comment-multiple-outline" class="w-4.5 h-4.5 text-gold-500/60" />
+              Nhận xét từ cộng đồng
+            </h3>
+            <span v-if="comments.length > 3" class="text-xs text-charcoal-400">
+              Cuộn để xem thêm
+            </span>
+          </div>
+          <div class="space-y-3 max-h-[430px] overflow-y-auto pr-1.5 sm:pr-2">
             <div
               v-for="(c, i) in comments"
               :key="i"
